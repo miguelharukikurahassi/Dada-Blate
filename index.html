@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DADA BLATE — Anime Platform Fighter</title>
+  <title>DADA BLATE — Anime All-Stars Platform Fighter</title>
   <style>
     :root {
       --bg-dark: #070913;
@@ -58,7 +58,6 @@
       object-fit: contain;
     }
 
-    /* UI Layer */
     .ui-layer {
       position: absolute;
       inset: 0;
@@ -174,7 +173,7 @@
     .char-select-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+      gap: 16px;
       margin-bottom: 1.5rem;
       width: 100%;
     }
@@ -184,22 +183,22 @@
     }
 
     .char-card {
-      background: linear-gradient(180deg, rgba(20, 26, 46, 0.92) 0%, rgba(10, 13, 24, 0.98) 100%);
-      border: 2px solid rgba(255, 255, 255, 0.15);
-      border-radius: 6px;
+      background: linear-gradient(180deg, rgba(20, 26, 46, 0.94) 0%, rgba(10, 13, 24, 0.98) 100%);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       position: relative;
       transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-      height: 220px;
+      height: 250px;
     }
 
     .char-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
       border-color: #fff;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.35);
     }
 
     .char-card.selected-p1 {
@@ -223,7 +222,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 75%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 80%);
       overflow: hidden;
     }
 
@@ -231,93 +230,94 @@
       position: absolute;
       top: 6px;
       font-family: var(--font-display);
-      font-size: 0.85rem;
-      padding: 2px 8px;
+      font-size: 0.9rem;
+      padding: 3px 10px;
       font-style: italic;
-      border-radius: 3px;
+      border-radius: 4px;
       font-weight: bold;
       z-index: 5;
     }
 
-    .char-badge-p1 { left: 6px; background: var(--primary); color: #fff; }
-    .char-badge-p2 { right: 6px; background: var(--secondary); color: #000; }
+    .char-badge-p1 { left: 6px; background: var(--primary); color: #fff; box-shadow: 0 0 10px var(--primary); }
+    .char-badge-p2 { right: 6px; background: var(--secondary); color: #000; box-shadow: 0 0 10px var(--secondary); }
 
     .char-info {
-      padding: 8px 10px;
-      background: rgba(5, 7, 15, 0.95);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 12px;
+      background: rgba(6, 8, 18, 0.98);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .char-name {
       font-family: var(--font-display);
-      font-size: 1.15rem;
+      font-size: 1.3rem;
       font-style: italic;
       color: #fff;
+      letter-spacing: 1px;
     }
 
     .char-archetype {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--accent);
-      margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin-bottom: 3px;
+      font-weight: bold;
     }
 
     .char-stats {
-      font-size: 0.68rem;
-      color: #aaa;
+      font-size: 0.72rem;
+      color: #bbb;
     }
 
     /* Stage Select Grid */
     .stage-select-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 18px;
       margin-bottom: 2rem;
-      max-width: 1100px;
+      max-width: 1200px;
       width: 100%;
     }
 
-    @media (max-width: 860px) {
+    @media (max-width: 900px) {
       .stage-select-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     .stage-card {
-      height: 180px;
-      background: #111422;
+      height: 200px;
+      background: #0f1322;
       border: 3px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 12px;
+      padding: 14px;
       transition: all 0.2s ease;
     }
 
     .stage-card:hover, .stage-card.selected {
       border-color: var(--accent);
       transform: scale(1.03);
-      box-shadow: 0 0 20px rgba(255, 234, 0, 0.5);
+      box-shadow: 0 0 25px rgba(255, 234, 0, 0.6);
     }
 
     .stage-card-title {
       font-family: var(--font-display);
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-style: italic;
-      text-shadow: 2px 2px 4px #000;
+      text-shadow: 2px 2px 4px #000, 0 0 10px #000;
       z-index: 2;
+      color: #fff;
     }
 
     .stage-card-desc {
-      font-size: 0.72rem;
-      color: #ddd;
-      text-shadow: 1px 1px 2px #000;
+      font-size: 0.78rem;
+      color: #ffea00;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px #000, 0 0 8px #000;
       z-index: 2;
     }
 
@@ -338,10 +338,10 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      background: linear-gradient(135deg, rgba(10, 13, 24, 0.88) 0%, rgba(18, 22, 38, 0.65) 100%);
+      background: linear-gradient(135deg, rgba(10, 13, 24, 0.92) 0%, rgba(18, 22, 38, 0.75) 100%);
       padding: 10px 20px;
       border-radius: 8px;
-      border: 2px solid rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(8px);
       min-width: 320px;
     }
@@ -359,16 +359,13 @@
     }
 
     .hud-avatar {
-      width: 62px;
-      height: 62px;
+      width: 66px;
+      height: 66px;
       border-radius: 50%;
       border: 2px solid #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-style: italic;
       background: #182035;
       overflow: hidden;
     }
@@ -392,7 +389,7 @@
 
     .hud-name {
       font-family: var(--font-display);
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-style: italic;
       letter-spacing: 1px;
     }
@@ -426,7 +423,7 @@
 
     .hud-ult-bar-container {
       width: 180px;
-      height: 9px;
+      height: 10px;
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 3px;
@@ -456,7 +453,7 @@
       position: absolute;
       top: 100px;
       left: 32px;
-      background: rgba(10, 15, 30, 0.85);
+      background: rgba(10, 15, 30, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 12px 18px;
       border-radius: 8px;
@@ -502,10 +499,9 @@
       font-weight: bold;
     }
 
-    /* Input Monitor Display */
     .input-monitor {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       background: rgba(0, 0, 0, 0.5);
       padding: 6px 10px;
       border-radius: 4px;
@@ -577,7 +573,6 @@
       border-color: #fff;
     }
 
-    /* Impact Flash */
     #impact-flash {
       position: absolute;
       inset: 0;
@@ -588,7 +583,6 @@
       transition: opacity 0.05s ease-out;
     }
 
-    /* Error / Crash Banner (Zero Black Screens) */
     #error-banner {
       position: absolute;
       top: 10px;
@@ -612,19 +606,16 @@
     <div id="impact-flash"></div>
     <div id="error-banner"></div>
 
-    <!-- UI Overlay Layer -->
     <div class="ui-layer">
-
       <!-- In-Game HUD -->
       <div id="hud" style="display: none;">
-        <!-- P1 HUD -->
         <div class="fighter-hud p1" id="p1-hud">
           <div class="hud-avatar" id="p1-avatar">
-            <canvas width="62" height="62" id="avatar-canvas-p1"></canvas>
+            <canvas width="66" height="66" id="avatar-canvas-p1"></canvas>
           </div>
           <div class="hud-details">
             <div class="hud-header">
-              <span class="hud-name" id="p1-name">RYUUTO</span>
+              <span class="hud-name" id="p1-name">GOKU</span>
               <div class="hud-stocks" id="p1-stocks"></div>
             </div>
             <div class="hud-damage" id="p1-damage">0%</div>
@@ -634,14 +625,13 @@
           </div>
         </div>
 
-        <!-- P2 HUD -->
         <div class="fighter-hud p2" id="p2-hud">
           <div class="hud-avatar" id="p2-avatar">
-            <canvas width="62" height="62" id="avatar-canvas-p2"></canvas>
+            <canvas width="66" height="66" id="avatar-canvas-p2"></canvas>
           </div>
           <div class="hud-details">
             <div class="hud-header">
-              <span class="hud-name" id="p2-name">KUROGANE</span>
+              <span class="hud-name" id="p2-name">NARUTO</span>
               <div class="hud-stocks" id="p2-stocks"></div>
             </div>
             <div class="hud-damage" id="p2-damage">0%</div>
@@ -677,7 +667,7 @@
       <!-- Main Menu Screen -->
       <div class="screen-overlay" id="main-menu">
         <h1 class="title-logo">DADA BLATE</h1>
-        <div class="title-sub">Anime Platform Fighter 2D</div>
+        <div class="title-sub">Anime All-Stars Platform Fighter</div>
 
         <div class="menu-buttons">
           <button class="btn" id="btn-mode-versus">Versus Local (2 Jogadores)</button>
@@ -688,10 +678,10 @@
         </div>
       </div>
 
-      <!-- Character Select Screen (8 Archetypes) -->
+      <!-- Character Select Screen (Official Legends) -->
       <div class="screen-overlay hidden" id="char-select">
         <h2 class="title-logo" style="font-size: 2.8rem; margin-bottom: 0.1rem;">SELEÇÃO DE LUTADORES</h2>
-        <div class="title-sub" id="char-select-hint">JOGADOR 1: ESCOLHA SEU LUTADOR</div>
+        <div class="title-sub" id="char-select-hint">JOGADOR 1: ESCOLHA SEU PERSONAGEM</div>
 
         <div class="char-select-container">
           <div class="char-select-grid" id="char-grid"></div>
@@ -703,7 +693,7 @@
         </div>
       </div>
 
-      <!-- Stage Select Screen (6 Arenas) -->
+      <!-- Stage Select Screen (6 Famous Anime Arenas) -->
       <div class="screen-overlay hidden" id="stage-select">
         <h2 class="title-logo" style="font-size: 2.8rem; margin-bottom: 0.1rem;">SELEÇÃO DE ARENA</h2>
         <div class="title-sub">ESCOLHA O CAMPO DE BATALHA</div>
@@ -731,7 +721,7 @@
             <div class="rebind-row"><span>Fast Fall / Descer:</span> <button class="rebind-btn" data-player="p1" data-action="down">KeyS</button></div>
             <div class="rebind-row"><span>Ataque Leve:</span> <button class="rebind-btn" data-player="p1" data-action="light">KeyJ</button></div>
             <div class="rebind-row"><span>Ataque Pesado:</span> <button class="rebind-btn" data-player="p1" data-action="heavy">KeyK</button></div>
-            <div class="rebind-row"><span>Especial (Hadouken/Recovery):</span> <button class="rebind-btn" data-player="p1" data-action="special">KeyL</button></div>
+            <div class="rebind-row"><span>Especial Canônico:</span> <button class="rebind-btn" data-player="p1" data-action="special">KeyL</button></div>
             <div class="rebind-row"><span>Ultimate (100% Barra):</span> <button class="rebind-btn" data-player="p1" data-action="ult">KeyU</button></div>
             <div class="rebind-row"><span>Dash / Esquiva:</span> <button class="rebind-btn" data-player="p1" data-action="dash">KeyI</button></div>
           </div>
@@ -746,8 +736,8 @@
             <div class="rebind-row"><span>Ataque Leve:</span> <button class="rebind-btn" data-player="p2" data-action="light">Numpad1</button></div>
             <div class="rebind-row"><span>Ataque Pesado:</span> <button class="rebind-btn" data-player="p2" data-action="heavy">Numpad2</button></div>
             <div class="rebind-row"><span>Dash / Esquiva:</span> <button class="rebind-btn" data-player="p2" data-action="dash">Numpad3</button></div>
-            <div class="rebind-row"><span>Especial (Hadouken/Recovery):</span> <button class="rebind-btn" data-player="p2" data-action="special">Numpad4</button></div>
-            <div class="rebind-row"><span>Ultimate (100% Barra):</span> <button class="rebind-btn" data-player="p2" data-action="ult">Numpad5</button></div>
+            <div class="rebind-row"><span>Especial Canônico:</span> <button class="rebind-btn" data-player="p2" data-action="special">Numpad4</button></div>
+            <div class="rebind-row"><span>Ultimate:</span> <button class="rebind-btn" data-player="p2" data-action="ult">Numpad5</button></div>
           </div>
         </div>
 
@@ -778,16 +768,14 @@
           <button class="btn btn-secondary" id="btn-pause-quit">Menu Principal</button>
         </div>
       </div>
-
     </div>
   </div>
 
   <script>
     /* ==========================================================================
-       DADA BLATE: ANIME PLATFORM FIGHTER ENGINE (REVISED STABLE EDITION)
+       DADA BLATE: CANONICAL ANIME FIGHTER ENGINE (SIGNATURE MOVESETS)
        ========================================================================== */
 
-    // Polyfill for roundRect to avoid canvas crash on older browsers
     if (!CanvasRenderingContext2D.prototype.roundRect) {
       CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii) {
         if (!radii) radii = 0;
@@ -807,7 +795,7 @@
       };
     }
 
-    // --- SAFE AUDIO ENGINE (Procedural Web Audio API - Zero Crashes) ---
+    // --- SAFE AUDIO ENGINE ---
     class SoundEngine {
       constructor() {
         this.ctx = null;
@@ -863,7 +851,6 @@
             osc.start(now);
             osc.stop(now + 0.15);
           } else {
-            // Light
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(260, now);
             osc.frequency.exponentialRampToValueAtTime(70, now + 0.12);
@@ -872,9 +859,7 @@
             osc.start(now);
             osc.stop(now + 0.12);
           }
-        } catch (e) {
-          console.warn("playHit audio error:", e);
-        }
+        } catch (e) {}
       }
 
       playDash() {
@@ -937,7 +922,7 @@
         const tempo = 138;
         const beatSec = 60 / tempo;
         let step = 0;
-        const scale = [110, 130.81, 146.83, 164.81, 196, 220]; // Pentatonic
+        const scale = [110, 130.81, 146.83, 164.81, 196, 220];
 
         const playTick = () => {
           if (!this.bgmPlaying || !this.ctx) return;
@@ -971,15 +956,12 @@
 
     const sound = new SoundEngine();
 
-    // --- CENTRALIZED INPUT MANAGER (Multi-Key & Rebinding) ---
+    // --- CENTRALIZED INPUT MANAGER ---
     class InputManager {
       constructor() {
         this.keys = new Set();
-        this.listeningRebind = null; // { player, action, btnEl }
+        this.listeningRebind = null;
 
-        // Default Layouts:
-        // P1: W A S D + J(Light), K(Heavy), L(Special), U(Ult), I(Dash)
-        // P2: Arrows + Numpad 1..5 (with fallback for notebook without numpad)
         this.bindings = {
           p1: {
             up: 'KeyW',
@@ -1005,7 +987,6 @@
           }
         };
 
-        // Fallbacks for P2 on laptops without numpad:
         this.p2Fallbacks = {
           light: 'KeyV',
           heavy: 'KeyB',
@@ -1015,9 +996,8 @@
         };
 
         window.addEventListener('keydown', (e) => {
-          sound.init(); // Audio context init
+          sound.init();
 
-          // Rebinding capture
           if (this.listeningRebind) {
             e.preventDefault();
             const { player, action, btnEl } = this.listeningRebind;
@@ -1028,13 +1008,12 @@
             return;
           }
 
-          // Prevent default scrolling keys
           if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
             e.preventDefault();
           }
 
-          if (e.code === 'Escape') {
-            if (window.game) window.game.togglePause();
+          if (e.code === 'Escape' && window.game) {
+            window.game.togglePause();
           }
 
           this.keys.add(e.code);
@@ -1045,7 +1024,7 @@
         });
 
         window.addEventListener('blur', () => {
-          this.keys.clear(); // Prevent stuck keys on tab switch
+          this.keys.clear();
         });
       }
 
@@ -1087,484 +1066,678 @@
 
     const input = new InputManager();
 
-    // --- 8 DIVERSE ANIME ARCHETYPES (RADICAL VISUAL & COMBAT IDENTITY) ---
+    // --- CHARACTERS CANONICAL METADATA ---
     const CHARACTERS = {
-      ryuuto: {
-        id: 'ryuuto',
-        name: 'RYUUTO',
-        archetype: 'Protagonista Shounen',
-        genre: 'Torneio de Artes Marciais',
-        color: '#ff3b30',
-        secColor: '#007aff',
-        style: 'Brawler / Rushdown',
+      goku: {
+        id: 'goku',
+        name: 'GOKU',
+        anime: 'Dragon Ball',
+        archetype: 'Sayajin Guerreiro Z',
+        color: '#ff5722',
+        auraColor: '#ffd600',
+        style: 'Power / Rushdown',
         difficulty: '★★☆☆☆',
         weight: 100,
-        speed: 9.6,
-        jumpForce: 19.0,
+        speed: 9.8,
+        jumpForce: 19.5,
         gravity: 0.88,
-        desc: 'Guerreiro de kimono laranja e azul. Hadouken de energia pura, Dragon Uppercut e Supernova Burst.'
+        desc: 'Feixe contínuo do Kamehameha, Instant Transmission e Super Saiyajin.'
       },
-      kurogane: {
-        id: 'kurogane',
-        name: 'KUROGANE',
-        archetype: 'Espadachim Sombrio',
-        genre: 'Feudal Samurai / Ronin',
-        color: '#8b5cf6',
-        secColor: '#1e1b4b',
-        style: 'Espadachim / Footsies',
-        difficulty: '★★★★☆',
+      naruto: {
+        id: 'naruto',
+        name: 'NARUTO',
+        anime: 'Naruto Shippuden',
+        archetype: 'Ninja de Konoha',
+        color: '#f59e0b',
+        auraColor: '#38bdf8',
+        style: 'Clones / Rasengan',
+        difficulty: '★★☆☆☆',
         weight: 92,
+        speed: 10.8,
+        jumpForce: 20.0,
+        gravity: 0.86,
+        desc: 'Rasengan de avanço, catapulta de clones e Rasenshuriken de Kurama.'
+      },
+      luffy: {
+        id: 'luffy',
+        name: 'LUFFY',
+        anime: 'One Piece',
+        archetype: 'Capitão dos Chapéus de Palha',
+        color: '#ef4444',
+        auraColor: '#facc15',
+        style: 'Borracha / Estilingue',
+        difficulty: '★★★☆☆',
+        weight: 94,
+        speed: 10.2,
+        jumpForce: 19.8,
+        gravity: 0.85,
+        desc: 'Gatling de socos rápidos, Pistol de longo alcance e Red Hawk explosivo.'
+      },
+      ichigo: {
+        id: 'ichigo',
+        name: 'ICHIGO',
+        anime: 'Bleach',
+        archetype: 'Shinigami Substituto',
+        color: '#f97316',
+        auraColor: '#00e5ff',
+        style: 'Espadachim / Getsuga',
+        difficulty: '★★★☆☆',
+        weight: 95,
+        speed: 10.5,
+        jumpForce: 19.6,
+        gravity: 0.89,
+        desc: 'Cortes com Zangetsu gigante, Getsuga Tenshou em lâmina negra e Bankai.'
+      },
+      gojo: {
+        id: 'gojo',
+        name: 'GOJO',
+        anime: 'Jujutsu Kaisen',
+        archetype: 'O Feiticeiro Mais Forte',
+        color: '#06b6d4',
+        auraColor: '#a855f7',
+        style: 'Limitless / Gravidade',
+        difficulty: '★★★★☆',
+        weight: 90,
+        speed: 9.5,
+        jumpForce: 18.8,
+        gravity: 0.78,
+        desc: 'Azul que atrai magneticamente, Vermelho que repele e Vazio Roxo fulminante.'
+      },
+      zoro: {
+        id: 'zoro',
+        name: 'ZORO',
+        anime: 'One Piece',
+        archetype: 'Caçador de Piratas',
+        color: '#10b981',
+        auraColor: '#059669',
+        style: 'Puro Espadachim (3 Katanas)',
+        difficulty: '★★★★☆',
+        weight: 98,
+        speed: 10.0,
+        jumpForce: 19.2,
+        gravity: 0.90,
+        desc: 'Dash Onigiri, Iaidō Shishi Sonson e Tornado de Espadas Tatsumaki.'
+      },
+      tanjiro: {
+        id: 'tanjiro',
+        name: 'TANJIRO',
+        anime: 'Demon Slayer',
+        archetype: 'Caçador de Demônios',
+        color: '#059669',
+        auraColor: '#dc2626',
+        style: 'Respiração da Água / Sol',
+        difficulty: '★★★☆☆',
+        weight: 91,
         speed: 10.4,
         jumpForce: 19.5,
-        gravity: 0.90,
-        desc: 'Samurai com kimono escuro e katana afiada. Cortes desconectados de longo alcance e golpes Iaidō.'
+        gravity: 0.88,
+        desc: 'Cortes de ondas de água reais, Hinokami Kagura de fogo e Dragão do Sol.'
       },
-      malakor: {
-        id: 'malakor',
-        name: 'MALAKOR',
-        archetype: 'Mago Ocultista',
-        genre: 'Sobrenatural Underground',
-        color: '#10b981',
-        secColor: '#064e3b',
-        style: 'Trapmaster / Zoner',
-        difficulty: '★★★★★',
-        weight: 86,
-        speed: 8.6,
-        jumpForce: 18.0,
-        gravity: 0.78,
-        desc: 'Manto rasgado com símbolos misteriosos. Armadilhas rúnicas que detonam ao toque e fendas do vazio.'
-      },
-      hayate: {
-        id: 'hayate',
-        name: 'HAYATE',
-        archetype: 'Ninja Shinobi',
-        genre: 'Clã Ninja Tradicional',
-        color: '#06b6d4',
-        secColor: '#0f172a',
-        style: 'Assassino / Hiper-Velocidade',
-        difficulty: '★★★★☆',
-        weight: 84,
-        speed: 11.8,
-        jumpForce: 20.2,
-        gravity: 0.85,
-        desc: 'Traje shinobi azul e máscara. Arremesso veloz de shurikens, teleporte com tronco e clones das sombras.'
-      },
-      lumina: {
-        id: 'lumina',
-        name: 'LUMINA',
-        archetype: 'Magical Girl',
-        genre: 'Fantasia Mágica Estelar',
-        color: '#ec4899',
-        secColor: '#fdf2f8',
-        style: 'Zoner Aéreo / Magia',
+      jotaro: {
+        id: 'jotaro',
+        name: 'JOTARO',
+        anime: 'JoJo\'s Bizarre Adventure',
+        archetype: 'Usuário de Stand',
+        color: '#8b5cf6',
+        auraColor: '#eab308',
+        style: 'Star Platinum / The World',
         difficulty: '★★★☆☆',
-        weight: 80,
-        speed: 9.0,
+        weight: 105,
+        speed: 9.4,
         jumpForce: 18.5,
-        gravity: 0.72,
-        desc: 'Vestido rosa com báculo estelar. Projéteis em formato de estrelas cadentes e voo com purpurina cósmica.'
-      },
-      titan01: {
-        id: 'titan01',
-        name: 'TITAN-01',
-        archetype: 'Piloto de Mecha',
-        genre: 'Ficção Científica Pesada',
-        color: '#eab308',
-        secColor: '#334155',
-        style: 'Super-Pesado / Blindado',
-        difficulty: '★★★☆☆',
-        weight: 130,
-        speed: 7.8,
-        jumpForce: 17.5,
-        gravity: 1.05,
-        desc: 'Armadura exoesqueleto cinza e amarela. Propulsores a jato, soco foguete e raio destruidor de peito.'
-      },
-      ren: {
-        id: 'ren',
-        name: 'REN',
-        archetype: 'Invocadora Miko',
-        genre: 'Folclore Místico Japonês',
-        color: '#ef4444',
-        secColor: '#ffffff',
-        style: 'Invocadora / Controle',
-        difficulty: '★★★★☆',
-        weight: 85,
-        speed: 9.2,
-        jumpForce: 18.8,
-        gravity: 0.80,
-        desc: 'Sacerdotisa xintoísta com quimono branco/vermelho. Controla raposas espirituais (kitsune) de fogo azul.'
-      },
-      daiki: {
-        id: 'daiki',
-        name: 'DAIKI',
-        archetype: 'Atleta Campeão',
-        genre: 'Anime Esportivo / Super Técnicas',
-        color: '#f97316',
-        secColor: '#16a34a',
-        style: 'Brawler Aéreo / Alta Mobilidade',
-        difficulty: '★★☆☆☆',
-        weight: 94,
-        speed: 10.8,
-        jumpForce: 19.8,
-        gravity: 0.92,
-        desc: 'Uniforme esportivo com bandana e tênis veloz. Chutes acrobáticos de bicicleta e esferas de impacto elétrico.'
+        gravity: 0.94,
+        desc: 'Invoca Star Platinum fisicamente: ORA ORA ORA!, Star Finger e Parada no Tempo.'
       }
     };
 
-    // --- 6 COMPREHENSIVE ARENAS (DETAILED PLATFORMS & BLAST ZONES) ---
+    // --- 6 VIBRANT ANIME STAGES ---
     const STAGES = [
       {
-        id: 'stage_martial',
+        id: 'budokai',
         name: 'Torneio de Artes Marciais',
-        theme: 'Céu aberto, dojo de pedra e montanhas sagradas',
-        color: '#ff3b30',
-        bgGrad: ['#38bdf8', '#bae6fd', '#fef08a'],
+        anime: 'Dragon Ball (Tenkaichi Budokai)',
+        desc: 'Ringue de lajotas de pedra, muro do templo com kanji 武 e céu azul com montanhas.',
+        color: '#ff5722',
+        theme: 'budokai',
         platforms: [
-          { x: 500, y: 780, w: 920, h: 60, semi: false },
-          { x: 620, y: 610, w: 230, h: 16, semi: true },
-          { x: 1070, y: 610, w: 230, h: 16, semi: true }
+          { x: 480, y: 780, w: 960, h: 65, semi: false },
+          { x: 600, y: 600, w: 240, h: 18, semi: true },
+          { x: 1080, y: 600, w: 240, h: 18, semi: true }
         ],
-        spawnP1: { x: 720, y: 700 },
-        spawnP2: { x: 1200, y: 700 },
-        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
+        spawnP1: { x: 700, y: 700 },
+        spawnP2: { x: 1220, y: 700 },
+        blastZone: { left: -450, right: 2370, top: -850, bottom: 1400 }
       },
       {
-        id: 'stage_feudal',
-        name: 'Vila Feudal dos Samurais',
-        theme: 'Pôr do sol carmesim, telhados tradicionais e folhas de bordo',
-        color: '#8b5cf6',
-        bgGrad: ['#4c1d95', '#9f1239', '#fbbf24'],
+        id: 'konoha',
+        name: 'Vila da Folha (Konoha)',
+        anime: 'Naruto Shippuden',
+        desc: 'Monumento dos Hokages na montanha rochosa, telhados shinobi e folhas ao vento.',
+        color: '#f59e0b',
+        theme: 'konoha',
+        platforms: [
+          { x: 500, y: 790, w: 920, h: 60, semi: false },
+          { x: 440, y: 630, w: 250, h: 18, semi: true },
+          { x: 1230, y: 630, w: 250, h: 18, semi: true },
+          { x: 820, y: 500, w: 280, h: 18, semi: true }
+        ],
+        spawnP1: { x: 720, y: 710 },
+        spawnP2: { x: 1200, y: 710 },
+        blastZone: { left: -450, right: 2370, top: -850, bottom: 1400 }
+      },
+      {
+        id: 'sunny',
+        name: 'Navio Thousand Sunny',
+        anime: 'One Piece',
+        desc: 'Convés de madeira do navio pirata navegando sobre o oceano azul com mastros e velas.',
+        color: '#00e5ff',
+        theme: 'sunny',
+        platforms: [
+          { x: 520, y: 800, w: 880, h: 60, semi: false },
+          { x: 620, y: 610, w: 220, h: 18, semi: true },
+          { x: 1080, y: 610, w: 220, h: 18, semi: true }
+        ],
+        spawnP1: { x: 740, y: 720 },
+        spawnP2: { x: 1180, y: 720 },
+        blastZone: { left: -450, right: 2370, top: -850, bottom: 1400 }
+      },
+      {
+        id: 'seireitei',
+        name: 'Soul Society (Seireitei)',
+        anime: 'Bleach',
+        desc: 'Palácio espiritual tradicional sob lua mística com partículas azuladas de Reishi.',
+        color: '#a855f7',
+        theme: 'seireitei',
         platforms: [
           { x: 540, y: 790, w: 840, h: 55, semi: false },
-          { x: 440, y: 640, w: 240, h: 16, semi: true },
-          { x: 1240, y: 640, w: 240, h: 16, semi: true },
-          { x: 840, y: 520, w: 240, h: 16, semi: true }
-        ],
-        spawnP1: { x: 740, y: 710 },
-        spawnP2: { x: 1180, y: 710 },
-        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
-      },
-      {
-        id: 'stage_yokai',
-        name: 'Santuário dos Espíritos Yokai',
-        theme: 'Noite estrelada nas nuvens, portões Torii e névoa etérea',
-        color: '#06b6d4',
-        bgGrad: ['#0f172a', '#1e1b4b', '#064e3b'],
-        platforms: [
-          { x: 560, y: 800, w: 800, h: 50, semi: false },
           { x: 640, y: 620, w: 210, h: 16, semi: true },
           { x: 1070, y: 620, w: 210, h: 16, semi: true },
           { x: 855, y: 470, w: 210, h: 16, semi: true }
         ],
-        spawnP1: { x: 750, y: 720 },
-        spawnP2: { x: 1170, y: 720 },
-        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
+        spawnP1: { x: 740, y: 710 },
+        spawnP2: { x: 1180, y: 710 },
+        blastZone: { left: -450, right: 2370, top: -850, bottom: 1400 }
       },
       {
-        id: 'stage_crypt',
-        name: 'Cripta Oculta Subterrânea',
-        theme: 'Ruínas arcanas escuras com runas roxas pulsantes',
-        color: '#10b981',
-        bgGrad: ['#022c22', '#0f172a', '#000000'],
+        id: 'shibuya',
+        name: 'Shibuya Noturna',
+        anime: 'Jujutsu Kaisen',
+        desc: 'Telhado urbano moderno de Tóquio com chuva leve, vigas de ferro e letreiros neon.',
+        color: '#06b6d4',
+        theme: 'shibuya',
         platforms: [
-          { x: 580, y: 810, w: 760, h: 50, semi: false },
-          { x: 710, y: 630, w: 500, h: 16, semi: true }
+          { x: 500, y: 800, w: 920, h: 65, semi: false },
+          { x: 580, y: 630, w: 240, h: 18, semi: true },
+          { x: 1100, y: 630, w: 240, h: 18, semi: true }
         ],
-        spawnP1: { x: 760, y: 730 },
-        spawnP2: { x: 1160, y: 730 },
-        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
+        spawnP1: { x: 710, y: 720 },
+        spawnP2: { x: 1210, y: 720 },
+        blastZone: { left: -450, right: 2370, top: -850, bottom: 1400 }
       },
       {
-        id: 'stage_mecha',
-        name: 'Hangar do Mecha Gigante',
-        theme: 'Instalação militar sci-fi com robô titânico ao fundo',
-        color: '#eab308',
-        bgGrad: ['#1e293b', '#334155', '#0f172a'],
+        id: 'natagumo',
+        name: 'Monte Natagumo',
+        anime: 'Demon Slayer',
+        desc: 'Ponte de madeira sob uma lua cheia colossal com névoa e pétalas roxas caindo.',
+        color: '#ec4899',
+        theme: 'natagumo',
         platforms: [
-          { x: 480, y: 790, w: 960, h: 65, semi: false },
-          { x: 560, y: 630, w: 250, h: 18, semi: true },
-          { x: 1110, y: 630, w: 250, h: 18, semi: true }
+          { x: 520, y: 810, w: 880, h: 55, semi: false },
+          { x: 700, y: 630, w: 520, h: 18, semi: true }
         ],
-        spawnP1: { x: 700, y: 710 },
-        spawnP2: { x: 1220, y: 710 },
-        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
-      },
-      {
-        id: 'stage_stadium',
-        name: 'Estádio dos Campeões',
-        theme: 'Arena esportiva de anime com holofotes brilhantes e telão',
-        color: '#f97316',
-        bgGrad: ['#042f2e', '#083344', '#172554'],
-        platforms: [
-          { x: 520, y: 780, w: 880, h: 60, semi: false },
-          { x: 630, y: 610, w: 220, h: 16, semi: true },
-          { x: 1070, y: 610, w: 220, h: 16, semi: true }
-        ],
-        spawnP1: { x: 730, y: 700 },
-        spawnP2: { x: 1190, y: 700 },
-        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
+        spawnP1: { x: 750, y: 730 },
+        spawnP2: { x: 1170, y: 730 },
+        blastZone: { left: -450, right: 2370, top: -850, bottom: 1400 }
       }
     ];
 
-    // --- PROCEDURAL CHARACTER ARTWORK ENGINE (HIGH RES RETRAITS & BATALHA) ---
+    // --- CHARACTER ART & SIGNATURE ANIMATIONS ---
     class CharacterArtEngine {
       static drawPortrait(ctx, charId, w, h) {
         ctx.save();
         ctx.clearRect(0, 0, w, h);
         const c = CHARACTERS[charId];
-        if (!c) {
-          ctx.restore();
-          return;
-        }
+        if (!c) { ctx.restore(); return; }
 
-        // Card background
-        const grad = ctx.createLinearGradient(0, 0, 0, h);
-        grad.addColorStop(0, c.color + '44');
-        grad.addColorStop(1, '#0b0f19');
+        const grad = ctx.createRadialGradient(w/2, h/2, 10, w/2, h/2, w/1.2);
+        grad.addColorStop(0, c.color + '55');
+        grad.addColorStop(1, '#080c18');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, w, h);
 
-        ctx.translate(w / 2, h / 2 + 15);
-        this.drawFigure(ctx, charId, 1.4);
+        ctx.translate(w / 2, h / 2 + 18);
+        this.drawFighterArt(ctx, charId, 1.45, null);
         ctx.restore();
       }
 
-      static drawFigure(ctx, charId, scale = 1.0) {
+      static drawFighterArt(ctx, charId, scale = 1.0, fighter = null) {
         ctx.save();
         ctx.scale(scale, scale);
-        const c = CHARACTERS[charId] || CHARACTERS.ryuuto;
 
-        // Distinct Silhouette & Clothing by Genre!
         switch (charId) {
-          case 'ryuuto': // Martial Arts Shounen Gi
-            // Legs & Belt
-            ctx.fillStyle = '#f97316'; // Orange pants
-            ctx.fillRect(-14, 15, 11, 30);
-            ctx.fillRect(3, 15, 11, 30);
-            // Black belt
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(-15, 12, 30, 5);
-            // Torso (Orange Gi with Blue Undershirt)
-            ctx.fillStyle = '#0284c7';
-            ctx.fillRect(-12, -10, 24, 24);
+          case 'goku':
+            // Goku Gi & Boots
             ctx.fillStyle = '#f97316';
-            ctx.beginPath();
-            ctx.moveTo(-13, -10); ctx.lineTo(-4, 12); ctx.lineTo(-13, 12); ctx.fill();
-            ctx.beginPath();
-            ctx.moveTo(13, -10); ctx.lineTo(4, 12); ctx.lineTo(13, 12); ctx.fill();
-            // Head & Spiky Anime Hair
-            ctx.fillStyle = '#fed7aa'; // Skin
-            ctx.beginPath(); ctx.arc(0, -20, 11, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#000000'; // Black Spiky Hair
-            ctx.beginPath();
-            ctx.moveTo(-12, -22); ctx.lineTo(-18, -32); ctx.lineTo(-6, -26);
-            ctx.lineTo(0, -36); ctx.lineTo(7, -26); ctx.lineTo(18, -32); ctx.lineTo(12, -22);
-            ctx.closePath(); ctx.fill();
-            // Flaming Fists Aura
-            ctx.fillStyle = '#ffea00';
-            ctx.beginPath(); ctx.arc(18, 0, 7, 0, Math.PI * 2); ctx.fill();
-            break;
-
-          case 'kurogane': // Feudal Dark Samurai
-            // Dark Hakama pants
-            ctx.fillStyle = '#18181b';
-            ctx.beginPath(); ctx.moveTo(-16, 12); ctx.lineTo(-20, 44); ctx.lineTo(20, 44); ctx.lineTo(16, 12); ctx.fill();
-            // Dark Kimono / Haori
-            ctx.fillStyle = '#27272a';
-            ctx.fillRect(-14, -12, 28, 26);
-            // Red sash / obi
-            ctx.fillStyle = '#dc2626';
-            ctx.fillRect(-14, 10, 28, 5);
-            // Katana on hip
-            ctx.strokeStyle = '#e4e4e7'; ctx.lineWidth = 3;
-            ctx.beginPath(); ctx.moveTo(-24, 16); ctx.lineTo(22, -6); ctx.stroke();
-            // Head & Ronin Straw Hat / Long Hair
-            ctx.fillStyle = '#fde047'; // Straw hat
-            ctx.beginPath(); ctx.ellipse(0, -25, 20, 5, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#78350f';
-            ctx.beginPath(); ctx.arc(0, -26, 10, Math.PI, 0); ctx.fill();
-            break;
-
-          case 'malakor': // Underground Occultist
-            // Ragged Dark Robe
-            ctx.fillStyle = '#064e3b';
-            ctx.beginPath(); ctx.moveTo(-16, -10); ctx.lineTo(-24, 44); ctx.lineTo(24, 44); ctx.lineTo(16, -10); ctx.fill();
-            // Mysterious Green Glyphs on robe
-            ctx.strokeStyle = '#34d399'; ctx.lineWidth = 1.5;
-            ctx.strokeRect(-6, 8, 12, 12);
-            // Hood & Glowing Eyes
-            ctx.fillStyle = '#022c22';
-            ctx.beginPath(); ctx.arc(0, -22, 14, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#34d399';
-            ctx.fillRect(-5, -22, 3, 3); ctx.fillRect(2, -22, 3, 3);
-            // Floating Arcane Orbit Rune
-            ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.arc(20, -5, 8, 0, Math.PI * 2); ctx.stroke();
-            break;
-
-          case 'hayate': // Traditional Ninja
-            // Dark Navy Shinobi Shozoku
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect(-12, 15, 10, 30);
-            ctx.fillRect(2, 15, 10, 30);
-            ctx.fillStyle = '#1e293b';
-            ctx.fillRect(-13, -10, 26, 26);
-            // Mask & Red Long Scarf
-            ctx.fillStyle = '#f43f5e';
-            ctx.beginPath(); ctx.moveTo(-6, -12); ctx.lineTo(-26, 6); ctx.lineTo(-18, -14); ctx.fill();
-            ctx.fillStyle = '#fed7aa'; // Eyes slit
-            ctx.fillRect(-6, -22, 12, 4);
-            ctx.fillStyle = '#0f172a'; // Shinobi Hood
-            ctx.beginPath(); ctx.arc(0, -21, 11, 0, Math.PI * 2); ctx.fill();
-            // Ninja Shuriken in hand
-            ctx.fillStyle = '#94a3b8';
-            ctx.fillRect(14, -2, 8, 8);
-            break;
-
-          case 'lumina': // Magical Girl
-            // Fluffy Frilly Dress (Pink & White)
-            ctx.fillStyle = '#f472b6';
-            ctx.beginPath(); ctx.moveTo(-10, 5); ctx.lineTo(-24, 38); ctx.lineTo(24, 38); ctx.lineTo(10, 5); ctx.fill();
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(-8, -10, 16, 16);
-            // Cute Head & Twin Blonde Tails
-            ctx.fillStyle = '#fed7aa';
-            ctx.beginPath(); ctx.arc(0, -20, 10, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#fde047'; // Blonde Hair
-            ctx.beginPath(); ctx.arc(-13, -18, 6, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.arc(13, -18, 6, 0, Math.PI * 2); ctx.fill();
-            // Star Magic Wand
-            ctx.strokeStyle = '#eab308'; ctx.lineWidth = 2.5;
-            ctx.beginPath(); ctx.moveTo(14, 25); ctx.lineTo(20, -18); ctx.stroke();
-            ctx.fillStyle = '#ec4899';
-            ctx.beginPath(); ctx.arc(20, -20, 7, 0, Math.PI * 2); ctx.fill();
-            break;
-
-          case 'titan01': // Mecha Robot
-            // Heavy Armored Legs & Thrusters
-            ctx.fillStyle = '#334155';
-            ctx.fillRect(-16, 14, 13, 30);
-            ctx.fillRect(3, 14, 13, 30);
-            // Heavy Torso with Warning Yellow
-            ctx.fillStyle = '#475569';
-            ctx.fillRect(-16, -14, 32, 28);
-            ctx.fillStyle = '#eab308';
-            ctx.fillRect(-6, -6, 12, 12);
-            // Robotic Visor Head
-            ctx.fillStyle = '#1e293b';
-            ctx.fillRect(-11, -30, 22, 14);
-            ctx.fillStyle = '#00e5ff'; // Cyan optical sensor
-            ctx.fillRect(-7, -25, 14, 4);
-            break;
-
-          case 'ren': // Shinto Miko Summoner
-            // Red Hakama Skirt
-            ctx.fillStyle = '#dc2626';
-            ctx.beginPath(); ctx.moveTo(-12, 8); ctx.lineTo(-20, 42); ctx.lineTo(20, 42); ctx.lineTo(12, 8); ctx.fill();
-            // White Kimono Top
-            ctx.fillStyle = '#f8fafc';
-            ctx.fillRect(-12, -10, 24, 20);
-            // Head & Long Dark Hair
-            ctx.fillStyle = '#fed7aa';
-            ctx.beginPath(); ctx.arc(0, -20, 10, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#0f172a';
-            ctx.beginPath(); ctx.arc(0, -22, 11, 0, Math.PI * 2); ctx.fill();
-            // Blue Kitsune Spirit Companion Orb
-            ctx.fillStyle = '#38bdf8';
-            ctx.shadowColor = '#38bdf8'; ctx.shadowBlur = 12;
-            ctx.beginPath(); ctx.arc(22, -10, 8, 0, Math.PI * 2); ctx.fill();
-            break;
-
-          case 'daiki': // Sports Anime Striker
-            // Athletic Shorts & Kneepads
-            ctx.fillStyle = '#16a34a';
-            ctx.fillRect(-12, 12, 10, 18);
-            ctx.fillRect(2, 12, 10, 18);
-            // Sports Jersey (Orange & White with #10)
+            ctx.fillRect(-15, 14, 13, 30);
+            ctx.fillRect(2, 14, 13, 30);
+            ctx.fillStyle = '#1e3a8a';
+            ctx.fillRect(-16, 36, 15, 10);
+            ctx.fillRect(1, 36, 15, 10);
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(-11, 38, 5, 2);
+            ctx.fillRect(6, 38, 5, 2);
+            ctx.fillStyle = '#1d4ed8';
+            ctx.fillRect(-16, 10, 32, 6);
+            ctx.fillStyle = '#1e40af';
+            ctx.fillRect(-13, -12, 26, 24);
             ctx.fillStyle = '#ea580c';
-            ctx.fillRect(-12, -10, 24, 22);
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(-4, -6, 8, 12);
-            // Head with Headband
+            ctx.beginPath();
+            ctx.moveTo(-14, -12); ctx.lineTo(-4, 10); ctx.lineTo(-14, 10); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(14, -12); ctx.lineTo(4, 10); ctx.lineTo(14, 10); ctx.fill();
+            ctx.fillStyle = '#1e3a8a';
+            ctx.fillRect(-19, 0, 7, 7);
+            ctx.fillRect(12, 0, 7, 7);
             ctx.fillStyle = '#fed7aa';
-            ctx.beginPath(); ctx.arc(0, -20, 10, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#16a34a'; // Green Headband
-            ctx.fillRect(-10, -23, 20, 5);
-            ctx.fillStyle = '#78350f'; // Brown hair
-            ctx.beginPath(); ctx.arc(0, -25, 8, Math.PI, 0); ctx.fill();
-            // Kinetic Electric Ball at feet
-            ctx.fillStyle = '#ffea00';
-            ctx.beginPath(); ctx.arc(14, 38, 7, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(0, -22, 12, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.fillRect(-7, -24, 4, 3);
+            ctx.fillRect(3, -24, 4, 3);
+            // Goku Hair (Golden if in Super Saiyan state)
+            const isSSJ = fighter && (fighter.ultActiveTimer > 0 || fighter.ultGauge >= 100);
+            ctx.fillStyle = isSSJ ? '#fde047' : '#09090b';
+            ctx.beginPath();
+            ctx.moveTo(-12, -26);
+            ctx.lineTo(-26, -34); ctx.lineTo(-14, -34);
+            ctx.lineTo(-24, -46); ctx.lineTo(-8, -40);
+            ctx.lineTo(-4, -54); ctx.lineTo(6, -42);
+            ctx.lineTo(22, -48); ctx.lineTo(14, -36);
+            ctx.lineTo(24, -28); ctx.lineTo(10, -26);
+            ctx.closePath();
+            ctx.fill();
+            // Bangs
+            ctx.beginPath();
+            ctx.moveTo(-6, -26); ctx.lineTo(-10, -18); ctx.lineTo(-2, -22); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(4, -26); ctx.lineTo(8, -19); ctx.lineTo(1, -22); ctx.fill();
+            break;
+
+          case 'naruto':
+            ctx.fillStyle = '#f97316';
+            ctx.fillRect(-14, 14, 12, 28);
+            ctx.fillRect(2, 14, 12, 28);
+            ctx.fillStyle = '#1e3a8a';
+            ctx.fillRect(-15, 36, 14, 8);
+            ctx.fillRect(1, 36, 14, 8);
+            ctx.fillStyle = '#18181b';
+            ctx.fillRect(-14, -12, 28, 26);
+            ctx.fillStyle = '#ea580c';
+            ctx.fillRect(-14, -6, 28, 18);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-10, -14, 20, 4);
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -22, 12, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#78350f'; ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(-10, -21); ctx.lineTo(-6, -20);
+            ctx.moveTo(-10, -18); ctx.lineTo(-6, -18);
+            ctx.moveTo(6, -20); ctx.lineTo(10, -21);
+            ctx.moveTo(6, -18); ctx.lineTo(10, -18);
+            ctx.stroke();
+            ctx.fillStyle = '#0284c7';
+            ctx.fillRect(-7, -24, 4, 3);
+            ctx.fillRect(3, -24, 4, 3);
+            ctx.fillStyle = '#18181b';
+            ctx.fillRect(-13, -29, 26, 7);
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(-7, -28, 14, 5);
+            ctx.fillStyle = '#facc15';
+            ctx.beginPath();
+            ctx.moveTo(-14, -28);
+            ctx.lineTo(-20, -38); ctx.lineTo(-10, -35);
+            ctx.lineTo(-8, -46); ctx.lineTo(0, -38);
+            ctx.lineTo(8, -46); ctx.lineTo(10, -35);
+            ctx.lineTo(20, -38); ctx.lineTo(14, -28);
+            ctx.closePath();
+            ctx.fill();
+            break;
+
+          case 'luffy':
+            ctx.fillStyle = '#0284c7';
+            ctx.fillRect(-14, 12, 12, 18);
+            ctx.fillRect(2, 12, 12, 18);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-15, 27, 14, 4);
+            ctx.fillRect(1, 27, 14, 4);
+            ctx.fillStyle = '#fed7aa';
+            ctx.fillRect(-13, 31, 10, 10);
+            ctx.fillRect(3, 31, 10, 10);
+            ctx.fillStyle = '#78350f';
+            ctx.fillRect(-14, 40, 12, 3);
+            ctx.fillRect(2, 40, 12, 3);
+            ctx.fillStyle = '#eab308';
+            ctx.fillRect(-14, 8, 28, 5);
+            ctx.fillStyle = '#fed7aa';
+            ctx.fillRect(-12, -10, 24, 20);
+            ctx.strokeStyle = '#b91c1c'; ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(-8, -7); ctx.lineTo(8, 7);
+            ctx.moveTo(8, -7); ctx.lineTo(-8, 7);
+            ctx.stroke();
+            ctx.fillStyle = '#dc2626';
+            ctx.fillRect(-14, -10, 5, 20);
+            ctx.fillRect(9, -10, 5, 20);
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -21, 11, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#000'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.arc(0, -18, 6, 0.1, Math.PI - 0.1); ctx.stroke();
+            ctx.fillStyle = '#09090b';
+            ctx.beginPath(); ctx.arc(0, -24, 12, Math.PI, 0); ctx.fill();
+            ctx.fillStyle = '#fde047';
+            ctx.beginPath(); ctx.ellipse(0, -27, 24, 6, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#dc2626';
+            ctx.fillRect(-12, -34, 24, 5);
+            ctx.fillStyle = '#fde047';
+            ctx.beginPath(); ctx.arc(0, -32, 12, Math.PI, 0); ctx.fill();
+            break;
+
+          case 'ichigo':
+            ctx.fillStyle = '#18181b';
+            ctx.beginPath();
+            ctx.moveTo(-15, 12); ctx.lineTo(-20, 42); ctx.lineTo(20, 42); ctx.lineTo(15, 12);
+            ctx.fill();
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-15, 8, 30, 5);
+            ctx.fillStyle = '#18181b';
+            ctx.fillRect(-14, -12, 28, 22);
+            ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(-14, -12); ctx.lineTo(0, 8); ctx.lineTo(14, -12); ctx.stroke();
+            // Giant Zangetsu
+            ctx.save();
+            ctx.translate(-14, 5);
+            ctx.rotate(-0.4);
+            ctx.fillStyle = '#09090b';
+            ctx.fillRect(-5, -35, 10, 48);
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(3, -35, 3, 48);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-4, 13, 8, 14);
+            ctx.restore();
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -22, 11, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.fillRect(-6, -24, 3, 3);
+            ctx.fillRect(3, -24, 3, 3);
+            ctx.fillStyle = '#ea580c';
+            ctx.beginPath();
+            ctx.moveTo(-13, -24);
+            ctx.lineTo(-20, -34); ctx.lineTo(-10, -32);
+            ctx.lineTo(-14, -46); ctx.lineTo(-2, -38);
+            ctx.lineTo(2, -50); ctx.lineTo(6, -38);
+            ctx.lineTo(16, -44); ctx.lineTo(10, -32);
+            ctx.lineTo(20, -32); ctx.lineTo(13, -24);
+            ctx.closePath();
+            ctx.fill();
+            break;
+
+          case 'gojo':
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(-14, 14, 12, 30);
+            ctx.fillRect(2, 14, 12, 30);
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(-14, -12, 28, 28);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(-10, -18, 20, 8);
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -22, 11, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#09090b';
+            ctx.fillRect(-12, -26, 24, 7);
+            ctx.fillStyle = '#00e5ff';
+            ctx.fillRect(-8, -25, 4, 1);
+            ctx.fillRect(4, -25, 4, 1);
+            ctx.fillStyle = '#f8fafc';
+            ctx.beginPath();
+            ctx.moveTo(-13, -26);
+            ctx.lineTo(-20, -36); ctx.lineTo(-9, -34);
+            ctx.lineTo(-12, -48); ctx.lineTo(-2, -38);
+            ctx.lineTo(4, -50); ctx.lineTo(8, -38);
+            ctx.lineTo(18, -44); ctx.lineTo(11, -32);
+            ctx.lineTo(18, -32); ctx.lineTo(12, -26);
+            ctx.closePath();
+            ctx.fill();
+            break;
+
+          case 'zoro':
+            ctx.fillStyle = '#064e3b';
+            ctx.fillRect(-14, 14, 12, 30);
+            ctx.fillRect(2, 14, 12, 30);
+            ctx.fillStyle = '#10b981';
+            ctx.fillRect(-15, 6, 30, 10);
+            ctx.fillStyle = '#fed7aa';
+            ctx.fillRect(-12, -10, 24, 18);
+            ctx.fillStyle = '#047857';
+            ctx.fillRect(-15, -12, 6, 20);
+            ctx.fillRect(9, -12, 6, 20);
+            // 3 Katanas
+            ctx.strokeStyle = '#d97706'; ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(10, 8); ctx.lineTo(26, -10);
+            ctx.moveTo(12, 11); ctx.lineTo(28, -7);
+            ctx.moveTo(14, 14); ctx.lineTo(30, -4);
+            ctx.stroke();
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -22, 11, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#7f1d1d'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(-5, -26); ctx.lineTo(-5, -20); ctx.stroke();
+            ctx.fillStyle = '#22c55e';
+            ctx.beginPath(); ctx.arc(0, -26, 11, Math.PI, 0); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(-11, -26); ctx.lineTo(-14, -33); ctx.lineTo(-7, -30);
+            ctx.lineTo(0, -36); ctx.lineTo(7, -30); ctx.lineTo(14, -33); ctx.lineTo(11, -26);
+            ctx.fill();
+            // Katana held in hand
+            ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(-15, 2); ctx.lineTo(-32, -18); ctx.stroke();
+            break;
+
+          case 'tanjiro':
+            ctx.fillStyle = '#18181b';
+            ctx.fillRect(-14, 14, 12, 18);
+            ctx.fillRect(2, 14, 12, 18);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-14, 30, 12, 12);
+            ctx.fillRect(2, 30, 12, 12);
+            ctx.fillStyle = '#15803d';
+            ctx.fillRect(-16, -12, 32, 28);
+            ctx.fillStyle = '#18181b';
+            ctx.fillRect(-16, -12, 8, 7); ctx.fillRect(0, -12, 8, 7);
+            ctx.fillRect(-8, -5, 8, 7); ctx.fillRect(8, -5, 8, 7);
+            ctx.fillRect(-16, 2, 8, 7); ctx.fillRect(0, 2, 8, 7);
+            ctx.fillRect(-8, 9, 8, 7); ctx.fillRect(8, 9, 8, 7);
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -22, 11, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#b91c1c';
+            ctx.fillRect(-8, -28, 5, 4);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-13, -19, 3, 6);
+            ctx.fillStyle = '#dc2626';
+            ctx.fillRect(-12, -18, 2, 2);
+            ctx.fillStyle = '#831843';
+            ctx.beginPath();
+            ctx.moveTo(-12, -24);
+            ctx.lineTo(-16, -34); ctx.lineTo(-6, -32);
+            ctx.lineTo(-8, -42); ctx.lineTo(0, -36);
+            ctx.lineTo(8, -42); ctx.lineTo(6, -32);
+            ctx.lineTo(16, -34); ctx.lineTo(12, -24);
+            ctx.closePath();
+            ctx.fill();
+            // Black Nichirin blade
+            ctx.strokeStyle = '#09090b'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(14, 8); ctx.lineTo(32, -15); ctx.stroke();
+            break;
+
+          case 'jotaro':
+            ctx.fillStyle = '#18181b';
+            ctx.fillRect(-14, 14, 12, 30);
+            ctx.fillRect(2, 14, 12, 30);
+            ctx.fillStyle = '#eab308';
+            ctx.fillRect(-15, 10, 30, 4);
+            ctx.fillStyle = '#15803d';
+            ctx.fillRect(-12, -12, 24, 24);
+            ctx.fillStyle = '#09090b';
+            ctx.fillRect(-16, -14, 6, 46);
+            ctx.fillRect(10, -14, 6, 46);
+            ctx.strokeStyle = '#facc15'; ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.arc(-10, -3, 6, 0, Math.PI); ctx.stroke();
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -22, 11, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.fillRect(-6, -24, 4, 2);
+            ctx.fillRect(2, -24, 4, 2);
+            ctx.fillStyle = '#09090b';
+            ctx.beginPath(); ctx.arc(0, -26, 12, Math.PI, 0); ctx.fill();
+            ctx.fillRect(-14, -28, 28, 5);
+            ctx.fillStyle = '#facc15';
+            ctx.fillRect(-3, -29, 6, 6);
             break;
         }
 
         ctx.restore();
       }
-    }
 
-    // --- PROJECTILES & HAZARDS ---
-    class Projectile {
-      constructor(owner, x, y, vx, vy, type, options = {}) {
-        this.owner = owner;
-        this.x = Number.isFinite(x) ? x : 960;
-        this.y = Number.isFinite(y) ? y : 540;
-        this.vx = Number.isFinite(vx) ? vx : 0;
-        this.vy = Number.isFinite(vy) ? vy : 0;
-        this.type = type;
-        this.w = options.w || 30;
-        this.h = options.h || 30;
-        this.life = options.life || 90;
-        this.damage = options.damage || 8;
-        this.baseKB = options.baseKB || 6;
-        this.kbGrowth = options.kbGrowth || 0.4;
-        this.color = options.color || '#ffea00';
-        this.active = true;
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.life--;
-        if (this.life <= 0) this.active = false;
-      }
-
-      draw(ctx) {
+      // MANIFEST STAR PLATINUM PHYSICALLY IN FRONT OF JOTARO!
+      static drawStarPlatinum(ctx, x, y, facing, attackPhase = 0) {
         ctx.save();
-        ctx.fillStyle = this.color;
-        ctx.shadowColor = this.color;
-        ctx.shadowBlur = 15;
+        ctx.translate(x + facing * 45, y - 10);
+        ctx.scale(facing * 1.15, 1.15);
 
-        if (this.type === 'hadouken') {
+        // Purple Aura Glow
+        ctx.shadowColor = '#a855f7';
+        ctx.shadowBlur = 25;
+
+        // Muscular Purple Torso
+        ctx.fillStyle = '#9333ea';
+        ctx.fillRect(-14, -14, 28, 28);
+        ctx.fillStyle = '#facc15'; // Gold pectorals/armor
+        ctx.fillRect(-12, -12, 10, 8);
+        ctx.fillRect(2, -12, 10, 8);
+
+        // Gold Headband & Flowing Dark Hair
+        ctx.fillStyle = '#a855f7';
+        ctx.beginPath(); ctx.arc(0, -22, 12, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#facc15'; // Headband
+        ctx.fillRect(-11, -26, 22, 4);
+        ctx.fillStyle = '#1e1b4b'; // Flowing black hair
+        ctx.beginPath();
+        ctx.moveTo(-12, -26);
+        ctx.lineTo(-24, -36); ctx.lineTo(-12, -42);
+        ctx.lineTo(0, -48); ctx.lineTo(12, -42); ctx.lineTo(24, -36); ctx.lineTo(12, -26);
+        ctx.closePath(); ctx.fill();
+
+        // Glowing Fierce Eyes
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(-6, -22, 3, 2);
+        ctx.fillRect(3, -22, 3, 2);
+
+        // ORA ORA ORA! FLURRY OF RAPID FISTS!
+        ctx.fillStyle = '#c084fc';
+        const fistCount = 6;
+        for (let i = 0; i < fistCount; i++) {
+          const fx = 20 + Math.sin(Date.now() * 0.05 + i * 1.2) * 25;
+          const fy = -20 + (i * 8) + Math.cos(Date.now() * 0.05 + i) * 6;
+          ctx.beginPath(); ctx.arc(fx, fy, 8, 0, Math.PI * 2); ctx.fill();
+        }
+
+        // Display Floating Iconic "ORA ORA ORA!"
+        ctx.font = 'italic 900 24px Impact';
+        ctx.fillStyle = '#facc15';
+        ctx.shadowColor = '#000';
+        ctx.shadowBlur = 5;
+        ctx.fillText('ORA ORA ORA!', -20, -50);
+
+        ctx.restore();
+      }
+
+      // DRAW DYNAMICALLY STRETCHED RUBBER ARMS FOR LUFFY
+      static drawLuffyRubberArms(ctx, x, y, facing, reach = 180) {
+        ctx.save();
+        ctx.strokeStyle = '#fed7aa'; // Flesh tone rubber
+        ctx.lineWidth = 14;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(x, y + 25);
+        ctx.lineTo(x + facing * reach, y + 25);
+        ctx.stroke();
+
+        // Clenched Fist at end of stretch
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath();
+        ctx.arc(x + facing * reach, y + 25, 14, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // DRAW CONTINUOUS KAMEHAMEHA BEAM ACROSS THE STAGE
+      static drawKamehamehaBeam(ctx, x, y, facing, charge = 1.0) {
+        ctx.save();
+        const beamLength = 1600;
+        const beamY = y + 25;
+
+        // Outer Glow
+        ctx.strokeStyle = 'rgba(0, 229, 255, 0.7)';
+        ctx.lineWidth = 60 * charge;
+        ctx.beginPath();
+        ctx.moveTo(x + facing * 20, beamY);
+        ctx.lineTo(x + facing * beamLength, beamY);
+        ctx.stroke();
+
+        // Inner Bright Core
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 28 * charge;
+        ctx.beginPath();
+        ctx.moveTo(x + facing * 20, beamY);
+        ctx.lineTo(x + facing * beamLength, beamY);
+        ctx.stroke();
+
+        // Energy rings along the beam
+        ctx.fillStyle = '#38bdf8';
+        for (let d = 100; d < 1200; d += 180) {
           ctx.beginPath();
-          ctx.arc(this.x, this.y, this.w / 2, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (this.type === 'slashwave') {
-          ctx.beginPath();
-          ctx.ellipse(this.x, this.y, this.w / 2, this.h / 2, Math.PI / 4, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (this.type === 'trap') {
-          ctx.translate(this.x, this.y);
-          ctx.rotate(Date.now() * 0.005);
-          ctx.strokeStyle = this.color;
-          ctx.lineWidth = 3;
-          ctx.strokeRect(-this.w/2, -this.h/2, this.w, this.h);
-        } else {
-          // General star / shuriken
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.w / 2, 0, Math.PI * 2);
+          ctx.arc(x + facing * d, beamY, 20 * charge, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.restore();
       }
+
+      // DRAW FLOWING WATER BREATHING EFFECTS FOR TANJIRO
+      static drawWaterBreathingArc(ctx, x, y, facing) {
+        ctx.save();
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 12;
+        ctx.shadowColor = '#0284c7';
+        ctx.shadowBlur = 18;
+        ctx.beginPath();
+        ctx.arc(x + facing * 30, y + 20, 75, -Math.PI / 3, Math.PI / 3);
+        ctx.stroke();
+
+        // White Sea Foam Waves on edge
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(x + facing * 32, y + 20, 80, -Math.PI / 3, Math.PI / 3);
+        ctx.stroke();
+        ctx.restore();
+      }
     }
 
-    // --- FIGHTER CONTROLLER & CRASH-PROOF PHYSICS ---
+    // --- FIGHTER CONTROLLER WITH EXCLUSIVE CANONICAL ABILITIES ---
     class Fighter {
       constructor(id, charData, isCPU = false) {
         this.id = id;
         this.char = charData;
         this.isCPU = isCPU;
-        this.dummyMode = 'stand'; // 'stand', 'jump', 'evade', 'fight'
+        this.dummyMode = 'stand';
         this.isInvincibleDummy = false;
 
         this.w = 54;
@@ -1590,12 +1763,26 @@
         this.wallSliding = false;
         this.wallDir = 0;
 
+        this.coyoteTimer = 0;
+        this.jumpBuffer = 0;
+        this.jumpHoldTimer = 0;
+
         this.stateTimer = 0;
         this.attackCooldown = 0;
         this.hitstop = 0;
         this.invulnerableTimer = 0;
         this.currentAttack = null;
         this.activeHitbox = null;
+
+        // Signature Animation Timers
+        this.kamehamehaTimer = 0;
+        this.standActiveTimer = 0;
+        this.luffyStretchTimer = 0;
+        this.luffyReach = 0;
+        this.shishiSonsonTimer = 0;
+        this.blueVortexTimer = 0;
+        this.blueVortexPos = null;
+        this.ultActiveTimer = 0;
 
         this.upHeld = false;
         this.dashHeld = false;
@@ -1614,17 +1801,53 @@
         this.invulnerableTimer = 90;
         this.activeHitbox = null;
         this.currentAttack = null;
+        this.kamehamehaTimer = 0;
+        this.standActiveTimer = 0;
+        this.luffyStretchTimer = 0;
+        this.shishiSonsonTimer = 0;
+        this.blueVortexTimer = 0;
+        this.ultActiveTimer = 0;
       }
 
       update(ctrlInput, opponent, stage, projectiles, fx) {
-        // Sanitize coordinates against NaN corruptions
         if (!Number.isFinite(this.x) || !Number.isFinite(this.y)) {
           this.x = 960; this.y = 700; this.vx = 0; this.vy = 0;
         }
         if (!Number.isFinite(this.vx)) this.vx = 0;
         if (!Number.isFinite(this.vy)) this.vy = 0;
 
-        // Hit-stop freeze
+        // Timers for signature animations
+        if (this.kamehamehaTimer > 0) this.kamehamehaTimer--;
+        if (this.standActiveTimer > 0) this.standActiveTimer--;
+        if (this.luffyStretchTimer > 0) this.luffyStretchTimer--;
+        if (this.ultActiveTimer > 0) this.ultActiveTimer--;
+
+        // Delayed Iaidō cut for Zoro
+        if (this.shishiSonsonTimer > 0) {
+          this.shishiSonsonTimer--;
+          if (this.shishiSonsonTimer === 0 && opponent) {
+            // Unsheathe click & massive delayed slash!
+            sound.playHit('slash');
+            opponent.takeDamage(16, { baseKB: 8, kbGrowth: 0.8, angle: -Math.PI / 3, isHeavy: true });
+            if (fx) {
+              fx.spawnSlash(opponent.x + opponent.w/2, opponent.y + opponent.h/2, this.facing, '#ef4444', 2.0);
+              fx.triggerFlash();
+            }
+          }
+        }
+
+        // Gravitational pull for Gojo's Blue Vortex
+        if (this.blueVortexTimer > 0 && this.blueVortexPos && opponent) {
+          this.blueVortexTimer--;
+          const pullX = this.blueVortexPos.x - opponent.x;
+          const pullY = this.blueVortexPos.y - opponent.y;
+          const dist = Math.hypot(pullX, pullY) || 1;
+          if (dist < 600) {
+            opponent.vx += (pullX / dist) * 4.5;
+            opponent.vy += (pullY / dist) * 3.5;
+          }
+        }
+
         if (this.hitstop > 0) {
           this.hitstop--;
           return;
@@ -1641,8 +1864,22 @@
           inState = this.getCPUInput(opponent, stage);
         }
 
+        if (this.grounded) {
+          this.coyoteTimer = 6;
+        } else if (this.coyoteTimer > 0) {
+          this.coyoteTimer--;
+        }
+
+        if (inState.up && !this.upHeld) {
+          this.jumpBuffer = 6;
+        } else if (this.jumpBuffer > 0) {
+          this.jumpBuffer--;
+        }
+
         if (this.state === 'HITSTUN') {
           this.stateTimer--;
+          this.vx *= 0.965;
+          this.vy *= 0.965;
           this.applyGravity();
           this.moveAndCollide(stage, inState);
           if (this.stateTimer <= 0) this.state = 'IDLE';
@@ -1660,23 +1897,25 @@
         }
 
         this.handleMovement(inState, stage, fx);
-        this.handleAttacks(inState, projectiles, fx);
+        this.handleAttacks(inState, opponent, projectiles, fx);
         this.applyGravity();
         this.moveAndCollide(stage, inState);
       }
 
       handleMovement(inState, stage, fx) {
-        const accel = this.grounded ? 1.6 : 1.1;
+        const accel = this.grounded ? 1.8 : 1.2;
         const maxSpeed = this.char.speed;
         const friction = this.grounded ? 0.82 : 0.94;
 
         if (this.state !== 'ATTACK' || !this.grounded) {
           if (inState.left) {
+            if (this.vx > 1.5 && this.grounded && fx) fx.spawnDust(this.x + this.w/2, this.y + this.h);
             this.vx -= accel;
             if (this.vx < -maxSpeed) this.vx = -maxSpeed;
             this.facing = -1;
             if (this.grounded && this.state !== 'ATTACK') this.state = 'RUN';
           } else if (inState.right) {
+            if (this.vx < -1.5 && this.grounded && fx) fx.spawnDust(this.x + this.w/2, this.y + this.h);
             this.vx += accel;
             if (this.vx > maxSpeed) this.vx = maxSpeed;
             this.facing = 1;
@@ -1688,23 +1927,26 @@
           }
         }
 
-        // Pular (Jump / Double Jump / Wall Jump)
-        if (inState.up && !this.upHeld) {
-          if (this.grounded) {
-            this.vy = -this.char.jumpForce;
-            this.grounded = false;
-            this.canDoubleJump = true;
-            sound.playJump();
-            if (fx) fx.spawnDust(this.x + this.w/2, this.y + this.h);
-          } else if (this.wallSliding) {
+        const canJumpNow = this.grounded || this.coyoteTimer > 0;
+        if (this.jumpBuffer > 0 && canJumpNow) {
+          this.vy = -this.char.jumpForce;
+          this.grounded = false;
+          this.coyoteTimer = 0;
+          this.jumpBuffer = 0;
+          this.canDoubleJump = true;
+          this.jumpHoldTimer = 8;
+          sound.playJump();
+          if (fx) fx.spawnDust(this.x + this.w/2, this.y + this.h);
+        } else if (inState.up && !this.upHeld) {
+          if (this.wallSliding) {
             this.vy = -this.char.jumpForce * 0.95;
             this.vx = -this.wallDir * this.char.speed * 1.3;
             this.facing = -this.wallDir;
             this.wallSliding = false;
             sound.playJump();
             if (fx) fx.spawnDust(this.x + (this.wallDir > 0 ? this.w : 0), this.y + this.h/2);
-          } else if (this.canDoubleJump) {
-            this.vy = -this.char.jumpForce * 0.88;
+          } else if (this.canDoubleJump && !this.grounded) {
+            this.vy = -this.char.jumpForce * 0.90;
             this.canDoubleJump = false;
             sound.playJump();
             if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color);
@@ -1712,13 +1954,16 @@
         }
         this.upHeld = inState.up;
 
-        // Fast Fall (Baixo no ar)
+        if (this.jumpHoldTimer > 0) {
+          this.jumpHoldTimer--;
+          if (inState.up && this.vy < 0) this.vy -= 0.6;
+        }
+
         if (inState.down && this.vy > 0 && !this.grounded) {
-          this.vy = Math.max(this.vy, 18);
+          this.vy = Math.max(this.vy, 20);
           this.fastFalling = true;
         }
 
-        // Dash / Air Dodge
         if (inState.dash && !this.dashHeld) {
           if (this.grounded && this.state !== 'AIRDODGE') {
             this.vx = this.facing * (this.char.speed * 1.85);
@@ -1746,7 +1991,7 @@
       applyGravity() {
         if (!this.grounded) {
           this.vy += this.char.gravity;
-          if (this.vy > 25) this.vy = 25;
+          if (this.vy > 24) this.vy = 24;
         }
       }
 
@@ -1776,7 +2021,6 @@
               }
             }
           } else {
-            // Solid platform
             if (this.vy >= 0 &&
                 this.x + this.w > plat.x + 6 && this.x < plat.x + plat.w - 6 &&
                 this.y + this.h >= plat.y && this.y + this.h - this.vy <= plat.y + 16) {
@@ -1788,7 +2032,6 @@
               this.fastFalling = false;
             }
 
-            // Wall slide
             if (!this.grounded && this.y + this.h > plat.y && this.y < plat.y + plat.h) {
               if (this.x + this.w >= plat.x && this.x + this.w - this.vx <= plat.x + 10 && inState && inState.right) {
                 this.x = plat.x - this.w;
@@ -1808,7 +2051,8 @@
         }
       }
 
-      handleAttacks(inState, projectiles, fx) {
+      // --- CANONICAL ATTACKS FOR EACH ANIME CHARACTER ---
+      handleAttacks(inState, opponent, projectiles, fx) {
         if (this.attackCooldown > 0) this.attackCooldown--;
 
         if (this.state === 'ATTACK') {
@@ -1823,25 +2067,25 @@
 
         if (this.attackCooldown > 0) return;
 
-        // Ultimate
+        // 1. ULTIMATE ATTACK
         if (inState.ult && this.ultGauge >= 100) {
-          this.executeUltimate(fx);
+          this.executeUltimate(opponent, fx);
           return;
         }
 
-        // Especial (Hadouken / Recovery)
+        // 2. SPECIAL ATTACK
         if (inState.special) {
-          this.executeSpecial(inState, projectiles, fx);
+          this.executeSpecial(inState, opponent, projectiles, fx);
           return;
         }
 
-        // Ataque Pesado
+        // 3. HEAVY ATTACK
         if (inState.heavy) {
-          this.executeHeavy(inState, fx);
+          this.executeHeavy(inState, opponent, fx);
           return;
         }
 
-        // Ataque Leve
+        // 4. LIGHT ATTACK
         if (inState.light) {
           this.executeLight(inState, fx);
           return;
@@ -1850,129 +2094,281 @@
 
       executeLight(inState, fx) {
         this.state = 'ATTACK';
-        this.stateTimer = 16;
-        this.attackCooldown = 18;
+        this.stateTimer = 14;
+        this.attackCooldown = 16;
         this.currentAttack = 'LIGHT';
 
-        let hx = this.facing === 1 ? this.x + this.w : this.x - 50;
+        let hx = this.facing === 1 ? this.x + this.w : this.x - 55;
         let hy = this.y + 15;
-        let hw = 55;
+        let hw = 60;
         let hh = 50;
         let angle = this.facing === 1 ? -0.4 : -2.7;
 
-        if (inState.up) {
-          hy = this.y - 30; hw = 65; hh = 50; angle = -Math.PI / 2.2;
-        } else if (!this.grounded) {
-          hx = this.x - 15; hy = this.y - 10; hw = this.w + 30; hh = this.h + 20;
+        // Custom light attack visuals
+        if (this.char.id === 'jotaro') {
+          this.standActiveTimer = 16; // Star Platinum appears to jab!
+          sound.playHit('light');
+        } else if (this.char.id === 'luffy') {
+          this.luffyStretchTimer = 14;
+          this.luffyReach = 90; // Stretches arm!
+          hw = 100;
+          sound.playHit('light');
+        } else if (this.char.id === 'zoro' || this.char.id === 'ichigo') {
+          sound.playHit('slash');
+        } else if (this.char.id === 'tanjiro') {
+          sound.playHit('slash');
+          if (fx) CharacterArtEngine.drawWaterBreathingArc(fx, this.x, this.y, this.facing);
+        } else {
+          sound.playHit('light');
         }
 
-        this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg: 6, baseKB: 4.5, kbGrowth: 0.3, angle };
-        sound.playHit(this.char.id === 'kurogane' ? 'slash' : 'light');
+        this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg: 5, baseKB: 4.5, kbGrowth: 0.25, angle };
         if (fx) fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, this.char.color);
       }
 
-      executeHeavy(inState, fx) {
+      executeHeavy(inState, opponent, fx) {
         this.state = 'ATTACK';
-        this.stateTimer = 26;
-        this.attackCooldown = 32;
+        this.stateTimer = 24;
+        this.attackCooldown = 28;
         this.currentAttack = 'HEAVY';
 
-        let hx = this.facing === 1 ? this.x + this.w - 10 : this.x - 75;
+        let hx = this.facing === 1 ? this.x + this.w - 10 : this.x - 85;
         let hy = this.y + 5;
-        let hw = 85;
+        let hw = 90;
         let hh = 65;
         let angle = this.facing === 1 ? -0.55 : -2.55;
-        let dmg = 15;
-        let kbGrowth = 0.95;
+        let dmg = 14;
+        let kbGrowth = 0.85;
 
-        if (inState.up) {
-          hy = this.y - 45; hw = 75; hh = 75; angle = -Math.PI / 2; dmg = 17; kbGrowth = 1.05;
-        } else if (!this.grounded && inState.down) {
-          hy = this.y + this.h - 10; hw = 75; hh = 50; angle = Math.PI / 2; dmg = 16; kbGrowth = 0.9;
+        // --- CANONICAL HEAVY ATTACKS ---
+        if (this.char.id === 'jotaro') {
+          // STAR PLATINUM: STAR FINGER!
+          this.standActiveTimer = 24;
+          hw = 150; // Super long disjointed pierce reach!
+          hx = this.facing === 1 ? this.x + 30 : this.x - 150;
+          sound.playHit('heavy');
+        } else if (this.char.id === 'zoro') {
+          // ONIGIRI (DEMON DASH SLASH) - NO PROJECTIONS!
+          this.vx = this.facing * 22; // Instant sword dash across the floor!
+          sound.playHit('slash');
+          if (fx) fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, '#10b981', 2.0);
+        } else if (this.char.id === 'luffy') {
+          // GOMU GOMU NO PISTOL / BAZOOKA (Massive stretch!)
+          this.luffyStretchTimer = 24;
+          this.luffyReach = 200;
+          hw = 210;
+          hx = this.facing === 1 ? this.x + 20 : this.x - 210;
+          sound.playHit('heavy');
+        } else if (this.char.id === 'gojo') {
+          // REVERSAL: RED (AKA) - High repulsion blast!
+          dmg = 16;
+          kbGrowth = 1.05;
+          sound.playHit('heavy');
+          if (fx) fx.spawnAura(this.x + this.facing * 60, this.y + 20, '#ef4444', 20);
+        } else if (this.char.id === 'tanjiro') {
+          // WATER WHEEL (MIZU GURUMA) - 360 vertical flip
+          sound.playHit('slash');
+          if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#38bdf8', 15);
+        } else {
+          sound.playHit('heavy');
         }
 
-        this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg, baseKB: 8, kbGrowth, angle, hitstop: 8, isHeavy: true };
-        sound.playHit('heavy');
+        this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg, baseKB: 7.5, kbGrowth, angle, hitstop: 8, isHeavy: true };
         if (fx) fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, '#ffffff', 1.5);
       }
 
-      executeSpecial(inState, projectiles, fx) {
+      executeSpecial(inState, opponent, projectiles, fx) {
         this.state = 'ATTACK';
-        this.stateTimer = 25;
+        this.stateTimer = 26;
         this.attackCooldown = 30;
         this.currentAttack = 'SPECIAL';
 
         if (inState.up) {
-          // Recovery Up-Special (Safe Aerial Lift)
-          this.vy = -19.5;
-          this.vx = this.facing * 5.5;
-          this.grounded = false;
-          this.activeHitbox = {
-            x: this.x - 15, y: this.y - 30, w: this.w + 30, h: this.h + 20,
-            dmg: 13, baseKB: 8.5, kbGrowth: 0.8, angle: -Math.PI / 2.3, hitstop: 6
-          };
-          sound.playHit('heavy');
-          if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color);
-        } else {
-          // Neutral Special Projectile
-          const px = this.facing === 1 ? this.x + this.w + 10 : this.x - 35;
-          let projType = 'hadouken';
-          let projSpeed = 15;
-          if (this.char.id === 'kurogane') projType = 'slashwave';
-          if (this.char.id === 'malakor') { projType = 'trap'; projSpeed = 0; }
+          // --- RECOVERY UP-SPECIALS ---
+          if (this.char.id === 'goku') {
+            // INSTANT TRANSMISSION (Teleport upward)
+            this.y -= 190;
+            this.vx = this.facing * 4;
+            this.vy = -3;
+            sound.playDash();
+            if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#00e5ff', 20);
+            return;
+          } else if (this.char.id === 'jotaro') {
+            // STAND LEAP (Star Platinum hurls Jotaro up!)
+            this.standActiveTimer = 26;
+            this.vy = -20;
+            this.vx = this.facing * 5;
+            this.grounded = false;
+            sound.playHit('heavy');
+            return;
+          } else if (this.char.id === 'zoro') {
+            // TATSUMAKI (Dragon Tornado Whirlwind)
+            this.vy = -19.5;
+            this.vx = this.facing * 6;
+            this.grounded = false;
+            sound.playHit('slash');
+            this.activeHitbox = { x: this.x - 20, y: this.y - 30, w: this.w + 40, h: this.h + 20, dmg: 14, baseKB: 8, kbGrowth: 0.7, angle: -Math.PI / 2.2 };
+            if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#10b981', 25);
+            return;
+          } else if (this.char.id === 'luffy') {
+            // GOMU GOMU NO ROCKET (Slingshot upward)
+            this.vy = -21;
+            this.vx = this.facing * 7;
+            this.grounded = false;
+            sound.playDash();
+            return;
+          } else if (this.char.id === 'tanjiro') {
+            // HINOKAMI KAGURA FLAME DANCE
+            this.vy = -19.5;
+            this.vx = this.facing * 5;
+            this.grounded = false;
+            sound.playHit('heavy');
+            if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#ef4444', 25);
+            this.activeHitbox = { x: this.x - 15, y: this.y - 30, w: this.w + 30, h: this.h + 20, dmg: 13, baseKB: 8, kbGrowth: 0.75, angle: -Math.PI / 2.3 };
+            return;
+          } else {
+            // Standard Up Recovery
+            this.vy = -19.0;
+            this.vx = this.facing * 5.0;
+            this.grounded = false;
+            this.activeHitbox = { x: this.x - 15, y: this.y - 30, w: this.w + 30, h: this.h + 20, dmg: 12, baseKB: 7.5, kbGrowth: 0.70, angle: -Math.PI / 2.3 };
+            sound.playHit('heavy');
+            return;
+          }
+        }
 
-          projectiles.push(new Projectile(this, px, this.y + 25, this.facing * projSpeed, 0, projType, {
-            w: 36, h: 36, damage: 10, baseKB: 6, kbGrowth: 0.5, color: this.char.color
+        // --- NEUTRAL SPECIAL ATTACKS (CANONICAL SIGNATURES) ---
+        if (this.char.id === 'jotaro') {
+          // JOTARO: STAR PLATINUM ORA ORA ORA! BARRAGE!
+          this.standActiveTimer = 45; // Manifests Stand!
+          this.stateTimer = 45;
+          sound.playHit('light');
+          this.activeHitbox = {
+            x: this.facing === 1 ? this.x + 25 : this.x - 110,
+            y: this.y - 15, w: 120, h: 75,
+            dmg: 16, baseKB: 8.5, kbGrowth: 0.75, angle: this.facing === 1 ? -0.4 : -2.7, hitstop: 12, isHeavy: true
+          };
+          if (fx) fx.triggerScreenShake(12, 20);
+        }
+        else if (this.char.id === 'zoro') {
+          // ZORO: SHISHI SONSON (PURE IAIDŌ CUT - NO MAGIC BALLS!)
+          this.vx = this.facing * 24; // Blinding flash dash
+          this.invulnerableTimer = 18;
+          this.shishiSonsonTimer = 18; // Triggers delayed explosion of sword slashes!
+          sound.playHit('slash');
+          if (fx) fx.spawnSlash(this.x, this.y, this.facing, '#10b981', 2.2);
+        }
+        else if (this.char.id === 'luffy') {
+          // LUFFY: GOMU GOMU NO GATLING! (Rapid stretched fists)
+          this.luffyStretchTimer = 35;
+          this.luffyReach = 150;
+          this.stateTimer = 35;
+          sound.playHit('light');
+          this.activeHitbox = {
+            x: this.facing === 1 ? this.x + 20 : this.x - 160,
+            y: this.y + 5, w: 160, h: 60,
+            dmg: 14, baseKB: 7, kbGrowth: 0.65, angle: this.facing === 1 ? -0.3 : -2.8
+          };
+        }
+        else if (this.char.id === 'goku') {
+          // GOKU: FULL CONTINUOUS KAMEHAMEHA BEAM!
+          this.kamehamehaTimer = 35;
+          this.stateTimer = 35;
+          sound.playKO();
+          this.activeHitbox = {
+            x: this.facing === 1 ? this.x + 30 : this.x - 1500,
+            y: this.y - 10, w: 1500, h: 70, // Reaches across the stage!
+            dmg: 16, baseKB: 8.5, kbGrowth: 0.75, angle: this.facing === 1 ? -0.2 : -2.9, hitstop: 10, isHeavy: true
+          };
+          if (fx) fx.triggerScreenShake(15, 25);
+        }
+        else if (this.char.id === 'gojo') {
+          // GOJO: LAPSE BLUE (PULLING GRAVITY VORTEX)
+          this.blueVortexTimer = 60;
+          this.blueVortexPos = { x: this.x + this.facing * 220, y: this.y + 20 };
+          sound.playDash();
+          if (fx) fx.spawnAura(this.blueVortexPos.x, this.blueVortexPos.y, '#00e5ff', 30);
+        }
+        else if (this.char.id === 'naruto') {
+          // NARUTO: RUNNING RASENGAN IMPACT
+          this.vx = this.facing * 16;
+          sound.playHit('heavy');
+          this.activeHitbox = {
+            x: this.facing === 1 ? this.x + this.w : this.x - 60,
+            y: this.y + 15, w: 65, h: 55,
+            dmg: 15, baseKB: 8.5, kbGrowth: 0.8, angle: this.facing === 1 ? -0.5 : -2.6, hitstop: 10, isHeavy: true
+          };
+          if (fx) fx.spawnAura(this.x + this.facing * 40, this.y + 30, '#38bdf8', 20);
+        }
+        else if (this.char.id === 'ichigo') {
+          // ICHIGO: GETSUGA TENSHOU CRESCENT WAVE
+          const px = this.facing === 1 ? this.x + this.w + 10 : this.x - 35;
+          projectiles.push(new Projectile(this, px, this.y + 20, this.facing * 18, 0, 'getsuga', {
+            w: 46, h: 75, damage: 12, baseKB: 7, kbGrowth: 0.6, color: '#00e5ff'
           }));
-          sound.playHit(this.char.id === 'kurogane' ? 'slash' : 'light');
-          if (fx) fx.spawnDust(this.x + this.w/2, this.y + this.h);
+          sound.playHit('slash');
         }
       }
 
-      executeUltimate(fx) {
+      // --- ULTIMATE ATTACKS ---
+      executeUltimate(opponent, fx) {
         this.ultGauge = 0;
         this.state = 'ATTACK';
-        this.stateTimer = 42;
-        this.attackCooldown = 55;
+        this.stateTimer = 50;
+        this.attackCooldown = 60;
         this.currentAttack = 'ULTIMATE';
-        this.invulnerableTimer = 42;
+        this.invulnerableTimer = 50;
+        this.ultActiveTimer = 50;
 
         sound.playKO();
+
+        // JOTARO THE WORLD TIME STOP!
+        if (this.char.id === 'jotaro') {
+          if (window.game) {
+            window.game.timeStopTimer = 180; // 3 SECONDS OF TOTAL FROZEN TIME!
+            window.game.timeStopOwner = this;
+          }
+          this.standActiveTimer = 180;
+          if (fx) fx.triggerFlash();
+          return;
+        }
+
         if (fx) {
-          fx.triggerScreenShake(24, 30);
+          fx.triggerScreenShake(28, 35);
           fx.triggerFlash();
         }
 
-        let hw = 260;
+        let hw = 280;
         let hh = 160;
         let hx = this.facing === 1 ? this.x - 20 : this.x - hw + this.w + 20;
         let hy = this.y - 40;
 
         this.activeHitbox = {
-          x: hx, y: hy, w: hw, h: hh, dmg: 36, baseKB: 15, kbGrowth: 1.35,
+          x: hx, y: hy, w: hw, h: hh, dmg: 35, baseKB: 14, kbGrowth: 1.15,
           angle: this.facing === 1 ? -0.6 : -2.5, hitstop: 16, isHeavy: true
         };
 
-        if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color, 25);
+        if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color, 35);
       }
 
       takeDamage(dmg, kbVector, hitstopFrames = 5) {
         if (this.invulnerableTimer > 0 || this.isInvincibleDummy) return;
 
         this.damage += dmg;
-        this.ultGauge = Math.min(100, this.ultGauge + dmg * 0.85);
+        this.ultGauge = Math.min(100, this.ultGauge + dmg * 0.9);
 
         const weightFactor = 100 / this.char.weight;
         const angle = Number.isFinite(kbVector.angle) ? kbVector.angle : -Math.PI / 4;
         const baseKB = Number.isFinite(kbVector.baseKB) ? kbVector.baseKB : 5;
-        const kbGrowth = Number.isFinite(kbVector.kbGrowth) ? kbVector.kbGrowth : 0.5;
+        const kbGrowth = Number.isFinite(kbVector.kbGrowth) ? kbVector.kbGrowth : 0.45;
 
-        const totalKB = baseKB + (this.damage * kbGrowth * 0.55 * weightFactor);
+        const p = this.damage / 100;
+        const totalKB = (baseKB + Math.pow(p, 1.4) * kbGrowth * 14 + this.damage * 0.04) * weightFactor;
 
         this.vx = Math.cos(angle) * totalKB;
         this.vy = Math.sin(angle) * totalKB;
 
-        const hitstunDuration = Math.min(60, Math.max(10, Math.floor(totalKB * 1.4)));
+        const hitstunDuration = Math.min(55, Math.max(10, Math.floor(totalKB * 1.3)));
         this.state = 'HITSTUN';
         this.stateTimer = hitstunDuration;
         this.hitstop = hitstopFrames;
@@ -1996,14 +2392,12 @@
           return { up: this.grounded && Math.random() < 0.05, left: dx > 0, right: dx < 0, down: false, light: false, heavy: false, special: false, ult: false, dash: Math.random() < 0.08 };
         }
 
-        // Full Fight AI
         this.cpuTimer--;
         const res = { up: false, left: false, down: false, right: false, light: false, heavy: false, special: false, ult: false, dash: false };
         if (!opponent || !stage) return res;
 
-        // Stage recovery priority
         const plat = stage.platforms[0];
-        if (plat && (this.x < plat.x - 30 || this.x > plat.x + plat.w + 30 || this.y > 780)) {
+        if (plat && (this.x < plat.x - 40 || this.x > plat.x + plat.w + 40 || this.y > 780)) {
           if (this.x < 960) res.right = true; else res.left = true;
           if (this.vy > 2 && this.canDoubleJump) res.up = true;
           else if (this.vy > 4 && this.y > 690) { res.up = true; res.special = true; }
@@ -2018,11 +2412,11 @@
 
         if (opponent.y < this.y - 50 && this.grounded) res.up = true;
 
-        if (dist < 85) {
+        if (dist < 90) {
           if (this.ultGauge >= 100) res.ult = true;
           else if (Math.random() < 0.25) res.heavy = true;
           else res.light = true;
-        } else if (dist < 220 && Math.random() < 0.12) {
+        } else if (dist < 240 && Math.random() < 0.12) {
           res.special = true;
         }
 
@@ -2043,17 +2437,46 @@
           drawY += (Math.random() - 0.5) * 8;
         }
 
+        // Draw Continuous Kamehameha Beam for Goku
+        if (this.char.id === 'goku' && this.kamehamehaTimer > 0) {
+          CharacterArtEngine.drawKamehamehaBeam(ctx, drawX, drawY, this.facing, this.kamehamehaTimer / 35);
+        }
+
+        // Draw Stretched Rubber Arm for Luffy
+        if (this.char.id === 'luffy' && this.luffyStretchTimer > 0) {
+          CharacterArtEngine.drawLuffyRubberArms(ctx, drawX, drawY, this.facing, this.luffyReach);
+        }
+
+        // Draw Blue Gravity Vortex for Gojo
+        if (this.char.id === 'gojo' && this.blueVortexTimer > 0 && this.blueVortexPos) {
+          ctx.save();
+          ctx.fillStyle = '#00e5ff';
+          ctx.shadowColor = '#00e5ff'; ctx.shadowBlur = 25;
+          ctx.beginPath();
+          ctx.arc(this.blueVortexPos.x, this.blueVortexPos.y, 25, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(this.blueVortexPos.x, this.blueVortexPos.y, 45, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+
         ctx.translate(drawX + this.w / 2, drawY + this.h / 2);
         ctx.scale(this.facing, 1);
 
-        // Aura
-        ctx.shadowColor = this.char.color;
-        ctx.shadowBlur = this.ultGauge >= 100 ? 25 : 8;
+        if (this.ultGauge >= 100) {
+          ctx.shadowColor = this.char.auraColor || this.char.color;
+          ctx.shadowBlur = 24;
+        }
 
-        // Draw distinct archetype body
-        CharacterArtEngine.drawFigure(ctx, this.char.id, 1.0);
-
+        CharacterArtEngine.drawFighterArt(ctx, this.char.id, 1.0, this);
         ctx.restore();
+
+        // MANIFEST STAR PLATINUM PHYSICALLY IN FRONT OF JOTARO!
+        if (this.char.id === 'jotaro' && this.standActiveTimer > 0) {
+          CharacterArtEngine.drawStarPlatinum(ctx, drawX, drawY, this.facing);
+        }
       }
     }
 
@@ -2184,16 +2607,232 @@
       }
     }
 
-    // --- GAME MANAGER (STABLE & ZERO-BLACK-SCREEN ARCHITECTURE) ---
+    // --- STAGE RENDERER ---
+    class StageRenderer {
+      static drawFullStage(ctx, stage, tick = 0) {
+        if (!stage) return;
+        ctx.save();
+
+        switch (stage.theme) {
+          case 'budokai':
+            const skyGrad = ctx.createLinearGradient(0, -600, 0, 800);
+            skyGrad.addColorStop(0, '#38bdf8');
+            skyGrad.addColorStop(0.6, '#bae6fd');
+            skyGrad.addColorStop(1, '#fef08a');
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(-800, -800, 3600, 2400);
+
+            ctx.fillStyle = '#65a30d';
+            ctx.beginPath();
+            ctx.moveTo(-600, 780); ctx.lineTo(-200, 450); ctx.lineTo(200, 780);
+            ctx.moveTo(100, 780); ctx.lineTo(600, 380); ctx.lineTo(1100, 780);
+            ctx.moveTo(900, 780); ctx.lineTo(1500, 420); ctx.lineTo(2100, 780);
+            ctx.fill();
+
+            ctx.fillStyle = '#b91c1c';
+            ctx.fillRect(400, 480, 1120, 300);
+            ctx.fillStyle = '#facc15';
+            ctx.beginPath();
+            ctx.moveTo(350, 480); ctx.lineTo(450, 410); ctx.lineTo(1470, 410); ctx.lineTo(1570, 480);
+            ctx.closePath(); ctx.fill();
+            ctx.fillStyle = '#fef08a';
+            ctx.font = 'bold 120px serif';
+            ctx.fillText('武', 910, 660);
+
+            for (const plat of stage.platforms) {
+              if (plat.semi) {
+                ctx.fillStyle = '#78716c';
+                ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [4]); ctx.fill(); ctx.stroke();
+              } else {
+                ctx.fillStyle = '#d6d3d1';
+                ctx.strokeStyle = '#b91c1c'; ctx.lineWidth = 6;
+                ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [6]); ctx.fill(); ctx.stroke();
+                ctx.strokeStyle = '#a8a29e'; ctx.lineWidth = 2;
+                for (let x = plat.x; x <= plat.x + plat.w; x += 60) {
+                  ctx.beginPath(); ctx.moveTo(x, plat.y); ctx.lineTo(x, plat.y + plat.h); ctx.stroke();
+                }
+              }
+            }
+            break;
+
+          case 'konoha':
+            const konohaSky = ctx.createLinearGradient(0, -600, 0, 800);
+            konohaSky.addColorStop(0, '#0284c7');
+            konohaSky.addColorStop(0.7, '#fed7aa');
+            konohaSky.addColorStop(1, '#f97316');
+            ctx.fillStyle = konohaSky;
+            ctx.fillRect(-800, -800, 3600, 2400);
+
+            ctx.fillStyle = '#78716c';
+            ctx.fillRect(300, 300, 1320, 400);
+            ctx.fillStyle = '#57534e';
+            for (let i = 0; i < 4; i++) {
+              ctx.beginPath(); ctx.arc(480 + i * 260, 440, 70, 0, Math.PI * 2); ctx.fill();
+            }
+
+            ctx.fillStyle = '#15803d';
+            for (let i = -400; i < 2400; i += 180) {
+              ctx.beginPath(); ctx.arc(i, 780, 120, Math.PI, 0); ctx.fill();
+            }
+
+            for (const plat of stage.platforms) {
+              if (plat.semi) {
+                ctx.fillStyle = '#b45309';
+                ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [4]); ctx.fill(); ctx.stroke();
+              } else {
+                ctx.fillStyle = '#b91c1c';
+                ctx.strokeStyle = '#15803d'; ctx.lineWidth = 5;
+                ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [8]); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#22c55e';
+                ctx.beginPath(); ctx.arc(plat.x + plat.w/2, plat.y + 30, 22, 0, Math.PI * 2); ctx.fill();
+              }
+            }
+            break;
+
+          case 'sunny':
+            const oceanSky = ctx.createLinearGradient(0, -600, 0, 800);
+            oceanSky.addColorStop(0, '#38bdf8');
+            oceanSky.addColorStop(0.6, '#bae6fd');
+            oceanSky.addColorStop(1, '#0284c7');
+            ctx.fillStyle = oceanSky;
+            ctx.fillRect(-800, -800, 3600, 2400);
+
+            ctx.fillStyle = '#0369a1';
+            ctx.beginPath();
+            ctx.moveTo(-800, 740);
+            for (let x = -800; x <= 2800; x += 120) {
+              ctx.lineTo(x + 60, 720 + Math.sin((x + tick * 4) * 0.01) * 15);
+              ctx.lineTo(x + 120, 740);
+            }
+            ctx.lineTo(2800, 1500); ctx.lineTo(-800, 1500);
+            ctx.fill();
+
+            ctx.fillStyle = '#78350f';
+            ctx.fillRect(400, 720, 1120, 250);
+            ctx.fillStyle = '#92400e';
+            ctx.fillRect(940, 200, 40, 600);
+            ctx.fillStyle = '#f8fafc';
+            ctx.beginPath();
+            ctx.moveTo(600, 260); ctx.lineTo(960, 240); ctx.lineTo(1320, 260); ctx.lineTo(960, 520);
+            ctx.closePath(); ctx.fill();
+
+            for (const plat of stage.platforms) {
+              ctx.fillStyle = '#b45309';
+              ctx.strokeStyle = '#fde047'; ctx.lineWidth = 3.5;
+              ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [6]); ctx.fill(); ctx.stroke();
+            }
+            break;
+
+          case 'seireitei':
+            const seireiSky = ctx.createLinearGradient(0, -600, 0, 800);
+            seireiSky.addColorStop(0, '#0f172a');
+            seireiSky.addColorStop(0.6, '#1e1b4b');
+            seireiSky.addColorStop(1, '#312e81');
+            ctx.fillStyle = seireiSky;
+            ctx.fillRect(-800, -800, 3600, 2400);
+
+            ctx.fillStyle = '#f8fafc';
+            ctx.shadowColor = '#38bdf8'; ctx.shadowBlur = 25;
+            ctx.beginPath(); ctx.arc(960, 280, 80, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(360, 520, 1200, 300);
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.moveTo(300, 520); ctx.lineTo(440, 450); ctx.lineTo(1480, 450); ctx.lineTo(1620, 520);
+            ctx.closePath(); ctx.fill();
+
+            for (const plat of stage.platforms) {
+              ctx.fillStyle = '#f8fafc';
+              ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 4;
+              ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [plat.semi ? 4 : 8]); ctx.fill(); ctx.stroke();
+            }
+            break;
+
+          case 'shibuya':
+            const shibuyaSky = ctx.createLinearGradient(0, -600, 0, 800);
+            shibuyaSky.addColorStop(0, '#030712');
+            shibuyaSky.addColorStop(0.6, '#0f172a');
+            shibuyaSky.addColorStop(1, '#1e1b4b');
+            ctx.fillStyle = shibuyaSky;
+            ctx.fillRect(-800, -800, 3600, 2400);
+
+            ctx.fillStyle = '#111827';
+            ctx.fillRect(200, 200, 280, 700);
+            ctx.fillRect(520, 150, 320, 750);
+            ctx.fillRect(1100, 180, 340, 720);
+            ctx.fillRect(1480, 240, 300, 660);
+
+            ctx.fillStyle = '#ef4444'; ctx.shadowColor = '#ef4444'; ctx.shadowBlur = 15;
+            ctx.font = 'bold 50px sans-serif';
+            ctx.fillText('SHIBUYA 109', 560, 320);
+            ctx.fillStyle = '#00e5ff'; ctx.shadowColor = '#00e5ff'; ctx.shadowBlur = 15;
+            ctx.fillText('呪術', 1180, 350);
+            ctx.shadowBlur = 0;
+
+            for (const plat of stage.platforms) {
+              if (plat.semi) {
+                ctx.fillStyle = '#374151';
+                ctx.strokeStyle = '#00e5ff'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [4]); ctx.fill(); ctx.stroke();
+              } else {
+                ctx.fillStyle = '#1f2937';
+                ctx.strokeStyle = '#f43f5e'; ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [6]); ctx.fill(); ctx.stroke();
+              }
+            }
+            break;
+
+          case 'natagumo':
+            const natagumoSky = ctx.createLinearGradient(0, -600, 0, 800);
+            natagumoSky.addColorStop(0, '#020617');
+            natagumoSky.addColorStop(0.6, '#1e1b4b');
+            natagumoSky.addColorStop(1, '#4a044e');
+            ctx.fillStyle = natagumoSky;
+            ctx.fillRect(-800, -800, 3600, 2400);
+
+            ctx.fillStyle = '#fef08a';
+            ctx.shadowColor = '#fef08a'; ctx.shadowBlur = 35;
+            ctx.beginPath(); ctx.arc(960, 320, 120, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#0f172a';
+            for (let x = -400; x < 2400; x += 100) {
+              ctx.fillRect(x, 400, 16, 500);
+            }
+
+            ctx.fillStyle = '#c084fc';
+            for (let i = 0; i < 16; i++) {
+              ctx.beginPath();
+              ctx.arc(350 + i * 80, 520 + (i % 3) * 30, 24, 0, Math.PI * 2);
+              ctx.fill();
+            }
+
+            for (const plat of stage.platforms) {
+              ctx.fillStyle = '#4a044e';
+              ctx.strokeStyle = '#e879f9'; ctx.lineWidth = 3.5;
+              ctx.beginPath(); ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [6]); ctx.fill(); ctx.stroke();
+            }
+            break;
+        }
+
+        ctx.restore();
+      }
+    }
+
+    // --- GAME MANAGER ---
     class GameManager {
       constructor() {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
-        this.state = 'MENU'; // MENU, CHAR_SELECT, STAGE_SELECT, FIGHT, VICTORY, SETTINGS
+        this.state = 'MENU';
 
         this.gameMode = 'versus';
-        this.selectedP1 = 'ryuuto';
-        this.selectedP2 = 'kurogane';
+        this.selectedP1 = 'goku';
+        this.selectedP2 = 'naruto';
         this.selectingPlayer = 1;
         this.currentStageIdx = 0;
         this.isPaused = false;
@@ -2208,6 +2847,11 @@
         this.cam = { x: 960, y: 540, zoom: 1.0 };
         this.lastFrameTime = performance.now();
         this.fps = 60;
+        this.globalTick = 0;
+
+        // JOJO TIME STOP MECHANIC!
+        this.timeStopTimer = 0;
+        this.timeStopOwner = null;
 
         this.initUI();
         this.buildCharGrid();
@@ -2218,7 +2862,6 @@
       }
 
       initUI() {
-        // Mode buttons
         document.getElementById('btn-mode-versus').onclick = () => {
           sound.init(); this.gameMode = 'versus'; this.openCharSelect();
         };
@@ -2249,7 +2892,7 @@
         document.getElementById('btn-stage-back').onclick = () => this.openCharSelect();
         document.getElementById('btn-stage-start').onclick = () => this.startFight();
 
-        // Settings / Rebinding
+        // Settings
         document.getElementById('btn-save-controls').onclick = () => this.showScreen('main-menu');
         document.getElementById('btn-reset-controls').onclick = () => {
           input.bindings.p1 = { up: 'KeyW', left: 'KeyA', down: 'KeyS', right: 'KeyD', light: 'KeyJ', heavy: 'KeyK', special: 'KeyL', ult: 'KeyU', dash: 'KeyI' };
@@ -2266,7 +2909,7 @@
           };
         });
 
-        // Pause menu
+        // Pause
         document.getElementById('btn-resume').onclick = () => this.togglePause();
         document.getElementById('btn-pause-restart').onclick = () => { this.togglePause(); this.startFight(); };
         document.getElementById('btn-pause-quit').onclick = () => {
@@ -2276,7 +2919,7 @@
           document.getElementById('training-panel').style.display = 'none';
         };
 
-        // Victory screen
+        // Victory
         document.getElementById('btn-rematch').onclick = () => this.startFight();
         document.getElementById('btn-char-select-return').onclick = () => this.openCharSelect();
         document.getElementById('btn-menu-return').onclick = () => {
@@ -2284,7 +2927,7 @@
           document.getElementById('hud').style.display = 'none';
         };
 
-        // Training panel controls
+        // Training
         document.getElementById('btn-reset-pos').onclick = () => this.resetFighterPositions();
         document.getElementById('btn-reset-dmg').onclick = () => {
           if (this.p1 && this.p2) { this.p1.damage = 0; this.p2.damage = 0; }
@@ -2336,11 +2979,11 @@
 
           card.innerHTML = `
             <div class="char-card-portrait">
-              <canvas width="140" height="150" id="cvs-thumb-${c.id}"></canvas>
+              <canvas width="160" height="170" id="cvs-thumb-${c.id}"></canvas>
             </div>
             <div class="char-info">
               <div class="char-name">${c.name}</div>
-              <div class="char-archetype">${c.genre}</div>
+              <div class="char-archetype">${c.anime}</div>
               <div class="char-stats">${c.style} • ${c.difficulty}</div>
             </div>
           `;
@@ -2351,9 +2994,9 @@
               this.selectedP1 = c.id;
               if (this.gameMode === 'versus') {
                 this.selectingPlayer = 2;
-                document.getElementById('char-select-hint').innerText = 'JOGADOR 2: ESCOLHA SEU LUTADOR';
+                document.getElementById('char-select-hint').innerText = 'JOGADOR 2: ESCOLHA SEU PERSONAGEM';
               } else {
-                this.selectedP2 = c.id === 'ryuuto' ? 'kurogane' : 'ryuuto';
+                this.selectedP2 = c.id === 'goku' ? 'naruto' : 'goku';
               }
             } else {
               this.selectedP2 = c.id;
@@ -2365,10 +3008,9 @@
 
           grid.appendChild(card);
 
-          // Draw portrait on thumb canvas
           setTimeout(() => {
             const cvs = document.getElementById(`cvs-thumb-${c.id}`);
-            if (cvs) CharacterArtEngine.drawPortrait(cvs.getContext('2d'), c.id, 140, 150);
+            if (cvs) CharacterArtEngine.drawPortrait(cvs.getContext('2d'), c.id, 160, 170);
           }, 10);
         });
 
@@ -2385,9 +3027,9 @@
           card.dataset.stage = idx;
 
           card.innerHTML = `
-            <canvas width="320" height="180" id="stage-cvs-${idx}" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></canvas>
+            <canvas width="360" height="200" id="stage-cvs-${idx}" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></canvas>
             <div class="stage-card-title">${s.name}</div>
-            <div class="stage-card-desc">${s.theme}</div>
+            <div class="stage-card-desc">${s.anime}</div>
           `;
 
           card.onclick = () => {
@@ -2399,30 +3041,14 @@
 
           grid.appendChild(card);
 
-          // Draw Stage Thumbnail Preview
           setTimeout(() => {
             const cvs = document.getElementById(`stage-cvs-${idx}`);
             if (cvs) {
               const ctx = cvs.getContext('2d');
-              const grad = ctx.createLinearGradient(0, 0, 0, 180);
-              grad.addColorStop(0, s.bgGrad[0]);
-              grad.addColorStop(0.5, s.bgGrad[1]);
-              grad.addColorStop(1, s.bgGrad[2]);
-              ctx.fillStyle = grad;
-              ctx.fillRect(0, 0, 320, 180);
-
-              // Miniature platforms
-              ctx.fillStyle = '#0f172a';
-              ctx.strokeStyle = s.color;
-              ctx.lineWidth = 2;
-              s.platforms.forEach(p => {
-                const rx = (p.x / 1920) * 320;
-                const ry = (p.y / 1080) * 180;
-                const rw = (p.w / 1920) * 320;
-                const rh = Math.max(3, (p.h / 1080) * 180);
-                ctx.fillRect(rx, ry, rw, rh);
-                ctx.strokeRect(rx, ry, rw, rh);
-              });
+              ctx.save();
+              ctx.scale(360 / 1920, 200 / 1080);
+              StageRenderer.drawFullStage(ctx, s, 0);
+              ctx.restore();
             }
           }, 10);
         });
@@ -2430,7 +3056,7 @@
 
       openCharSelect() {
         this.selectingPlayer = 1;
-        document.getElementById('char-select-hint').innerText = 'JOGADOR 1: ESCOLHA SEU LUTADOR';
+        document.getElementById('char-select-hint').innerText = 'JOGADOR 1: ESCOLHA SEU PERSONAGEM';
         this.updateCharSelectCards();
         this.showScreen('char-select');
       }
@@ -2459,11 +3085,14 @@
 
       startFight() {
         this.stage = STAGES[this.currentStageIdx] || STAGES[0];
-        this.p1 = new Fighter('p1', CHARACTERS[this.selectedP1] || CHARACTERS.ryuuto, false);
-        this.p2 = new Fighter('p2', CHARACTERS[this.selectedP2] || CHARACTERS.kurogane, this.gameMode === 'cpu');
+        this.p1 = new Fighter('p1', CHARACTERS[this.selectedP1] || CHARACTERS.goku, false);
+        this.p2 = new Fighter('p2', CHARACTERS[this.selectedP2] || CHARACTERS.naruto, this.gameMode === 'cpu');
 
         this.p1.reset(this.stage.spawnP1.x, this.stage.spawnP1.y);
         this.p2.reset(this.stage.spawnP2.x, this.stage.spawnP2.y);
+
+        this.timeStopTimer = 0;
+        this.timeStopOwner = null;
 
         if (this.gameMode === 'training') {
           this.p1.stocks = 99;
@@ -2477,17 +3106,16 @@
           document.getElementById('training-panel').style.display = 'none';
         }
 
-        // Draw HUD avatars
         document.getElementById('p1-name').innerText = this.p1.char.name;
         document.getElementById('p2-name').innerText = this.p2.char.name;
         const cvsP1 = document.getElementById('avatar-canvas-p1');
         const cvsP2 = document.getElementById('avatar-canvas-p2');
-        if (cvsP1) CharacterArtEngine.drawPortrait(cvsP1.getContext('2d'), this.p1.char.id, 62, 62);
-        if (cvsP2) CharacterArtEngine.drawPortrait(cvsP2.getContext('2d'), this.p2.char.id, 62, 62);
+        if (cvsP1) CharacterArtEngine.drawPortrait(cvsP1.getContext('2d'), this.p1.char.id, 66, 66);
+        if (cvsP2) CharacterArtEngine.drawPortrait(cvsP2.getContext('2d'), this.p2.char.id, 66, 66);
 
         this.projectiles = [];
         this.state = 'FIGHT';
-        this.showScreen(''); // Hide all overlays
+        this.showScreen('');
         document.getElementById('hud').style.display = 'flex';
       }
 
@@ -2523,13 +3151,13 @@
           attacker.ultGauge = Math.min(100, attacker.ultGauge + hb.dmg * 1.1);
 
           this.fx.spawnAura(defender.x + defender.w/2, defender.y + defender.h/2, '#ffea00', 12);
-          this.fx.triggerScreenShake(hb.isHeavy ? 18 : 8, hb.isHeavy ? 14 : 8);
+          this.fx.triggerScreenShake(hb.isHeavy ? 16 : 7, hb.isHeavy ? 12 : 7);
 
           if (hb.isHeavy && defender.damage > 90) {
             this.fx.triggerFlash();
           }
 
-          attacker.activeHitbox = null; // Consume hitbox hit
+          attacker.activeHitbox = null;
         }
       }
 
@@ -2609,13 +3237,11 @@
         p1Ult.classList.toggle('hud-ult-ready', this.p1.ultGauge >= 100);
         p2Ult.classList.toggle('hud-ult-ready', this.p2.ultGauge >= 100);
 
-        // Training mode stats
         if (this.gameMode === 'training') {
           document.getElementById('stat-fps').innerText = Math.round(this.fps);
           document.getElementById('stat-p1-vel').innerText = `VX: ${this.p1.vx.toFixed(1)} | VY: ${this.p1.vy.toFixed(1)}`;
           document.getElementById('stat-p2-vel').innerText = `VX: ${this.p2.vx.toFixed(1)} | VY: ${this.p2.vy.toFixed(1)}`;
 
-          // Input monitors
           const p1In = input.getP1Input();
           const p2In = input.getP2Input();
 
@@ -2663,7 +3289,6 @@
 
         const targetZoom = Math.min(1.15, Math.max(0.65, 1200 / (dist + 500)));
 
-        // Guard against NaN
         if (Number.isFinite(targetZoom)) this.cam.zoom += (targetZoom - this.cam.zoom) * 0.08;
         if (Number.isFinite(midX)) this.cam.x += (midX - this.cam.x) * 0.08;
         if (Number.isFinite(midY)) this.cam.y += (midY - this.cam.y) * 0.08;
@@ -2674,10 +3299,10 @@
       }
 
       loop(now) {
-        // Calculate FPS
         const delta = now - this.lastFrameTime;
         this.lastFrameTime = now;
         if (delta > 0) this.fps = this.fps * 0.9 + (1000 / delta) * 0.1;
+        this.globalTick++;
 
         try {
           this.ctx.clearRect(0, 0, 1920, 1080);
@@ -2686,18 +3311,29 @@
             const p1In = input.getP1Input();
             const p2In = input.getP2Input();
 
-            // P key in training resets positions
             if (this.gameMode === 'training' && input.isDown('KeyP')) {
               this.resetFighterPositions();
             }
 
-            this.p1.update(p1In, this.p2, this.stage, this.projectiles, this.fx);
-            this.p2.update(p2In, this.p1, this.stage, this.projectiles, this.fx);
+            // JOJO THE WORLD TIME STOP HANDLING
+            if (this.timeStopTimer > 0) {
+              this.timeStopTimer--;
+              // Only time stop owner can move!
+              if (this.timeStopOwner === this.p1) {
+                this.p1.update(p1In, this.p2, this.stage, this.projectiles, this.fx);
+              } else if (this.timeStopOwner === this.p2) {
+                this.p2.update(p2In, this.p1, this.stage, this.projectiles, this.fx);
+              }
+            } else {
+              // Normal simulation
+              this.p1.update(p1In, this.p2, this.stage, this.projectiles, this.fx);
+              this.p2.update(p2In, this.p1, this.stage, this.projectiles, this.fx);
+              this.checkProjectileCollisions();
+            }
 
             this.checkHitboxCollision(this.p1, this.p2);
             this.checkHitboxCollision(this.p2, this.p1);
 
-            this.checkProjectileCollisions();
             this.checkRingOut(this.p1);
             this.checkRingOut(this.p2);
 
@@ -2719,7 +3355,18 @@
           this.ctx.scale(this.cam.zoom, this.cam.zoom);
           this.ctx.translate(-this.cam.x, -this.cam.y);
 
-          this.drawStage();
+          StageRenderer.drawFullStage(this.ctx, this.stage, this.globalTick);
+
+          // Inverted tint if Time Stop is active!
+          if (this.timeStopTimer > 0) {
+            this.ctx.save();
+            this.ctx.fillStyle = 'rgba(147, 51, 234, 0.25)';
+            this.ctx.fillRect(-800, -800, 3600, 2400);
+            this.ctx.font = 'italic 900 60px Impact';
+            this.ctx.fillStyle = '#facc15';
+            this.ctx.fillText('THE WORLD: TEMPO PARADO!', 620, 350);
+            this.ctx.restore();
+          }
 
           if (this.state === 'FIGHT' || this.state === 'VICTORY') {
             for (const proj of this.projectiles) proj.draw(this.ctx);
@@ -2735,11 +3382,11 @@
           if (this.state === 'FIGHT') this.drawCombos();
 
         } catch (err) {
-          console.error("Critical Render/GameLoop Error:", err);
+          console.error("Game Loop Error:", err);
           const eb = document.getElementById('error-banner');
           if (eb) {
             eb.style.display = 'block';
-            eb.innerText = `Auto-Recuperado de Erro: ${err.message}`;
+            eb.innerText = `Auto-Recuperado: ${err.message}`;
             setTimeout(() => { if (eb) eb.style.display = 'none'; }, 2000);
           }
         }
@@ -2747,74 +3394,16 @@
         requestAnimationFrame(this.loop);
       }
 
-      drawStage() {
-        if (!this.stage) return;
-        const grad = this.ctx.createLinearGradient(0, -400, 0, 1400);
-        grad.addColorStop(0, this.stage.bgGrad[0]);
-        grad.addColorStop(0.5, this.stage.bgGrad[1]);
-        grad.addColorStop(1, this.stage.bgGrad[2]);
-
-        this.ctx.fillStyle = grad;
-        this.ctx.fillRect(-800, -800, 3600, 2400);
-
-        // Backdrop architectural details
-        this.ctx.save();
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-        for (let i = -600; i < 2600; i += 160) {
-          this.ctx.fillRect(i, -200, 4, 1400);
-        }
-        this.ctx.restore();
-
-        // Platforms
-        for (const plat of this.stage.platforms) {
-          this.ctx.save();
-          if (plat.semi) {
-            this.ctx.fillStyle = 'rgba(20, 28, 48, 0.92)';
-            this.ctx.strokeStyle = this.stage.color;
-            this.ctx.lineWidth = 3;
-            this.ctx.shadowColor = this.stage.color;
-            this.ctx.shadowBlur = 12;
-
-            this.ctx.beginPath();
-            this.ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [4]);
-            this.ctx.fill();
-            this.ctx.stroke();
-          } else {
-            this.ctx.fillStyle = '#0b0f19';
-            this.ctx.strokeStyle = '#ffffff';
-            this.ctx.lineWidth = 3.5;
-            this.ctx.shadowColor = 'rgba(255, 255, 255, 0.2)';
-            this.ctx.shadowBlur = 15;
-
-            this.ctx.beginPath();
-            this.ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [8]);
-            this.ctx.fill();
-            this.ctx.stroke();
-
-            // Neon top lip
-            this.ctx.strokeStyle = this.stage.color;
-            this.ctx.lineWidth = 4;
-            this.ctx.beginPath();
-            this.ctx.moveTo(plat.x, plat.y);
-            this.ctx.lineTo(plat.x + plat.w, plat.y);
-            this.ctx.stroke();
-          }
-          this.ctx.restore();
-        }
-      }
-
       drawDebugHitboxes() {
         this.ctx.save();
         for (const f of [this.p1, this.p2]) {
           if (!f) continue;
-          // Hurtbox (Green)
           this.ctx.strokeStyle = '#22c55e';
           this.ctx.fillStyle = 'rgba(34, 197, 94, 0.2)';
           this.ctx.lineWidth = 2;
           this.ctx.strokeRect(f.x, f.y, f.w, f.h);
           this.ctx.fillRect(f.x, f.y, f.w, f.h);
 
-          // Hitbox (Red)
           if (f.activeHitbox) {
             const hb = f.activeHitbox;
             this.ctx.strokeStyle = '#ef4444';
@@ -2845,7 +3434,6 @@
       }
     }
 
-    // Launch Engine
     window.addEventListener('DOMContentLoaded', () => {
       window.game = new GameManager();
     });
