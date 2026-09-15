@@ -6,13 +6,14 @@
   <title>DADA BLATE — Anime Platform Fighter</title>
   <style>
     :root {
-      --bg-dark: #090a10;
+      --bg-dark: #070913;
       --primary: #ff2a5f;
       --primary-glow: rgba(255, 42, 95, 0.6);
       --secondary: #00e5ff;
       --secondary-glow: rgba(0, 229, 255, 0.6);
       --accent: #ffea00;
-      --purple: #9d00ff;
+      --purple: #a855f7;
+      --green: #22c55e;
       --text: #ffffff;
       --font-display: 'Impact', 'Arial Black', sans-serif;
       --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -55,27 +56,18 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      image-rendering: auto;
     }
 
     /* UI Layer */
     .ui-layer {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       pointer-events: none;
       z-index: 10;
       display: flex;
       flex-direction: column;
     }
 
-    .interactive {
-      pointer-events: auto;
-    }
-
-    /* Menus Styling */
     .screen-overlay {
       position: absolute;
       inset: 0;
@@ -83,21 +75,23 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at center, rgba(15, 18, 30, 0.85) 0%, rgba(5, 6, 12, 0.98) 100%);
-      transition: opacity 0.25s ease, transform 0.25s ease;
+      background: radial-gradient(circle at center, rgba(12, 16, 30, 0.88) 0%, rgba(4, 6, 12, 0.98) 100%);
+      transition: opacity 0.2s ease, transform 0.2s ease;
       z-index: 50;
       pointer-events: auto;
+      overflow-y: auto;
+      padding: 20px;
     }
 
     .screen-overlay.hidden {
       opacity: 0;
       pointer-events: none;
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
     .title-logo {
       font-family: var(--font-display);
-      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-size: clamp(2.8rem, 6.5vw, 6rem);
       font-style: italic;
       text-transform: uppercase;
       letter-spacing: 4px;
@@ -105,18 +99,19 @@
       text-shadow: 0 0 25px var(--primary-glow), 4px 4px 0 #000, -3px -3px 0 var(--secondary);
       line-height: 0.95;
       text-align: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       animation: logoGlow 3s ease-in-out infinite alternate;
     }
 
     .title-sub {
-      font-size: clamp(0.9rem, 2vw, 1.4rem);
-      letter-spacing: 8px;
+      font-size: clamp(0.85rem, 1.8vw, 1.3rem);
+      letter-spacing: 6px;
       color: var(--secondary);
       text-transform: uppercase;
       font-weight: 800;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       text-shadow: 0 0 10px var(--secondary-glow);
+      text-align: center;
     }
 
     @keyframes logoGlow {
@@ -127,25 +122,25 @@
     .menu-buttons {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      width: min(400px, 90%);
+      gap: 0.9rem;
+      width: min(440px, 92%);
     }
 
     .btn {
       position: relative;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px solid rgba(255, 255, 255, 0.22);
       color: #fff;
       font-family: var(--font-display);
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-style: italic;
       letter-spacing: 2px;
-      padding: 0.85rem 1.8rem;
+      padding: 0.8rem 1.6rem;
       cursor: pointer;
       text-transform: uppercase;
       text-align: center;
-      clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
-      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
+      transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.2);
       outline: none;
     }
 
@@ -153,7 +148,7 @@
       background: var(--primary);
       border-color: #fff;
       color: #fff;
-      transform: translateX(6px) scale(1.03);
+      transform: translateX(6px) scale(1.02);
       box-shadow: 0 0 20px var(--primary-glow);
     }
 
@@ -167,33 +162,44 @@
       box-shadow: 0 0 20px var(--secondary-glow);
     }
 
-    /* Character Select Screen */
-    .char-select-grid {
+    /* Character Select Grid */
+    .char-select-container {
       display: flex;
-      gap: 1.8rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 1200px;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 1350px;
+    }
+
+    .char-select-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 1.5rem;
+      width: 100%;
+    }
+
+    @media (max-width: 1000px) {
+      .char-select-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     .char-card {
-      width: 250px;
-      height: 370px;
-      background: linear-gradient(180deg, rgba(20, 25, 45, 0.9) 0%, rgba(10, 12, 22, 0.95) 100%);
-      border: 3px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(20, 26, 46, 0.92) 0%, rgba(10, 13, 24, 0.98) 100%);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       position: relative;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      height: 220px;
     }
 
     .char-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-4px);
       border-color: #fff;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     }
 
     .char-card.selected-p1 {
@@ -217,63 +223,70 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 75%);
+      overflow: hidden;
     }
 
     .char-badge-p1, .char-badge-p2 {
       position: absolute;
-      top: 10px;
+      top: 6px;
       font-family: var(--font-display);
-      font-size: 0.9rem;
-      padding: 3px 10px;
+      font-size: 0.85rem;
+      padding: 2px 8px;
       font-style: italic;
       border-radius: 3px;
       font-weight: bold;
+      z-index: 5;
     }
 
-    .char-badge-p1 { left: 10px; background: var(--primary); color: #fff; }
-    .char-badge-p2 { right: 10px; background: var(--secondary); color: #000; }
+    .char-badge-p1 { left: 6px; background: var(--primary); color: #fff; }
+    .char-badge-p2 { right: 6px; background: var(--secondary); color: #000; }
 
     .char-info {
-      padding: 12px;
+      padding: 8px 10px;
       background: rgba(5, 7, 15, 0.95);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .char-name {
       font-family: var(--font-display);
-      font-size: 1.4rem;
+      font-size: 1.15rem;
       font-style: italic;
       color: #fff;
-      margin-bottom: 2px;
     }
 
     .char-archetype {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       color: var(--accent);
-      margin-bottom: 8px;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .char-stats {
-      font-size: 0.72rem;
-      color: #bbb;
-      line-height: 1.4;
+      font-size: 0.68rem;
+      color: #aaa;
     }
 
-    /* Stage Select */
+    /* Stage Select Grid */
     .stage-select-grid {
-      display: flex;
-      gap: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
       margin-bottom: 2rem;
-      justify-content: center;
-      flex-wrap: wrap;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    @media (max-width: 860px) {
+      .stage-select-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     .stage-card {
-      width: 260px;
-      height: 170px;
+      height: 180px;
       background: #111422;
       border: 3px solid rgba(255, 255, 255, 0.2);
       border-radius: 6px;
@@ -281,22 +294,30 @@
       position: relative;
       overflow: hidden;
       display: flex;
-      align-items: flex-end;
+      flex-direction: column;
+      justify-content: flex-end;
       padding: 12px;
       transition: all 0.2s ease;
     }
 
     .stage-card:hover, .stage-card.selected {
       border-color: var(--accent);
-      transform: scale(1.05);
+      transform: scale(1.03);
       box-shadow: 0 0 20px rgba(255, 234, 0, 0.5);
     }
 
     .stage-card-title {
       font-family: var(--font-display);
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-style: italic;
       text-shadow: 2px 2px 4px #000;
+      z-index: 2;
+    }
+
+    .stage-card-desc {
+      font-size: 0.72rem;
+      color: #ddd;
+      text-shadow: 1px 1px 2px #000;
       z-index: 2;
     }
 
@@ -306,7 +327,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      padding: 24px 36px;
+      padding: 20px 32px;
       display: flex;
       justify-content: space-between;
       pointer-events: none;
@@ -317,8 +338,8 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      background: linear-gradient(135deg, rgba(10, 12, 22, 0.85) 0%, rgba(20, 24, 40, 0.6) 100%);
-      padding: 12px 22px;
+      background: linear-gradient(135deg, rgba(10, 13, 24, 0.88) 0%, rgba(18, 22, 38, 0.65) 100%);
+      padding: 10px 20px;
       border-radius: 8px;
       border: 2px solid rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(8px);
@@ -338,8 +359,8 @@
     }
 
     .hud-avatar {
-      width: 60px;
-      height: 60px;
+      width: 62px;
+      height: 62px;
       border-radius: 50%;
       border: 2px solid #fff;
       display: flex;
@@ -348,7 +369,8 @@
       font-family: var(--font-display);
       font-size: 1.8rem;
       font-style: italic;
-      background: #1a2035;
+      background: #182035;
+      overflow: hidden;
     }
 
     .fighter-hud.p1 .hud-avatar { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
@@ -357,7 +379,7 @@
     .hud-details {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     .hud-header {
@@ -366,9 +388,7 @@
       gap: 10px;
     }
 
-    .fighter-hud.p2 .hud-header {
-      justify-content: flex-end;
-    }
+    .fighter-hud.p2 .hud-header { justify-content: flex-end; }
 
     .hud-name {
       font-family: var(--font-display);
@@ -401,7 +421,7 @@
       line-height: 1;
       letter-spacing: 1px;
       color: #fff;
-      transition: color 0.15s ease, transform 0.1s ease;
+      transition: color 0.1s ease;
     }
 
     .hud-ult-bar-container {
@@ -418,7 +438,7 @@
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, #ffea00, #ff5e00);
-      transition: width 0.1s linear;
+      transition: width 0.08s linear;
     }
 
     .hud-ult-ready {
@@ -431,33 +451,48 @@
       100% { box-shadow: 0 0 15px #00e5ff, 0 0 25px #ff2a5f; }
     }
 
-    /* Training HUD */
+    /* Training HUD & Overlay */
     #training-panel {
       position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 100px;
+      left: 32px;
       background: rgba(10, 15, 30, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 10px 24px;
-      border-radius: 20px;
+      padding: 12px 18px;
+      border-radius: 8px;
       display: flex;
-      gap: 16px;
+      flex-direction: column;
+      gap: 10px;
       pointer-events: auto;
       backdrop-filter: blur(8px);
       z-index: 20;
+      font-size: 0.85rem;
+    }
+
+    .training-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: monospace;
+      color: #38bdf8;
+    }
+
+    .training-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .training-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       color: #fff;
-      padding: 5px 12px;
-      border-radius: 12px;
-      font-size: 0.85rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
       cursor: pointer;
       font-family: var(--font-body);
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
 
     .training-btn:hover, .training-btn.active {
@@ -467,36 +502,41 @@
       font-weight: bold;
     }
 
-    /* Floating Combos Counter */
-    .combo-banner {
-      position: absolute;
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      font-style: italic;
-      color: var(--accent);
-      text-shadow: 0 0 15px rgba(255, 234, 0, 0.8), 2px 2px 0 #000;
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.2s ease;
-      z-index: 25;
+    /* Input Monitor Display */
+    .input-monitor {
+      display: flex;
+      gap: 14px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.78rem;
     }
 
-    /* Modal dialogs / Help */
-    .controls-modal {
-      display: flex;
-      gap: 2.5rem;
-      background: rgba(10, 14, 25, 0.95);
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 24px 36px;
-      max-width: 850px;
+    .input-monitor span.active {
+      color: var(--accent);
+      font-weight: bold;
+      text-shadow: 0 0 5px var(--accent);
+    }
+
+    /* Settings & Rebinding Screen */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 800px;
+      width: 100%;
       margin-bottom: 2rem;
     }
 
-    .control-col {
-      flex: 1;
+    .settings-col {
+      background: rgba(15, 20, 36, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 16px 20px;
     }
 
-    .control-col h3 {
+    .settings-col h3 {
       font-family: var(--font-display);
       font-style: italic;
       font-size: 1.3rem;
@@ -505,50 +545,39 @@
       padding-bottom: 6px;
     }
 
-    .control-col.p1 h3 { color: var(--primary); border-color: var(--primary); }
-    .control-col.p2 h3 { color: var(--secondary); border-color: var(--secondary); }
+    .settings-col.p1 h3 { color: var(--primary); border-color: var(--primary); }
+    .settings-col.p2 h3 { color: var(--secondary); border-color: var(--secondary); }
 
-    .control-row {
+    .rebind-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 6px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
-    .key-badge {
+    .rebind-btn {
       background: #252c42;
       border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 2px 8px;
+      color: var(--accent);
+      padding: 4px 10px;
       border-radius: 4px;
       font-family: monospace;
       font-weight: bold;
-      color: var(--accent);
+      cursor: pointer;
+      min-width: 80px;
+      text-align: center;
+      transition: all 0.15s;
     }
 
-    /* Pause Menu */
-    #pause-menu {
-      z-index: 60;
+    .rebind-btn:hover, .rebind-btn.listening {
+      background: var(--accent);
+      color: #000;
+      border-color: #fff;
     }
 
-    /* Blast Indicators */
-    .offscreen-marker {
-      position: absolute;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: 3px solid #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      pointer-events: none;
-      z-index: 22;
-      transform: translate(-50%, -50%);
-    }
-
-    /* Impact Flash Effect */
+    /* Impact Flash */
     #impact-flash {
       position: absolute;
       inset: 0;
@@ -558,6 +587,22 @@
       z-index: 30;
       transition: opacity 0.05s ease-out;
     }
+
+    /* Error / Crash Banner (Zero Black Screens) */
+    #error-banner {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(220, 38, 38, 0.95);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      z-index: 100;
+      display: none;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
   </style>
 </head>
 <body>
@@ -565,23 +610,22 @@
   <div id="game-container">
     <canvas id="gameCanvas" width="1920" height="1080"></canvas>
     <div id="impact-flash"></div>
+    <div id="error-banner"></div>
 
-    <!-- UI Overlay -->
+    <!-- UI Overlay Layer -->
     <div class="ui-layer">
 
       <!-- In-Game HUD -->
       <div id="hud" style="display: none;">
         <!-- P1 HUD -->
         <div class="fighter-hud p1" id="p1-hud">
-          <div class="hud-avatar" id="p1-avatar">K</div>
+          <div class="hud-avatar" id="p1-avatar">
+            <canvas width="62" height="62" id="avatar-canvas-p1"></canvas>
+          </div>
           <div class="hud-details">
             <div class="hud-header">
-              <span class="hud-name" id="p1-name">KAIEN</span>
-              <div class="hud-stocks" id="p1-stocks">
-                <span class="stock-icon"></span>
-                <span class="stock-icon"></span>
-                <span class="stock-icon"></span>
-              </div>
+              <span class="hud-name" id="p1-name">RYUUTO</span>
+              <div class="hud-stocks" id="p1-stocks"></div>
             </div>
             <div class="hud-damage" id="p1-damage">0%</div>
             <div class="hud-ult-bar-container">
@@ -592,15 +636,13 @@
 
         <!-- P2 HUD -->
         <div class="fighter-hud p2" id="p2-hud">
-          <div class="hud-avatar" id="p2-avatar">M</div>
+          <div class="hud-avatar" id="p2-avatar">
+            <canvas width="62" height="62" id="avatar-canvas-p2"></canvas>
+          </div>
           <div class="hud-details">
             <div class="hud-header">
-              <span class="hud-name" id="p2-name">MURAMASA</span>
-              <div class="hud-stocks" id="p2-stocks">
-                <span class="stock-icon"></span>
-                <span class="stock-icon"></span>
-                <span class="stock-icon"></span>
-              </div>
+              <span class="hud-name" id="p2-name">KUROGANE</span>
+              <div class="hud-stocks" id="p2-stocks"></div>
             </div>
             <div class="hud-damage" id="p2-damage">0%</div>
             <div class="hud-ult-bar-container">
@@ -610,112 +652,63 @@
         </div>
       </div>
 
-      <!-- Training Mode Controls -->
+      <!-- Training Mode Panel -->
       <div id="training-panel" style="display: none;">
-        <button class="training-btn" id="btn-reset-pos">Resetar Posições (P)</button>
-        <button class="training-btn" id="btn-reset-dmg">Zerar Dano</button>
-        <button class="training-btn" id="btn-toggle-hitbox">Hitboxes: OFF</button>
-        <button class="training-btn" id="btn-dummy-cpu">Dummy: Parado</button>
+        <div class="training-stats" id="training-stats">
+          <span>FPS: <b id="stat-fps">60</b></span>
+          <span>P1 VEL: <b id="stat-p1-vel">VX: 0.0 | VY: 0.0</b></span>
+          <span>P2 VEL: <b id="stat-p2-vel">VX: 0.0 | VY: 0.0</b></span>
+        </div>
+        <div class="input-monitor" id="input-monitor-p1">
+          P1: <span id="in-p1-w">W</span> <span id="in-p1-a">A</span> <span id="in-p1-s">S</span> <span id="in-p1-d">D</span> | <span id="in-p1-j">J</span> <span id="in-p1-k">K</span> <span id="in-p1-l">L</span> <span id="in-p1-u">U</span> <span id="in-p1-i">I</span>
+        </div>
+        <div class="input-monitor" id="input-monitor-p2">
+          P2: <span id="in-p2-up">↑</span> <span id="in-p2-left">←</span> <span id="in-p2-down">↓</span> <span id="in-p2-right">→</span> | <span id="in-p2-1">1</span> <span id="in-p2-2">2</span> <span id="in-p2-3">3</span> <span id="in-p2-4">4</span> <span id="in-p2-5">5</span>
+        </div>
+        <div class="training-buttons">
+          <button class="training-btn" id="btn-reset-pos">Resetar Posição (P)</button>
+          <button class="training-btn" id="btn-reset-dmg">Zerar Dano</button>
+          <button class="training-btn" id="btn-toggle-hitbox">Hitboxes: OFF</button>
+          <button class="training-btn" id="btn-dummy-cpu">Dummy: Parado</button>
+          <button class="training-btn" id="btn-dummy-inv">Dummy Invencível: OFF</button>
+        </div>
       </div>
 
       <!-- Main Menu Screen -->
       <div class="screen-overlay" id="main-menu">
         <h1 class="title-logo">DADA BLATE</h1>
-        <div class="title-sub">Anime Platform Fighter</div>
+        <div class="title-sub">Anime Platform Fighter 2D</div>
 
         <div class="menu-buttons">
           <button class="btn" id="btn-mode-versus">Versus Local (2 Jogadores)</button>
           <button class="btn btn-secondary" id="btn-mode-cpu">1 Jogador vs CPU</button>
           <button class="btn btn-secondary" id="btn-mode-training">Modo Treinamento</button>
-          <button class="btn" id="btn-show-controls">Controles & Anti-Ghosting</button>
+          <button class="btn" id="btn-open-settings">Controles & Configurações</button>
           <button class="btn" id="btn-toggle-sound">Som & Música: LIGADO</button>
         </div>
       </div>
 
-      <!-- Character Select Screen -->
+      <!-- Character Select Screen (8 Archetypes) -->
       <div class="screen-overlay hidden" id="char-select">
-        <h2 class="title-logo" style="font-size: 3rem; margin-bottom: 0.2rem;">SELEÇÃO DE LUTADORES</h2>
-        <div class="title-sub" id="char-select-hint">JOGADOR 1: ESCOLHA SEU PERSONAGEM</div>
+        <h2 class="title-logo" style="font-size: 2.8rem; margin-bottom: 0.1rem;">SELEÇÃO DE LUTADORES</h2>
+        <div class="title-sub" id="char-select-hint">JOGADOR 1: ESCOLHA SEU LUTADOR</div>
 
-        <div class="char-select-grid" id="char-grid">
-          <!-- Kaien -->
-          <div class="char-card selected-p1" data-char="kaien">
-            <div class="char-badge-p1">P1</div>
-            <div class="char-card-portrait">
-              <canvas width="160" height="220" id="preview-kaien"></canvas>
-            </div>
-            <div class="char-info">
-              <div class="char-name">KAIEN</div>
-              <div class="char-archetype">O Protagonista Shounen</div>
-              <div class="char-stats">
-                Velocidade: ★★★★☆<br>
-                Poder: ★★★★★<br>
-                Alcance: ★★★☆☆<br>
-                <i>Brawler flamejante com Hadouken e Dragon Uppercut.</i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Muramasa -->
-          <div class="char-card" data-char="muramasa">
-            <div class="char-card-portrait">
-              <canvas width="160" height="220" id="preview-muramasa"></canvas>
-            </div>
-            <div class="char-info">
-              <div class="char-name">MURAMASA</div>
-              <div class="char-archetype">O Espadachim Sombrio</div>
-              <div class="char-stats">
-                Velocidade: ★★★★★<br>
-                Poder: ★★★☆☆<br>
-                Alcance: ★★★★★<br>
-                <i>Alcance de katana, cortes em dash e sangramento.</i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Vesper -->
-          <div class="char-card" data-char="vesper">
-            <div class="char-card-portrait">
-              <canvas width="160" height="220" id="preview-vesper"></canvas>
-            </div>
-            <div class="char-info">
-              <div class="char-name">VESPER</div>
-              <div class="char-archetype">O Mago Underground</div>
-              <div class="char-stats">
-                Velocidade: ★★★☆☆<br>
-                Poder: ★★★★☆<br>
-                Alcance: ★★★★★<br>
-                <i>Armadilhas rúnicas, vórtices de gravidade e teleporte.</i>
-              </div>
-            </div>
-          </div>
+        <div class="char-select-container">
+          <div class="char-select-grid" id="char-grid"></div>
         </div>
 
-        <div style="display: flex; gap: 1rem;">
+        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
           <button class="btn btn-secondary" id="btn-char-back">Voltar</button>
-          <button class="btn" id="btn-char-confirm">Confirmar Seleção</button>
+          <button class="btn" id="btn-char-confirm">Confirmar e Escolher Arena</button>
         </div>
       </div>
 
-      <!-- Stage Select Screen -->
+      <!-- Stage Select Screen (6 Arenas) -->
       <div class="screen-overlay hidden" id="stage-select">
-        <h2 class="title-logo" style="font-size: 3rem; margin-bottom: 0.2rem;">SELEÇÃO DE ARENA</h2>
+        <h2 class="title-logo" style="font-size: 2.8rem; margin-bottom: 0.1rem;">SELEÇÃO DE ARENA</h2>
         <div class="title-sub">ESCOLHA O CAMPO DE BATALHA</div>
 
-        <div class="stage-select-grid" id="stage-grid">
-          <div class="stage-card selected" data-stage="0">
-            <canvas width="260" height="170" id="stage-thumb-0" style="position: absolute; top:0; left:0;"></canvas>
-            <div class="stage-card-title">NEO SHINJUKU</div>
-          </div>
-          <div class="stage-card" data-stage="1">
-            <canvas width="260" height="170" id="stage-thumb-1" style="position: absolute; top:0; left:0;"></canvas>
-            <div class="stage-card-title">SANTUÁRIO CELESTIAL</div>
-          </div>
-          <div class="stage-card" data-stage="2">
-            <canvas width="260" height="170" id="stage-thumb-2" style="position: absolute; top:0; left:0;"></canvas>
-            <div class="stage-card-title">CÂMARA DO VAZIO</div>
-          </div>
-        </div>
+        <div class="stage-select-grid" id="stage-grid"></div>
 
         <div style="display: flex; gap: 1rem;">
           <button class="btn btn-secondary" id="btn-stage-back">Voltar</button>
@@ -723,49 +716,55 @@
         </div>
       </div>
 
-      <!-- Controls Screen -->
-      <div class="screen-overlay hidden" id="controls-screen">
-        <h2 class="title-logo" style="font-size: 2.8rem; margin-bottom: 1.5rem;">ESQUEMA DE CONTROLES</h2>
+      <!-- Settings & Controls Screen (Key Remapping) -->
+      <div class="screen-overlay hidden" id="settings-screen">
+        <h2 class="title-logo" style="font-size: 2.6rem; margin-bottom: 0.5rem;">CONFIGURAÇÃO DE CONTROLES</h2>
+        <div class="title-sub" style="margin-bottom: 1.5rem;">CLIQUE EM UMA TECLA E PRESSIONE A NOVA TECLA PARA REMAPEAR</div>
 
-        <div class="controls-modal">
-          <div class="control-col p1">
-            <h3>JOGADOR 1 (Lado Esquerdo)</h3>
-            <div class="control-row"><span>Mover / Pular</span> <span class="key-badge">W A S D</span></div>
-            <div class="control-row"><span>Fast Fall / Descer Plataforma</span> <span class="key-badge">S</span></div>
-            <div class="control-row"><span>Ataque Leve</span> <span class="key-badge">F</span></div>
-            <div class="control-row"><span>Ataque Pesado / Smash</span> <span class="key-badge">G</span></div>
-            <div class="control-row"><span>Especial (Neutro / Cima)</span> <span class="key-badge">R</span></div>
-            <div class="control-row"><span>Ataque Ultimate (100%)</span> <span class="key-badge">T</span></div>
-            <div class="control-row"><span>Dash Terrestre / Air Dodge</span> <span class="key-badge">E</span></div>
+        <div class="settings-grid">
+          <!-- P1 Controls -->
+          <div class="settings-col p1">
+            <h3>JOGADOR 1</h3>
+            <div class="rebind-row"><span>Pular:</span> <button class="rebind-btn" data-player="p1" data-action="up">KeyW</button></div>
+            <div class="rebind-row"><span>Esquerda:</span> <button class="rebind-btn" data-player="p1" data-action="left">KeyA</button></div>
+            <div class="rebind-row"><span>Direita:</span> <button class="rebind-btn" data-player="p1" data-action="right">KeyD</button></div>
+            <div class="rebind-row"><span>Fast Fall / Descer:</span> <button class="rebind-btn" data-player="p1" data-action="down">KeyS</button></div>
+            <div class="rebind-row"><span>Ataque Leve:</span> <button class="rebind-btn" data-player="p1" data-action="light">KeyJ</button></div>
+            <div class="rebind-row"><span>Ataque Pesado:</span> <button class="rebind-btn" data-player="p1" data-action="heavy">KeyK</button></div>
+            <div class="rebind-row"><span>Especial (Hadouken/Recovery):</span> <button class="rebind-btn" data-player="p1" data-action="special">KeyL</button></div>
+            <div class="rebind-row"><span>Ultimate (100% Barra):</span> <button class="rebind-btn" data-player="p1" data-action="ult">KeyU</button></div>
+            <div class="rebind-row"><span>Dash / Esquiva:</span> <button class="rebind-btn" data-player="p1" data-action="dash">KeyI</button></div>
           </div>
 
-          <div class="control-col p2">
-            <h3>JOGADOR 2 (Lado Direito)</h3>
-            <div class="control-row"><span>Mover / Pular</span> <span class="key-badge">Setas Direcionais</span></div>
-            <div class="control-row"><span>Fast Fall / Descer Plataforma</span> <span class="key-badge">Seta Baixo</span></div>
-            <div class="control-row"><span>Ataque Leve</span> <span class="key-badge">Numpad 1 ou K</span></div>
-            <div class="control-row"><span>Ataque Pesado / Smash</span> <span class="key-badge">Numpad 2 ou L</span></div>
-            <div class="control-row"><span>Especial (Neutro / Cima)</span> <span class="key-badge">Numpad 4 ou I</span></div>
-            <div class="control-row"><span>Ataque Ultimate (100%)</span> <span class="key-badge">Numpad 5 ou O</span></div>
-            <div class="control-row"><span>Dash Terrestre / Air Dodge</span> <span class="key-badge">Numpad 3 ou J</span></div>
+          <!-- P2 Controls -->
+          <div class="settings-col p2">
+            <h3>JOGADOR 2</h3>
+            <div class="rebind-row"><span>Pular:</span> <button class="rebind-btn" data-player="p2" data-action="up">ArrowUp</button></div>
+            <div class="rebind-row"><span>Esquerda:</span> <button class="rebind-btn" data-player="p2" data-action="left">ArrowLeft</button></div>
+            <div class="rebind-row"><span>Direita:</span> <button class="rebind-btn" data-player="p2" data-action="right">ArrowRight</button></div>
+            <div class="rebind-row"><span>Fast Fall / Descer:</span> <button class="rebind-btn" data-player="p2" data-action="down">ArrowDown</button></div>
+            <div class="rebind-row"><span>Ataque Leve:</span> <button class="rebind-btn" data-player="p2" data-action="light">Numpad1</button></div>
+            <div class="rebind-row"><span>Ataque Pesado:</span> <button class="rebind-btn" data-player="p2" data-action="heavy">Numpad2</button></div>
+            <div class="rebind-row"><span>Dash / Esquiva:</span> <button class="rebind-btn" data-player="p2" data-action="dash">Numpad3</button></div>
+            <div class="rebind-row"><span>Especial (Hadouken/Recovery):</span> <button class="rebind-btn" data-player="p2" data-action="special">Numpad4</button></div>
+            <div class="rebind-row"><span>Ultimate (100% Barra):</span> <button class="rebind-btn" data-player="p2" data-action="ult">Numpad5</button></div>
           </div>
         </div>
 
-        <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 1.5rem; max-width: 650px; text-align: center;">
-          ⚡ <b>Anti-Ghosting Integrado</b>: Posições físicas totalmente separadas no teclado. Jogadores em notebooks podem usar <b>I, J, K, L, O</b> simultaneamente sem Numpad!
-        </p>
-
-        <button class="btn" id="btn-controls-back">Entendido</button>
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-secondary" id="btn-reset-controls">Restaurar Padrão</button>
+          <button class="btn" id="btn-save-controls">Salvar e Voltar</button>
+        </div>
       </div>
 
       <!-- Victory Screen -->
       <div class="screen-overlay hidden" id="victory-screen">
         <h1 class="title-logo" id="victory-title" style="color: var(--accent);">VITÓRIA!</h1>
-        <div class="title-sub" id="victory-subtitle">JOGADOR 1 VENCEU A PARTIDA</div>
+        <div class="title-sub" id="victory-subtitle">JOGADOR 1 VENCEU A BATALHA</div>
 
         <div class="menu-buttons" style="margin-top: 1rem;">
-          <button class="btn" id="btn-rematch">Revanche Instantânea</button>
-          <button class="btn btn-secondary" id="btn-char-select-return">Mudar Personagens</button>
+          <button class="btn" id="btn-rematch">Jogar Novamente</button>
+          <button class="btn btn-secondary" id="btn-char-select-return">Trocar Personagens</button>
           <button class="btn btn-secondary" id="btn-menu-return">Menu Principal</button>
         </div>
       </div>
@@ -775,8 +774,8 @@
         <h2 class="title-logo" style="font-size: 3rem;">JOGO PAUSADO</h2>
         <div class="menu-buttons">
           <button class="btn" id="btn-resume">Continuar</button>
-          <button class="btn btn-secondary" id="btn-pause-restart">Reiniciar Partida</button>
-          <button class="btn btn-secondary" id="btn-pause-quit">Sair para o Menu</button>
+          <button class="btn btn-secondary" id="btn-pause-restart">Reiniciar Luta</button>
+          <button class="btn btn-secondary" id="btn-pause-quit">Menu Principal</button>
         </div>
       </div>
 
@@ -785,178 +784,179 @@
 
   <script>
     /* ==========================================================================
-       DADA BLATE: ANIME PLATFORM FIGHTER ENGINE (Vanilla JS / Canvas / Web Audio)
+       DADA BLATE: ANIME PLATFORM FIGHTER ENGINE (REVISED STABLE EDITION)
        ========================================================================== */
 
-    // --- AUDIO SYSTEM (Procedural Web Audio API) ---
+    // Polyfill for roundRect to avoid canvas crash on older browsers
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+      CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii) {
+        if (!radii) radii = 0;
+        const r = typeof radii === 'number' ? radii : (Array.isArray(radii) ? (radii[0] || 0) : 0);
+        this.beginPath();
+        this.moveTo(x + r, y);
+        this.lineTo(x + w - r, y);
+        this.quadraticCurveTo(x + w, y, x + w, y + r);
+        this.lineTo(x + w, y + h - r);
+        this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        this.lineTo(x + r, y + h);
+        this.quadraticCurveTo(x, y + h, x, y + h - r);
+        this.lineTo(x, y + r);
+        this.quadraticCurveTo(x, y, x + r, y);
+        this.closePath();
+        return this;
+      };
+    }
+
+    // --- SAFE AUDIO ENGINE (Procedural Web Audio API - Zero Crashes) ---
     class SoundEngine {
       constructor() {
         this.ctx = null;
         this.enabled = true;
         this.bgmPlaying = false;
-        this.bgmNode = null;
         this.masterGain = null;
+        this.bgmTimeout = null;
       }
 
       init() {
-        if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          this.ctx = new AudioContext();
-          this.masterGain = this.ctx.createGain();
-          this.masterGain.gain.setValueAtTime(0.4, this.ctx.currentTime);
-          this.masterGain.connect(this.ctx.destination);
-          this.startBGM();
-        }
-        if (this.ctx.state === 'suspended') {
-          this.ctx.resume();
+        try {
+          if (!this.ctx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+              this.ctx = new AudioContext();
+              this.masterGain = this.ctx.createGain();
+              this.masterGain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+              this.masterGain.connect(this.ctx.destination);
+              this.startBGM();
+            }
+          }
+          if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume().catch(e => console.warn("Audio resume deferred:", e));
+          }
+        } catch (err) {
+          console.warn("Audio init caught:", err);
         }
       }
 
       playHit(strength = 'light') {
-        if (!this.enabled || !this.ctx) return;
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.connect(gain);
-        gain.connect(this.masterGain);
+        if (!this.enabled || !this.ctx || this.ctx.state === 'suspended') return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.connect(gain);
+          gain.connect(this.masterGain);
 
-        if (strength === 'light') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(280, now);
-          osc.frequency.exponentialRampToValueAtTime(70, now + 0.12);
-          gain.gain.setValueAtTime(0.6, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-          osc.start(now);
-          osc.stop(now + 0.12);
-        } else if (strength === 'heavy') {
-          // Punchy heavy sub-drop with noise
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(360, now);
-          osc.frequency.exponentialRampToValueAtTime(35, now + 0.35);
-          gain.gain.setValueAtTime(1.0, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-          osc.start(now);
-          osc.stop(now + 0.35);
-        } else if (strength === 'slash') {
-          // Katana high frequency metallic slice
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(1200, now);
-          osc.frequency.exponentialRampToValueAtTime(200, now + 0.18);
-          gain.gain.setValueAtTime(0.7, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-          osc.start(now);
-          osc.stop(now + 0.18);
+          if (strength === 'heavy') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(320, now);
+            osc.frequency.exponentialRampToValueAtTime(30, now + 0.3);
+            gain.gain.setValueAtTime(0.8, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+            osc.start(now);
+            osc.stop(now + 0.3);
+          } else if (strength === 'slash') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(1100, now);
+            osc.frequency.exponentialRampToValueAtTime(180, now + 0.15);
+            gain.gain.setValueAtTime(0.6, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+            osc.start(now);
+            osc.stop(now + 0.15);
+          } else {
+            // Light
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(260, now);
+            osc.frequency.exponentialRampToValueAtTime(70, now + 0.12);
+            gain.gain.setValueAtTime(0.5, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+            osc.start(now);
+            osc.stop(now + 0.12);
+          }
+        } catch (e) {
+          console.warn("playHit audio error:", e);
         }
       }
 
       playDash() {
-        if (!this.enabled || !this.ctx) return;
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(500, now);
-        osc.frequency.exponentialRampToValueAtTime(180, now + 0.1);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-        osc.connect(gain);
-        gain.connect(this.masterGain);
-        osc.start(now);
-        osc.stop(now + 0.1);
+        if (!this.enabled || !this.ctx || this.ctx.state === 'suspended') return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(450, now);
+          osc.frequency.exponentialRampToValueAtTime(160, now + 0.09);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.09);
+        } catch (e) {}
       }
 
       playJump() {
-        if (!this.enabled || !this.ctx) return;
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(180, now);
-        osc.frequency.exponentialRampToValueAtTime(380, now + 0.12);
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-        osc.connect(gain);
-        gain.connect(this.masterGain);
-        osc.start(now);
-        osc.stop(now + 0.12);
+        if (!this.enabled || !this.ctx || this.ctx.state === 'suspended') return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(160, now);
+          osc.frequency.exponentialRampToValueAtTime(340, now + 0.1);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        } catch (e) {}
       }
 
       playKO() {
-        if (!this.enabled || !this.ctx) return;
-        const now = this.ctx.currentTime;
-        // Big ring-out explosion boom
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.exponentialRampToValueAtTime(25, now + 1.2);
-        gain.gain.setValueAtTime(1.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
-        osc.connect(gain);
-        gain.connect(this.masterGain);
-        osc.start(now);
-        osc.stop(now + 1.2);
+        if (!this.enabled || !this.ctx || this.ctx.state === 'suspended') return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(200, now);
+          osc.frequency.exponentialRampToValueAtTime(25, now + 0.9);
+          gain.gain.setValueAtTime(1.0, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.9);
+        } catch (e) {}
       }
 
-      playUltCharge() {
-        if (!this.enabled || !this.ctx) return;
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.5);
-        gain.gain.setValueAtTime(0.6, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-        osc.connect(gain);
-        gain.connect(this.masterGain);
-        osc.start(now);
-        osc.stop(now + 0.5);
-      }
-
-      // Procedural Synth-Rock/Cyber Chiptune Loop
       startBGM() {
         if (this.bgmPlaying || !this.ctx) return;
         this.bgmPlaying = true;
-        const tempo = 135;
+        const tempo = 138;
         const beatSec = 60 / tempo;
         let step = 0;
-        const scale = [110, 130.81, 146.83, 164.81, 196, 220]; // A Minor Pentatonic
+        const scale = [110, 130.81, 146.83, 164.81, 196, 220]; // Pentatonic
 
         const playTick = () => {
           if (!this.bgmPlaying || !this.ctx) return;
-          const now = this.ctx.currentTime;
-
-          // Bass groove
-          if (step % 2 === 0) {
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.type = 'sawtooth';
-            const note = scale[(step / 2) % scale.length] / 2;
-            osc.frequency.setValueAtTime(note, now);
-            gain.gain.setValueAtTime(0.12, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + beatSec * 0.9);
-            osc.connect(gain);
-            gain.connect(this.masterGain);
-            osc.start(now);
-            osc.stop(now + beatSec * 0.9);
-          }
-
-          // Arpeggio Lead
-          if (step % 1 === 0) {
-            const leadOsc = this.ctx.createOscillator();
-            const leadGain = this.ctx.createGain();
-            leadOsc.type = 'triangle';
-            const noteIdx = (step * 3) % scale.length;
-            leadOsc.frequency.setValueAtTime(scale[noteIdx] * 2, now);
-            leadGain.gain.setValueAtTime(0.07, now);
-            leadGain.gain.exponentialRampToValueAtTime(0.01, now + beatSec * 0.45);
-            leadOsc.connect(leadGain);
-            leadGain.connect(this.masterGain);
-            leadOsc.start(now);
-            leadOsc.stop(now + beatSec * 0.45);
-          }
-
+          try {
+            const now = this.ctx.currentTime;
+            if (this.ctx.state === 'running' && step % 2 === 0) {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sawtooth';
+              const note = scale[(step / 2) % scale.length] / 2;
+              osc.frequency.setValueAtTime(note, now);
+              gain.gain.setValueAtTime(0.1, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + beatSec * 0.85);
+              osc.connect(gain);
+              gain.connect(this.masterGain);
+              osc.start(now);
+              osc.stop(now + beatSec * 0.85);
+            }
+          } catch (e) {}
           step = (step + 1) % 32;
           this.bgmTimeout = setTimeout(playTick, beatSec * 500);
         };
@@ -971,25 +971,81 @@
 
     const sound = new SoundEngine();
 
-    // --- INPUT MANAGER (Zero-Ghosting & Multi-key Tracking) ---
+    // --- CENTRALIZED INPUT MANAGER (Multi-Key & Rebinding) ---
     class InputManager {
       constructor() {
         this.keys = new Set();
-        this.buffer = { p1: {}, p2: {} };
+        this.listeningRebind = null; // { player, action, btnEl }
+
+        // Default Layouts:
+        // P1: W A S D + J(Light), K(Heavy), L(Special), U(Ult), I(Dash)
+        // P2: Arrows + Numpad 1..5 (with fallback for notebook without numpad)
+        this.bindings = {
+          p1: {
+            up: 'KeyW',
+            left: 'KeyA',
+            down: 'KeyS',
+            right: 'KeyD',
+            light: 'KeyJ',
+            heavy: 'KeyK',
+            special: 'KeyL',
+            ult: 'KeyU',
+            dash: 'KeyI'
+          },
+          p2: {
+            up: 'ArrowUp',
+            left: 'ArrowLeft',
+            down: 'ArrowDown',
+            right: 'ArrowRight',
+            light: 'Numpad1',
+            heavy: 'Numpad2',
+            dash: 'Numpad3',
+            special: 'Numpad4',
+            ult: 'Numpad5'
+          }
+        };
+
+        // Fallbacks for P2 on laptops without numpad:
+        this.p2Fallbacks = {
+          light: 'KeyV',
+          heavy: 'KeyB',
+          dash: 'KeyN',
+          special: 'KeyM',
+          ult: 'Comma'
+        };
 
         window.addEventListener('keydown', (e) => {
-          sound.init(); // Initialize audio on first user keypress
+          sound.init(); // Audio context init
+
+          // Rebinding capture
+          if (this.listeningRebind) {
+            e.preventDefault();
+            const { player, action, btnEl } = this.listeningRebind;
+            this.bindings[player][action] = e.code;
+            btnEl.innerText = e.code;
+            btnEl.classList.remove('listening');
+            this.listeningRebind = null;
+            return;
+          }
+
+          // Prevent default scrolling keys
           if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
             e.preventDefault();
           }
+
           if (e.code === 'Escape') {
-            game.togglePause();
+            if (window.game) window.game.togglePause();
           }
+
           this.keys.add(e.code);
         });
 
         window.addEventListener('keyup', (e) => {
           this.keys.delete(e.code);
+        });
+
+        window.addEventListener('blur', () => {
+          this.keys.clear(); // Prevent stuck keys on tab switch
         });
       }
 
@@ -998,135 +1054,463 @@
       }
 
       getP1Input() {
+        const b = this.bindings.p1;
         return {
-          left: this.isDown('KeyA'),
-          right: this.isDown('KeyD'),
-          up: this.isDown('KeyW'),
-          down: this.isDown('KeyS'),
-          light: this.isDown('KeyF'),
-          heavy: this.isDown('KeyG'),
-          special: this.isDown('KeyR'),
-          ult: this.isDown('KeyT'),
-          dash: this.isDown('KeyE')
+          up: this.isDown(b.up),
+          left: this.isDown(b.left),
+          down: this.isDown(b.down),
+          right: this.isDown(b.right),
+          light: this.isDown(b.light),
+          heavy: this.isDown(b.heavy),
+          special: this.isDown(b.special),
+          ult: this.isDown(b.ult),
+          dash: this.isDown(b.dash)
         };
       }
 
       getP2Input() {
-        // Supports Numpad OR Laptop alternative keys (I, J, K, L, O) simultaneously!
+        const b = this.bindings.p2;
+        const fb = this.p2Fallbacks;
         return {
-          left: this.isDown('ArrowLeft'),
-          right: this.isDown('ArrowRight'),
-          up: this.isDown('ArrowUp'),
-          down: this.isDown('ArrowDown'),
-          light: this.isDown('Numpad1') || this.isDown('KeyK'),
-          heavy: this.isDown('Numpad2') || this.isDown('KeyL'),
-          special: this.isDown('Numpad4') || this.isDown('KeyI'),
-          ult: this.isDown('Numpad5') || this.isDown('KeyO'),
-          dash: this.isDown('Numpad3') || this.isDown('KeyJ')
+          up: this.isDown(b.up),
+          left: this.isDown(b.left),
+          down: this.isDown(b.down),
+          right: this.isDown(b.right),
+          light: this.isDown(b.light) || this.isDown(fb.light),
+          heavy: this.isDown(b.heavy) || this.isDown(fb.heavy),
+          dash: this.isDown(b.dash) || this.isDown(fb.dash),
+          special: this.isDown(b.special) || this.isDown(fb.special),
+          ult: this.isDown(b.ult) || this.isDown(fb.ult)
         };
       }
     }
 
     const input = new InputManager();
 
-    // --- ARENAS / STAGES DEFINITION ---
+    // --- 8 DIVERSE ANIME ARCHETYPES (RADICAL VISUAL & COMBAT IDENTITY) ---
+    const CHARACTERS = {
+      ryuuto: {
+        id: 'ryuuto',
+        name: 'RYUUTO',
+        archetype: 'Protagonista Shounen',
+        genre: 'Torneio de Artes Marciais',
+        color: '#ff3b30',
+        secColor: '#007aff',
+        style: 'Brawler / Rushdown',
+        difficulty: '★★☆☆☆',
+        weight: 100,
+        speed: 9.6,
+        jumpForce: 19.0,
+        gravity: 0.88,
+        desc: 'Guerreiro de kimono laranja e azul. Hadouken de energia pura, Dragon Uppercut e Supernova Burst.'
+      },
+      kurogane: {
+        id: 'kurogane',
+        name: 'KUROGANE',
+        archetype: 'Espadachim Sombrio',
+        genre: 'Feudal Samurai / Ronin',
+        color: '#8b5cf6',
+        secColor: '#1e1b4b',
+        style: 'Espadachim / Footsies',
+        difficulty: '★★★★☆',
+        weight: 92,
+        speed: 10.4,
+        jumpForce: 19.5,
+        gravity: 0.90,
+        desc: 'Samurai com kimono escuro e katana afiada. Cortes desconectados de longo alcance e golpes Iaidō.'
+      },
+      malakor: {
+        id: 'malakor',
+        name: 'MALAKOR',
+        archetype: 'Mago Ocultista',
+        genre: 'Sobrenatural Underground',
+        color: '#10b981',
+        secColor: '#064e3b',
+        style: 'Trapmaster / Zoner',
+        difficulty: '★★★★★',
+        weight: 86,
+        speed: 8.6,
+        jumpForce: 18.0,
+        gravity: 0.78,
+        desc: 'Manto rasgado com símbolos misteriosos. Armadilhas rúnicas que detonam ao toque e fendas do vazio.'
+      },
+      hayate: {
+        id: 'hayate',
+        name: 'HAYATE',
+        archetype: 'Ninja Shinobi',
+        genre: 'Clã Ninja Tradicional',
+        color: '#06b6d4',
+        secColor: '#0f172a',
+        style: 'Assassino / Hiper-Velocidade',
+        difficulty: '★★★★☆',
+        weight: 84,
+        speed: 11.8,
+        jumpForce: 20.2,
+        gravity: 0.85,
+        desc: 'Traje shinobi azul e máscara. Arremesso veloz de shurikens, teleporte com tronco e clones das sombras.'
+      },
+      lumina: {
+        id: 'lumina',
+        name: 'LUMINA',
+        archetype: 'Magical Girl',
+        genre: 'Fantasia Mágica Estelar',
+        color: '#ec4899',
+        secColor: '#fdf2f8',
+        style: 'Zoner Aéreo / Magia',
+        difficulty: '★★★☆☆',
+        weight: 80,
+        speed: 9.0,
+        jumpForce: 18.5,
+        gravity: 0.72,
+        desc: 'Vestido rosa com báculo estelar. Projéteis em formato de estrelas cadentes e voo com purpurina cósmica.'
+      },
+      titan01: {
+        id: 'titan01',
+        name: 'TITAN-01',
+        archetype: 'Piloto de Mecha',
+        genre: 'Ficção Científica Pesada',
+        color: '#eab308',
+        secColor: '#334155',
+        style: 'Super-Pesado / Blindado',
+        difficulty: '★★★☆☆',
+        weight: 130,
+        speed: 7.8,
+        jumpForce: 17.5,
+        gravity: 1.05,
+        desc: 'Armadura exoesqueleto cinza e amarela. Propulsores a jato, soco foguete e raio destruidor de peito.'
+      },
+      ren: {
+        id: 'ren',
+        name: 'REN',
+        archetype: 'Invocadora Miko',
+        genre: 'Folclore Místico Japonês',
+        color: '#ef4444',
+        secColor: '#ffffff',
+        style: 'Invocadora / Controle',
+        difficulty: '★★★★☆',
+        weight: 85,
+        speed: 9.2,
+        jumpForce: 18.8,
+        gravity: 0.80,
+        desc: 'Sacerdotisa xintoísta com quimono branco/vermelho. Controla raposas espirituais (kitsune) de fogo azul.'
+      },
+      daiki: {
+        id: 'daiki',
+        name: 'DAIKI',
+        archetype: 'Atleta Campeão',
+        genre: 'Anime Esportivo / Super Técnicas',
+        color: '#f97316',
+        secColor: '#16a34a',
+        style: 'Brawler Aéreo / Alta Mobilidade',
+        difficulty: '★★☆☆☆',
+        weight: 94,
+        speed: 10.8,
+        jumpForce: 19.8,
+        gravity: 0.92,
+        desc: 'Uniforme esportivo com bandana e tênis veloz. Chutes acrobáticos de bicicleta e esferas de impacto elétrico.'
+      }
+    };
+
+    // --- 6 COMPREHENSIVE ARENAS (DETAILED PLATFORMS & BLAST ZONES) ---
     const STAGES = [
       {
-        name: 'Neo Shinjuku',
-        color: '#ff2a5f',
-        bgGradient: ['#0d111d', '#1e1430', '#0a0715'],
+        id: 'stage_martial',
+        name: 'Torneio de Artes Marciais',
+        theme: 'Céu aberto, dojo de pedra e montanhas sagradas',
+        color: '#ff3b30',
+        bgGrad: ['#38bdf8', '#bae6fd', '#fef08a'],
         platforms: [
-          // Main solid base: { x, y, w, h, semi: false }
-          { x: 560, y: 780, w: 800, h: 60, semi: false },
-          // Floating semi-solid platforms (jump through or drop down)
-          { x: 620, y: 620, w: 220, h: 16, semi: true },
-          { x: 1080, y: 620, w: 220, h: 16, semi: true },
-          { x: 850, y: 480, w: 220, h: 16, semi: true }
+          { x: 500, y: 780, w: 920, h: 60, semi: false },
+          { x: 620, y: 610, w: 230, h: 16, semi: true },
+          { x: 1070, y: 610, w: 230, h: 16, semi: true }
         ],
-        spawnP1: { x: 750, y: 700 },
-        spawnP2: { x: 1170, y: 700 },
-        blastZone: { left: 100, right: 1820, top: 50, bottom: 1050 }
+        spawnP1: { x: 720, y: 700 },
+        spawnP2: { x: 1200, y: 700 },
+        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
       },
       {
-        name: 'Santuário Celestial',
-        color: '#ffea00',
-        bgGradient: ['#0f223d', '#2c1e4a', '#100c24'],
+        id: 'stage_feudal',
+        name: 'Vila Feudal dos Samurais',
+        theme: 'Pôr do sol carmesim, telhados tradicionais e folhas de bordo',
+        color: '#8b5cf6',
+        bgGrad: ['#4c1d95', '#9f1239', '#fbbf24'],
         platforms: [
-          { x: 500, y: 800, w: 920, h: 70, semi: false },
-          { x: 450, y: 640, w: 240, h: 18, semi: true },
-          { x: 1230, y: 640, w: 240, h: 18, semi: true },
-          { x: 810, y: 550, w: 300, h: 18, semi: true }
+          { x: 540, y: 790, w: 840, h: 55, semi: false },
+          { x: 440, y: 640, w: 240, h: 16, semi: true },
+          { x: 1240, y: 640, w: 240, h: 16, semi: true },
+          { x: 840, y: 520, w: 240, h: 16, semi: true }
         ],
-        spawnP1: { x: 700, y: 720 },
-        spawnP2: { x: 1220, y: 720 },
-        blastZone: { left: 80, right: 1840, top: 40, bottom: 1060 }
+        spawnP1: { x: 740, y: 710 },
+        spawnP2: { x: 1180, y: 710 },
+        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
       },
       {
-        name: 'Câmara do Vazio',
-        color: '#9d00ff',
-        bgGradient: ['#050510', '#150524', '#000005'],
+        id: 'stage_yokai',
+        name: 'Santuário dos Espíritos Yokai',
+        theme: 'Noite estrelada nas nuvens, portões Torii e névoa etérea',
+        color: '#06b6d4',
+        bgGrad: ['#0f172a', '#1e1b4b', '#064e3b'],
         platforms: [
-          { x: 600, y: 810, w: 720, h: 50, semi: false },
-          { x: 740, y: 630, w: 440, h: 16, semi: true }
+          { x: 560, y: 800, w: 800, h: 50, semi: false },
+          { x: 640, y: 620, w: 210, h: 16, semi: true },
+          { x: 1070, y: 620, w: 210, h: 16, semi: true },
+          { x: 855, y: 470, w: 210, h: 16, semi: true }
+        ],
+        spawnP1: { x: 750, y: 720 },
+        spawnP2: { x: 1170, y: 720 },
+        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
+      },
+      {
+        id: 'stage_crypt',
+        name: 'Cripta Oculta Subterrânea',
+        theme: 'Ruínas arcanas escuras com runas roxas pulsantes',
+        color: '#10b981',
+        bgGrad: ['#022c22', '#0f172a', '#000000'],
+        platforms: [
+          { x: 580, y: 810, w: 760, h: 50, semi: false },
+          { x: 710, y: 630, w: 500, h: 16, semi: true }
         ],
         spawnP1: { x: 760, y: 730 },
         spawnP2: { x: 1160, y: 730 },
-        blastZone: { left: 120, right: 1800, top: 60, bottom: 1050 }
+        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
+      },
+      {
+        id: 'stage_mecha',
+        name: 'Hangar do Mecha Gigante',
+        theme: 'Instalação militar sci-fi com robô titânico ao fundo',
+        color: '#eab308',
+        bgGrad: ['#1e293b', '#334155', '#0f172a'],
+        platforms: [
+          { x: 480, y: 790, w: 960, h: 65, semi: false },
+          { x: 560, y: 630, w: 250, h: 18, semi: true },
+          { x: 1110, y: 630, w: 250, h: 18, semi: true }
+        ],
+        spawnP1: { x: 700, y: 710 },
+        spawnP2: { x: 1220, y: 710 },
+        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
+      },
+      {
+        id: 'stage_stadium',
+        name: 'Estádio dos Campeões',
+        theme: 'Arena esportiva de anime com holofotes brilhantes e telão',
+        color: '#f97316',
+        bgGrad: ['#042f2e', '#083344', '#172554'],
+        platforms: [
+          { x: 520, y: 780, w: 880, h: 60, semi: false },
+          { x: 630, y: 610, w: 220, h: 16, semi: true },
+          { x: 1070, y: 610, w: 220, h: 16, semi: true }
+        ],
+        spawnP1: { x: 730, y: 700 },
+        spawnP2: { x: 1190, y: 700 },
+        blastZone: { left: -400, right: 2320, top: -800, bottom: 1350 }
       }
     ];
 
-    // --- CHARACTER DEFINITIONS ---
-    const CHARACTERS = {
-      kaien: {
-        id: 'kaien',
-        name: 'KAIEN',
-        archetype: 'O Protagonista Shounen',
-        color: '#ff3b30',
-        auraColor: 'rgba(255, 60, 40, 0.4)',
-        weight: 100,
-        speed: 9.2,
-        jumpForce: 18.5,
-        gravity: 0.85,
-        avatarLetter: 'K',
-        description: 'Brawler ofensivo com Hadouken, Uppercut flamejante e combos aéreos velozes.'
-      },
-      muramasa: {
-        id: 'muramasa',
-        name: 'MURAMASA',
-        archetype: 'O Espadachim Sombrio',
-        color: '#9d00ff',
-        auraColor: 'rgba(157, 0, 255, 0.4)',
-        weight: 90,
-        speed: 10.5,
-        jumpForce: 19.0,
-        gravity: 0.88,
-        avatarLetter: 'M',
-        description: 'Mestre da espada rápida com alto alcance, cortes verticais e sangramento contínuo.'
-      },
-      vesper: {
-        id: 'vesper',
-        name: 'VESPER',
-        archetype: 'O Mago Underground',
-        color: '#00e5ff',
-        auraColor: 'rgba(0, 229, 255, 0.4)',
-        weight: 85,
-        speed: 8.5,
-        jumpForce: 17.8,
-        gravity: 0.76,
-        avatarLetter: 'V',
-        description: 'Trapmaster que invoca armadilhas de glifos no chão, vórtice de atração e teleporte.'
+    // --- PROCEDURAL CHARACTER ARTWORK ENGINE (HIGH RES RETRAITS & BATALHA) ---
+    class CharacterArtEngine {
+      static drawPortrait(ctx, charId, w, h) {
+        ctx.save();
+        ctx.clearRect(0, 0, w, h);
+        const c = CHARACTERS[charId];
+        if (!c) {
+          ctx.restore();
+          return;
+        }
+
+        // Card background
+        const grad = ctx.createLinearGradient(0, 0, 0, h);
+        grad.addColorStop(0, c.color + '44');
+        grad.addColorStop(1, '#0b0f19');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.translate(w / 2, h / 2 + 15);
+        this.drawFigure(ctx, charId, 1.4);
+        ctx.restore();
       }
-    };
+
+      static drawFigure(ctx, charId, scale = 1.0) {
+        ctx.save();
+        ctx.scale(scale, scale);
+        const c = CHARACTERS[charId] || CHARACTERS.ryuuto;
+
+        // Distinct Silhouette & Clothing by Genre!
+        switch (charId) {
+          case 'ryuuto': // Martial Arts Shounen Gi
+            // Legs & Belt
+            ctx.fillStyle = '#f97316'; // Orange pants
+            ctx.fillRect(-14, 15, 11, 30);
+            ctx.fillRect(3, 15, 11, 30);
+            // Black belt
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(-15, 12, 30, 5);
+            // Torso (Orange Gi with Blue Undershirt)
+            ctx.fillStyle = '#0284c7';
+            ctx.fillRect(-12, -10, 24, 24);
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath();
+            ctx.moveTo(-13, -10); ctx.lineTo(-4, 12); ctx.lineTo(-13, 12); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(13, -10); ctx.lineTo(4, 12); ctx.lineTo(13, 12); ctx.fill();
+            // Head & Spiky Anime Hair
+            ctx.fillStyle = '#fed7aa'; // Skin
+            ctx.beginPath(); ctx.arc(0, -20, 11, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#000000'; // Black Spiky Hair
+            ctx.beginPath();
+            ctx.moveTo(-12, -22); ctx.lineTo(-18, -32); ctx.lineTo(-6, -26);
+            ctx.lineTo(0, -36); ctx.lineTo(7, -26); ctx.lineTo(18, -32); ctx.lineTo(12, -22);
+            ctx.closePath(); ctx.fill();
+            // Flaming Fists Aura
+            ctx.fillStyle = '#ffea00';
+            ctx.beginPath(); ctx.arc(18, 0, 7, 0, Math.PI * 2); ctx.fill();
+            break;
+
+          case 'kurogane': // Feudal Dark Samurai
+            // Dark Hakama pants
+            ctx.fillStyle = '#18181b';
+            ctx.beginPath(); ctx.moveTo(-16, 12); ctx.lineTo(-20, 44); ctx.lineTo(20, 44); ctx.lineTo(16, 12); ctx.fill();
+            // Dark Kimono / Haori
+            ctx.fillStyle = '#27272a';
+            ctx.fillRect(-14, -12, 28, 26);
+            // Red sash / obi
+            ctx.fillStyle = '#dc2626';
+            ctx.fillRect(-14, 10, 28, 5);
+            // Katana on hip
+            ctx.strokeStyle = '#e4e4e7'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(-24, 16); ctx.lineTo(22, -6); ctx.stroke();
+            // Head & Ronin Straw Hat / Long Hair
+            ctx.fillStyle = '#fde047'; // Straw hat
+            ctx.beginPath(); ctx.ellipse(0, -25, 20, 5, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#78350f';
+            ctx.beginPath(); ctx.arc(0, -26, 10, Math.PI, 0); ctx.fill();
+            break;
+
+          case 'malakor': // Underground Occultist
+            // Ragged Dark Robe
+            ctx.fillStyle = '#064e3b';
+            ctx.beginPath(); ctx.moveTo(-16, -10); ctx.lineTo(-24, 44); ctx.lineTo(24, 44); ctx.lineTo(16, -10); ctx.fill();
+            // Mysterious Green Glyphs on robe
+            ctx.strokeStyle = '#34d399'; ctx.lineWidth = 1.5;
+            ctx.strokeRect(-6, 8, 12, 12);
+            // Hood & Glowing Eyes
+            ctx.fillStyle = '#022c22';
+            ctx.beginPath(); ctx.arc(0, -22, 14, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#34d399';
+            ctx.fillRect(-5, -22, 3, 3); ctx.fillRect(2, -22, 3, 3);
+            // Floating Arcane Orbit Rune
+            ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(20, -5, 8, 0, Math.PI * 2); ctx.stroke();
+            break;
+
+          case 'hayate': // Traditional Ninja
+            // Dark Navy Shinobi Shozoku
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(-12, 15, 10, 30);
+            ctx.fillRect(2, 15, 10, 30);
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(-13, -10, 26, 26);
+            // Mask & Red Long Scarf
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath(); ctx.moveTo(-6, -12); ctx.lineTo(-26, 6); ctx.lineTo(-18, -14); ctx.fill();
+            ctx.fillStyle = '#fed7aa'; // Eyes slit
+            ctx.fillRect(-6, -22, 12, 4);
+            ctx.fillStyle = '#0f172a'; // Shinobi Hood
+            ctx.beginPath(); ctx.arc(0, -21, 11, 0, Math.PI * 2); ctx.fill();
+            // Ninja Shuriken in hand
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(14, -2, 8, 8);
+            break;
+
+          case 'lumina': // Magical Girl
+            // Fluffy Frilly Dress (Pink & White)
+            ctx.fillStyle = '#f472b6';
+            ctx.beginPath(); ctx.moveTo(-10, 5); ctx.lineTo(-24, 38); ctx.lineTo(24, 38); ctx.lineTo(10, 5); ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(-8, -10, 16, 16);
+            // Cute Head & Twin Blonde Tails
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -20, 10, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#fde047'; // Blonde Hair
+            ctx.beginPath(); ctx.arc(-13, -18, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(13, -18, 6, 0, Math.PI * 2); ctx.fill();
+            // Star Magic Wand
+            ctx.strokeStyle = '#eab308'; ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.moveTo(14, 25); ctx.lineTo(20, -18); ctx.stroke();
+            ctx.fillStyle = '#ec4899';
+            ctx.beginPath(); ctx.arc(20, -20, 7, 0, Math.PI * 2); ctx.fill();
+            break;
+
+          case 'titan01': // Mecha Robot
+            // Heavy Armored Legs & Thrusters
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(-16, 14, 13, 30);
+            ctx.fillRect(3, 14, 13, 30);
+            // Heavy Torso with Warning Yellow
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(-16, -14, 32, 28);
+            ctx.fillStyle = '#eab308';
+            ctx.fillRect(-6, -6, 12, 12);
+            // Robotic Visor Head
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(-11, -30, 22, 14);
+            ctx.fillStyle = '#00e5ff'; // Cyan optical sensor
+            ctx.fillRect(-7, -25, 14, 4);
+            break;
+
+          case 'ren': // Shinto Miko Summoner
+            // Red Hakama Skirt
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath(); ctx.moveTo(-12, 8); ctx.lineTo(-20, 42); ctx.lineTo(20, 42); ctx.lineTo(12, 8); ctx.fill();
+            // White Kimono Top
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-12, -10, 24, 20);
+            // Head & Long Dark Hair
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -20, 10, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath(); ctx.arc(0, -22, 11, 0, Math.PI * 2); ctx.fill();
+            // Blue Kitsune Spirit Companion Orb
+            ctx.fillStyle = '#38bdf8';
+            ctx.shadowColor = '#38bdf8'; ctx.shadowBlur = 12;
+            ctx.beginPath(); ctx.arc(22, -10, 8, 0, Math.PI * 2); ctx.fill();
+            break;
+
+          case 'daiki': // Sports Anime Striker
+            // Athletic Shorts & Kneepads
+            ctx.fillStyle = '#16a34a';
+            ctx.fillRect(-12, 12, 10, 18);
+            ctx.fillRect(2, 12, 10, 18);
+            // Sports Jersey (Orange & White with #10)
+            ctx.fillStyle = '#ea580c';
+            ctx.fillRect(-12, -10, 24, 22);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(-4, -6, 8, 12);
+            // Head with Headband
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -20, 10, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#16a34a'; // Green Headband
+            ctx.fillRect(-10, -23, 20, 5);
+            ctx.fillStyle = '#78350f'; // Brown hair
+            ctx.beginPath(); ctx.arc(0, -25, 8, Math.PI, 0); ctx.fill();
+            // Kinetic Electric Ball at feet
+            ctx.fillStyle = '#ffea00';
+            ctx.beginPath(); ctx.arc(14, 38, 7, 0, Math.PI * 2); ctx.fill();
+            break;
+        }
+
+        ctx.restore();
+      }
+    }
 
     // --- PROJECTILES & HAZARDS ---
     class Projectile {
       constructor(owner, x, y, vx, vy, type, options = {}) {
         this.owner = owner;
-        this.x = x;
-        this.y = y;
-        this.vx = vx;
-        this.vy = vy;
-        this.type = type; // 'hadouken', 'trap', 'slashwave', 'vortex'
+        this.x = Number.isFinite(x) ? x : 960;
+        this.y = Number.isFinite(y) ? y : 540;
+        this.vx = Number.isFinite(vx) ? vx : 0;
+        this.vy = Number.isFinite(vy) ? vy : 0;
+        this.type = type;
         this.w = options.w || 30;
         this.h = options.h || 30;
         this.life = options.life || 90;
@@ -1159,48 +1543,46 @@
           ctx.ellipse(this.x, this.y, this.w / 2, this.h / 2, Math.PI / 4, 0, Math.PI * 2);
           ctx.fill();
         } else if (this.type === 'trap') {
-          // Arcane spinning rune
           ctx.translate(this.x, this.y);
           ctx.rotate(Date.now() * 0.005);
           ctx.strokeStyle = this.color;
           ctx.lineWidth = 3;
           ctx.strokeRect(-this.w/2, -this.h/2, this.w, this.h);
+        } else {
+          // General star / shuriken
           ctx.beginPath();
-          ctx.arc(0, 0, this.w / 3, 0, Math.PI * 2);
-          ctx.stroke();
+          ctx.arc(this.x, this.y, this.w / 2, 0, Math.PI * 2);
+          ctx.fill();
         }
         ctx.restore();
       }
     }
 
-    // --- FIGHTER CONTROLLER & PHYSICS ---
+    // --- FIGHTER CONTROLLER & CRASH-PROOF PHYSICS ---
     class Fighter {
       constructor(id, charData, isCPU = false) {
-        this.id = id; // 'p1' or 'p2'
+        this.id = id;
         this.char = charData;
         this.isCPU = isCPU;
-        this.cpuLevel = 'normal'; // 'easy', 'normal', 'hard'
+        this.dummyMode = 'stand'; // 'stand', 'jump', 'evade', 'fight'
+        this.isInvincibleDummy = false;
 
-        // Dimensions
         this.w = 54;
         this.h = 92;
 
-        // Position & Velocity
         this.x = 800;
         this.y = 700;
         this.vx = 0;
         this.vy = 0;
         this.facing = id === 'p1' ? 1 : -1;
 
-        // Combat Stats
         this.damage = 0;
         this.stocks = 3;
         this.ultGauge = 0;
         this.comboCount = 0;
         this.comboTimer = 0;
 
-        // States
-        this.state = 'IDLE'; // IDLE, RUN, JUMP, ATTACK, AIRDODGE, HITSTUN, RESPAWN
+        this.state = 'IDLE';
         this.grounded = false;
         this.canDoubleJump = true;
         this.canAirDash = true;
@@ -1208,37 +1590,41 @@
         this.wallSliding = false;
         this.wallDir = 0;
 
-        // Timers & Frames
         this.stateTimer = 0;
         this.attackCooldown = 0;
         this.hitstop = 0;
         this.invulnerableTimer = 0;
         this.currentAttack = null;
-
-        // Active hitboxes
         this.activeHitbox = null;
 
-        // CPU AI internals
+        this.upHeld = false;
+        this.dashHeld = false;
         this.cpuTimer = 0;
-        this.cpuTargetAction = null;
       }
 
       reset(x, y) {
-        this.x = x;
-        this.y = y;
+        this.x = Number.isFinite(x) ? x : 960;
+        this.y = Number.isFinite(y) ? y : 700;
         this.vx = 0;
         this.vy = 0;
         this.damage = 0;
         this.ultGauge = 0;
         this.state = 'IDLE';
         this.grounded = false;
-        this.invulnerableTimer = 90; // Respawn i-frames
+        this.invulnerableTimer = 90;
         this.activeHitbox = null;
         this.currentAttack = null;
       }
 
       update(ctrlInput, opponent, stage, projectiles, fx) {
-        // Hit-stop freeze frames (impact frame pause)
+        // Sanitize coordinates against NaN corruptions
+        if (!Number.isFinite(this.x) || !Number.isFinite(this.y)) {
+          this.x = 960; this.y = 700; this.vx = 0; this.vy = 0;
+        }
+        if (!Number.isFinite(this.vx)) this.vx = 0;
+        if (!Number.isFinite(this.vy)) this.vy = 0;
+
+        // Hit-stop freeze
         if (this.hitstop > 0) {
           this.hitstop--;
           return;
@@ -1250,20 +1636,16 @@
           if (this.comboTimer === 0) this.comboCount = 0;
         }
 
-        // Handle CPU Decisions if bot
-        let inputState = ctrlInput;
+        let inState = ctrlInput;
         if (this.isCPU) {
-          inputState = this.getCPUInput(opponent, stage);
+          inState = this.getCPUInput(opponent, stage);
         }
 
-        // --- STATE HANDLING ---
         if (this.state === 'HITSTUN') {
           this.stateTimer--;
           this.applyGravity();
-          this.moveAndCollide(stage, inputState);
-          if (this.stateTimer <= 0) {
-            this.state = 'IDLE';
-          }
+          this.moveAndCollide(stage, inState);
+          if (this.stateTimer <= 0) this.state = 'IDLE';
           return;
         }
 
@@ -1273,26 +1655,22 @@
           this.y += this.vy;
           this.vx *= 0.92;
           this.vy *= 0.92;
-          if (this.stateTimer <= 0) {
-            this.state = 'IDLE';
-          }
+          if (this.stateTimer <= 0) this.state = 'IDLE';
           return;
         }
 
-        // Normal Control Logic
-        this.handleMovement(inputState, stage);
-        this.handleAttacks(inputState, projectiles, fx);
+        this.handleMovement(inState, stage, fx);
+        this.handleAttacks(inState, projectiles, fx);
         this.applyGravity();
-        this.moveAndCollide(stage, inputState);
+        this.moveAndCollide(stage, inState);
       }
 
-      handleMovement(inState, stage) {
-        // Horizontal Movement
+      handleMovement(inState, stage, fx) {
         const accel = this.grounded ? 1.6 : 1.1;
         const maxSpeed = this.char.speed;
         const friction = this.grounded ? 0.82 : 0.94;
 
-        if (this.state !== 'ATTACK' || this.canMoveWhileAttacking()) {
+        if (this.state !== 'ATTACK' || !this.grounded) {
           if (inState.left) {
             this.vx -= accel;
             if (this.vx < -maxSpeed) this.vx = -maxSpeed;
@@ -1310,77 +1688,65 @@
           }
         }
 
-        // Jump & Double Jump
+        // Pular (Jump / Double Jump / Wall Jump)
         if (inState.up && !this.upHeld) {
           if (this.grounded) {
             this.vy = -this.char.jumpForce;
             this.grounded = false;
             this.canDoubleJump = true;
             sound.playJump();
-            fx.spawnDust(this.x + this.w/2, this.y + this.h);
+            if (fx) fx.spawnDust(this.x + this.w/2, this.y + this.h);
           } else if (this.wallSliding) {
-            // Wall Jump
             this.vy = -this.char.jumpForce * 0.95;
             this.vx = -this.wallDir * this.char.speed * 1.3;
             this.facing = -this.wallDir;
             this.wallSliding = false;
             sound.playJump();
-            fx.spawnDust(this.x + (this.wallDir > 0 ? this.w : 0), this.y + this.h/2);
+            if (fx) fx.spawnDust(this.x + (this.wallDir > 0 ? this.w : 0), this.y + this.h/2);
           } else if (this.canDoubleJump) {
             this.vy = -this.char.jumpForce * 0.88;
             this.canDoubleJump = false;
             sound.playJump();
-            fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color);
+            if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color);
           }
         }
         this.upHeld = inState.up;
 
-        // Fast Fall (Hold down while falling)
+        // Fast Fall (Baixo no ar)
         if (inState.down && this.vy > 0 && !this.grounded) {
           this.vy = Math.max(this.vy, 18);
           this.fastFalling = true;
         }
 
-        // Dash / Air Dodge (E or Numpad 3)
+        // Dash / Air Dodge
         if (inState.dash && !this.dashHeld) {
           if (this.grounded && this.state !== 'AIRDODGE') {
-            // Ground Dash
-            this.vx = this.facing * (this.char.speed * 1.9);
+            this.vx = this.facing * (this.char.speed * 1.85);
             this.invulnerableTimer = 16;
             sound.playDash();
-            fx.spawnDashLines(this.x + this.w/2, this.y + this.h/2, this.facing);
+            if (fx) fx.spawnDashLines(this.x + this.w/2, this.y + this.h/2, this.facing);
           } else if (!this.grounded && this.canAirDash) {
-            // Directional Air Dodge
-            let dirX = 0;
-            let dirY = 0;
-            if (inState.left) dirX -= 1;
-            if (inState.right) dirX += 1;
-            if (inState.up) dirY -= 1;
-            if (inState.down) dirY += 1;
-            if (dirX === 0 && dirY === 0) dirX = this.facing;
-
-            const len = Math.hypot(dirX, dirY) || 1;
-            this.vx = (dirX / len) * 16;
-            this.vy = (dirY / len) * 16;
+            let dx = (inState.left ? -1 : 0) + (inState.right ? 1 : 0);
+            let dy = (inState.up ? -1 : 0) + (inState.down ? 1 : 0);
+            if (dx === 0 && dy === 0) dx = this.facing;
+            const len = Math.hypot(dx, dy) || 1;
+            this.vx = (dx / len) * 16;
+            this.vy = (dy / len) * 16;
             this.state = 'AIRDODGE';
             this.stateTimer = 18;
             this.canAirDash = false;
             this.invulnerableTimer = 18;
             sound.playDash();
-            fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#ffffff');
+            if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#ffffff');
           }
         }
         this.dashHeld = inState.dash;
       }
 
-      canMoveWhileAttacking() {
-        return !this.grounded;
-      }
-
       applyGravity() {
         if (!this.grounded) {
           this.vy += this.char.gravity;
-          if (this.vy > 25) this.vy = 25; // Terminal velocity
+          if (this.vy > 25) this.vy = 25;
         }
       }
 
@@ -1391,15 +1757,15 @@
         this.grounded = false;
         this.wallSliding = false;
 
-        // Check Stage Platform Collisions
+        if (!stage || !stage.platforms) return;
+
         for (const plat of stage.platforms) {
           if (plat.semi) {
-            // One-way semi-solid platform
-            const dropDown = inState && inState.down && inState.up; // Down + jump drops down
+            const dropDown = inState && inState.down && inState.up;
             if (!dropDown && this.vy >= 0) {
               const feetPrev = (this.y - this.vy) + this.h;
               const feetNow = this.y + this.h;
-              if (feetPrev <= plat.y + 4 && feetNow >= plat.y &&
+              if (feetPrev <= plat.y + 6 && feetNow >= plat.y &&
                   this.x + this.w > plat.x && this.x < plat.x + plat.w) {
                 this.y = plat.y - this.h;
                 this.vy = 0;
@@ -1410,11 +1776,10 @@
               }
             }
           } else {
-            // Solid platform: top, sides, bottom
-            // Check Landing on top
+            // Solid platform
             if (this.vy >= 0 &&
                 this.x + this.w > plat.x + 6 && this.x < plat.x + plat.w - 6 &&
-                this.y + this.h >= plat.y && this.y + this.h - this.vy <= plat.y + 15) {
+                this.y + this.h >= plat.y && this.y + this.h - this.vy <= plat.y + 16) {
               this.y = plat.y - this.h;
               this.vy = 0;
               this.grounded = true;
@@ -1423,18 +1788,15 @@
               this.fastFalling = false;
             }
 
-            // Wall Slide check
+            // Wall slide
             if (!this.grounded && this.y + this.h > plat.y && this.y < plat.y + plat.h) {
-              // Touching left edge of solid platform
-              if (this.x + this.w >= plat.x && this.x + this.w - this.vx <= plat.x + 10 && inState.right) {
+              if (this.x + this.w >= plat.x && this.x + this.w - this.vx <= plat.x + 10 && inState && inState.right) {
                 this.x = plat.x - this.w;
                 this.vx = 0;
                 this.wallSliding = true;
                 this.wallDir = 1;
-                if (this.vy > 2.5) this.vy = 2.5; // Slide friction
-              }
-              // Touching right edge
-              else if (this.x <= plat.x + plat.w && this.x - this.vx >= plat.x + plat.w - 10 && inState.left) {
+                if (this.vy > 2.5) this.vy = 2.5;
+              } else if (this.x <= plat.x + plat.w && this.x - this.vx >= plat.x + plat.w - 10 && inState && inState.left) {
                 this.x = plat.x + plat.w;
                 this.vx = 0;
                 this.wallSliding = true;
@@ -1461,25 +1823,25 @@
 
         if (this.attackCooldown > 0) return;
 
-        // 1. ULTIMATE ATTACK (T or Numpad 5 when gauge >= 100)
+        // Ultimate
         if (inState.ult && this.ultGauge >= 100) {
           this.executeUltimate(fx);
           return;
         }
 
-        // 2. SPECIAL ATTACK (R or Numpad 4)
+        // Especial (Hadouken / Recovery)
         if (inState.special) {
           this.executeSpecial(inState, projectiles, fx);
           return;
         }
 
-        // 3. HEAVY ATTACK / SMASH (G or Numpad 2)
+        // Ataque Pesado
         if (inState.heavy) {
           this.executeHeavy(inState, fx);
           return;
         }
 
-        // 4. LIGHT ATTACK (F or Numpad 1)
+        // Ataque Leve
         if (inState.light) {
           this.executeLight(inState, fx);
           return;
@@ -1496,23 +1858,17 @@
         let hy = this.y + 15;
         let hw = 55;
         let hh = 50;
+        let angle = this.facing === 1 ? -0.4 : -2.7;
 
         if (inState.up) {
-          // Up-tilt
-          hy = this.y - 30;
-          hw = 65;
-          hh = 50;
-          this.activeHitbox = { x: this.x - 5, y: hy, w: hw, h: hh, dmg: 7, baseKB: 5, kbGrowth: 0.35, angle: -Math.PI / 2.2 };
+          hy = this.y - 30; hw = 65; hh = 50; angle = -Math.PI / 2.2;
         } else if (!this.grounded) {
-          // Aerial Light (360 spin / quick kick)
-          this.activeHitbox = { x: this.x - 15, y: this.y - 10, w: this.w + 30, h: this.h + 20, dmg: 6, baseKB: 4.5, kbGrowth: 0.3, angle: this.facing === 1 ? -0.5 : -2.6 };
-        } else {
-          // Neutral Jab
-          this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg: 5, baseKB: 3.5, kbGrowth: 0.25, angle: this.facing === 1 ? -0.4 : -2.7 };
+          hx = this.x - 15; hy = this.y - 10; hw = this.w + 30; hh = this.h + 20;
         }
 
-        sound.playHit('light');
-        fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, this.char.color);
+        this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg: 6, baseKB: 4.5, kbGrowth: 0.3, angle };
+        sound.playHit(this.char.id === 'kurogane' ? 'slash' : 'light');
+        if (fx) fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, this.char.color);
       }
 
       executeHeavy(inState, fx) {
@@ -1521,35 +1877,23 @@
         this.attackCooldown = 32;
         this.currentAttack = 'HEAVY';
 
-        let hx = this.facing === 1 ? this.x + this.w - 10 : this.x - 70;
+        let hx = this.facing === 1 ? this.x + this.w - 10 : this.x - 75;
         let hy = this.y + 5;
-        let hw = 80;
+        let hw = 85;
         let hh = 65;
         let angle = this.facing === 1 ? -0.55 : -2.55;
         let dmg = 15;
         let kbGrowth = 0.95;
 
         if (inState.up) {
-          // High Launching Uppercut
-          hy = this.y - 45;
-          hw = 70;
-          hh = 75;
-          angle = -Math.PI / 2;
-          dmg = 17;
-          kbGrowth = 1.05;
+          hy = this.y - 45; hw = 75; hh = 75; angle = -Math.PI / 2; dmg = 17; kbGrowth = 1.05;
         } else if (!this.grounded && inState.down) {
-          // Down Air Spike / Meteor Smash!
-          hy = this.y + this.h - 10;
-          hw = 75;
-          hh = 50;
-          angle = Math.PI / 2; // Straight Down!
-          dmg = 16;
-          kbGrowth = 0.9;
+          hy = this.y + this.h - 10; hw = 75; hh = 50; angle = Math.PI / 2; dmg = 16; kbGrowth = 0.9;
         }
 
         this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg, baseKB: 8, kbGrowth, angle, hitstop: 8, isHeavy: true };
         sound.playHit('heavy');
-        fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, '#ffffff', 1.5);
+        if (fx) fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, '#ffffff', 1.5);
       }
 
       executeSpecial(inState, projectiles, fx) {
@@ -1558,160 +1902,128 @@
         this.attackCooldown = 30;
         this.currentAttack = 'SPECIAL';
 
-        if (this.char.id === 'kaien') {
-          if (inState.up) {
-            // DRAGON UPPERCUT RECOVERY
-            this.vy = -20;
-            this.vx = this.facing * 5;
-            this.grounded = false;
-            this.activeHitbox = { x: this.x - 10, y: this.y - 30, w: this.w + 20, h: this.h + 20, dmg: 14, baseKB: 9, kbGrowth: 0.85, angle: -Math.PI / 2.3, hitstop: 6 };
-            sound.playHit('heavy');
-            fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#ffea00');
-          } else {
-            // HADOUKEN KI BLAST
-            const px = this.facing === 1 ? this.x + this.w + 10 : this.x - 30;
-            projectiles.push(new Projectile(this, px, this.y + 25, this.facing * 14, 0, 'hadouken', {
-              w: 36, h: 36, damage: 10, baseKB: 6, kbGrowth: 0.5, color: '#ff3b30'
-            }));
-            sound.playHit('light');
-            fx.spawnDust(this.x + this.w/2, this.y + this.h);
-          }
-        } else if (this.char.id === 'muramasa') {
-          if (inState.up) {
-            // SHADOW SLASH RECOVERY (Angled dash teleport)
-            this.vy = -19;
-            this.vx = this.facing * 11;
-            this.grounded = false;
-            this.activeHitbox = { x: this.x - 20, y: this.y - 20, w: this.w + 40, h: this.h + 20, dmg: 13, baseKB: 8, kbGrowth: 0.8, angle: -Math.PI / 3 };
-            sound.playHit('slash');
-            fx.spawnSlash(this.x, this.y, this.facing, '#9d00ff', 1.8);
-          } else {
-            // PHANTOM CRESCENT WAVE
-            const px = this.facing === 1 ? this.x + this.w + 10 : this.x - 30;
-            projectiles.push(new Projectile(this, px, this.y + 20, this.facing * 17, 0, 'slashwave', {
-              w: 45, h: 60, damage: 11, baseKB: 7, kbGrowth: 0.6, color: '#9d00ff'
-            }));
-            sound.playHit('slash');
-          }
-        } else if (this.char.id === 'vesper') {
-          if (inState.up) {
-            // BLINK WARP RECOVERY (Teleports towards input)
-            this.y -= 180;
-            this.vx = (inState.left ? -1 : inState.right ? 1 : this.facing) * 6;
-            this.vy = -4;
-            sound.playDash();
-            fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#00e5ff');
-          } else {
-            // ARCANE RUNE TRAP
-            const px = this.facing === 1 ? this.x + this.w + 30 : this.x - 50;
-            projectiles.push(new Projectile(this, px, this.y + 40, 0, 0, 'trap', {
-              w: 42, h: 42, life: 300, damage: 13, baseKB: 8, kbGrowth: 0.7, color: '#00e5ff'
-            }));
-            sound.playHit('light');
-          }
+        if (inState.up) {
+          // Recovery Up-Special (Safe Aerial Lift)
+          this.vy = -19.5;
+          this.vx = this.facing * 5.5;
+          this.grounded = false;
+          this.activeHitbox = {
+            x: this.x - 15, y: this.y - 30, w: this.w + 30, h: this.h + 20,
+            dmg: 13, baseKB: 8.5, kbGrowth: 0.8, angle: -Math.PI / 2.3, hitstop: 6
+          };
+          sound.playHit('heavy');
+          if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color);
+        } else {
+          // Neutral Special Projectile
+          const px = this.facing === 1 ? this.x + this.w + 10 : this.x - 35;
+          let projType = 'hadouken';
+          let projSpeed = 15;
+          if (this.char.id === 'kurogane') projType = 'slashwave';
+          if (this.char.id === 'malakor') { projType = 'trap'; projSpeed = 0; }
+
+          projectiles.push(new Projectile(this, px, this.y + 25, this.facing * projSpeed, 0, projType, {
+            w: 36, h: 36, damage: 10, baseKB: 6, kbGrowth: 0.5, color: this.char.color
+          }));
+          sound.playHit(this.char.id === 'kurogane' ? 'slash' : 'light');
+          if (fx) fx.spawnDust(this.x + this.w/2, this.y + this.h);
         }
       }
 
       executeUltimate(fx) {
         this.ultGauge = 0;
         this.state = 'ATTACK';
-        this.stateTimer = 45;
-        this.attackCooldown = 60;
+        this.stateTimer = 42;
+        this.attackCooldown = 55;
         this.currentAttack = 'ULTIMATE';
-        this.invulnerableTimer = 45;
+        this.invulnerableTimer = 42;
 
-        // Cinematic Impact burst
-        sound.playUltCharge();
-        fx.triggerScreenShake(25, 35);
-        fx.triggerFlash();
+        sound.playKO();
+        if (fx) {
+          fx.triggerScreenShake(24, 30);
+          fx.triggerFlash();
+        }
 
-        // Massive anime burst area
         let hw = 260;
         let hh = 160;
         let hx = this.facing === 1 ? this.x - 20 : this.x - hw + this.w + 20;
         let hy = this.y - 40;
 
         this.activeHitbox = {
-          x: hx, y: hy, w: hw, h: hh, dmg: 38, baseKB: 16, kbGrowth: 1.4,
-          angle: this.facing === 1 ? -0.6 : -2.5, hitstop: 18, isHeavy: true
+          x: hx, y: hy, w: hw, h: hh, dmg: 36, baseKB: 15, kbGrowth: 1.35,
+          angle: this.facing === 1 ? -0.6 : -2.5, hitstop: 16, isHeavy: true
         };
 
-        fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color, 4);
+        if (fx) fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color, 25);
       }
 
       takeDamage(dmg, kbVector, hitstopFrames = 5) {
-        if (this.invulnerableTimer > 0) return;
+        if (this.invulnerableTimer > 0 || this.isInvincibleDummy) return;
 
         this.damage += dmg;
         this.ultGauge = Math.min(100, this.ultGauge + dmg * 0.85);
 
-        // Smash Knockback Scaling Formula:
-        // kb = baseKB + (damage * kbGrowth * weightFactor)
         const weightFactor = 100 / this.char.weight;
-        const totalKB = kbVector.baseKB + (this.damage * kbVector.kbGrowth * 0.55 * weightFactor);
+        const angle = Number.isFinite(kbVector.angle) ? kbVector.angle : -Math.PI / 4;
+        const baseKB = Number.isFinite(kbVector.baseKB) ? kbVector.baseKB : 5;
+        const kbGrowth = Number.isFinite(kbVector.kbGrowth) ? kbVector.kbGrowth : 0.5;
 
-        this.vx = Math.cos(kbVector.angle) * totalKB;
-        this.vy = Math.sin(kbVector.angle) * totalKB;
+        const totalKB = baseKB + (this.damage * kbGrowth * 0.55 * weightFactor);
 
-        // Hitstun Duration proportional to knockback
-        const hitstunDuration = Math.min(65, Math.max(10, Math.floor(totalKB * 1.5)));
+        this.vx = Math.cos(angle) * totalKB;
+        this.vy = Math.sin(angle) * totalKB;
+
+        const hitstunDuration = Math.min(60, Math.max(10, Math.floor(totalKB * 1.4)));
         this.state = 'HITSTUN';
         this.stateTimer = hitstunDuration;
         this.hitstop = hitstopFrames;
         this.grounded = false;
 
-        // Combo Counter
         this.comboCount++;
         this.comboTimer = 75;
 
         sound.playHit(kbVector.isHeavy ? 'heavy' : 'light');
       }
 
-      // AI Decision Making (Bot Controller)
       getCPUInput(opponent, stage) {
+        if (this.dummyMode === 'stand') {
+          return { up: false, left: false, down: false, right: false, light: false, heavy: false, special: false, ult: false, dash: false };
+        }
+        if (this.dummyMode === 'jump') {
+          return { up: Math.random() < 0.15, left: false, down: false, right: false, light: false, heavy: false, special: false, ult: false, dash: false };
+        }
+        if (this.dummyMode === 'evade') {
+          const dx = opponent.x - this.x;
+          return { up: this.grounded && Math.random() < 0.05, left: dx > 0, right: dx < 0, down: false, light: false, heavy: false, special: false, ult: false, dash: Math.random() < 0.08 };
+        }
+
+        // Full Fight AI
         this.cpuTimer--;
-        const dist = Math.hypot(opponent.x - this.x, opponent.y - this.y);
-        const dx = opponent.x - this.x;
-        const dy = opponent.y - this.y;
+        const res = { up: false, left: false, down: false, right: false, light: false, heavy: false, special: false, ult: false, dash: false };
+        if (!opponent || !stage) return res;
 
-        const res = { left: false, right: false, up: false, down: false, light: false, heavy: false, special: false, ult: false, dash: false };
-
-        // 1. Offstage Survival / Recovery AI Priority!
-        const blast = stage.blastZone;
-        const offstageLeft = this.x < stage.platforms[0].x - 40;
-        const offstageRight = this.x > stage.platforms[0].x + stage.platforms[0].w + 40;
-
-        if (offstageLeft || offstageRight || this.y > 780) {
-          // Move towards stage center
-          if (this.x < 960) res.right = true;
-          else res.left = true;
-
-          // Double jump if falling
-          if (this.vy > 2 && this.canDoubleJump) {
-            res.up = true;
-          }
-          // Use Recovery Up-Special if still below platform
-          else if (this.vy > 4 && this.y > 680) {
-            res.up = true;
-            res.special = true;
-          }
+        // Stage recovery priority
+        const plat = stage.platforms[0];
+        if (plat && (this.x < plat.x - 30 || this.x > plat.x + plat.w + 30 || this.y > 780)) {
+          if (this.x < 960) res.right = true; else res.left = true;
+          if (this.vy > 2 && this.canDoubleJump) res.up = true;
+          else if (this.vy > 4 && this.y > 690) { res.up = true; res.special = true; }
           return res;
         }
 
-        // 2. Combat Engagement
-        if (dx > 30) res.right = true;
-        else if (dx < -30) res.left = true;
+        const dist = Math.hypot(opponent.x - this.x, opponent.y - this.y);
+        const dx = opponent.x - this.x;
 
-        if (dy < -60 && this.grounded) res.up = true; // Jump towards aerial opponent
+        if (dx > 35) res.right = true;
+        else if (dx < -35) res.left = true;
 
-        // Attacks based on distance
-        if (dist < 80) {
+        if (opponent.y < this.y - 50 && this.grounded) res.up = true;
+
+        if (dist < 85) {
           if (this.ultGauge >= 100) res.ult = true;
           else if (Math.random() < 0.25) res.heavy = true;
           else res.light = true;
-        } else if (dist < 220) {
-          if (Math.random() < 0.15) res.special = true;
-          else if (Math.random() < 0.1) res.dash = true;
+        } else if (dist < 220 && Math.random() < 0.12) {
+          res.special = true;
         }
 
         return res;
@@ -1720,14 +2032,12 @@
       draw(ctx) {
         ctx.save();
 
-        // Respawn / Invulnerability Flashing
         if (this.invulnerableTimer > 0 && Math.floor(Date.now() / 60) % 2 === 0) {
-          ctx.globalAlpha = 0.4;
+          ctx.globalAlpha = 0.45;
         }
 
-        // Hitstun Shake
-        let drawX = this.x;
-        let drawY = this.y;
+        let drawX = Number.isFinite(this.x) ? this.x : 960;
+        let drawY = Number.isFinite(this.y) ? this.y : 700;
         if (this.state === 'HITSTUN' && this.hitstop > 0) {
           drawX += (Math.random() - 0.5) * 8;
           drawY += (Math.random() - 0.5) * 8;
@@ -1736,91 +2046,18 @@
         ctx.translate(drawX + this.w / 2, drawY + this.h / 2);
         ctx.scale(this.facing, 1);
 
-        // Character Aura / Silhouette
+        // Aura
         ctx.shadowColor = this.char.color;
-        ctx.shadowBlur = this.ultGauge >= 100 ? 30 : 12;
+        ctx.shadowBlur = this.ultGauge >= 100 ? 25 : 8;
 
-        // Draw Stylized Anime Body
-        this.drawFighterBody(ctx);
+        // Draw distinct archetype body
+        CharacterArtEngine.drawFigure(ctx, this.char.id, 1.0);
 
         ctx.restore();
       }
-
-      drawFighterBody(ctx) {
-        const hw = this.w / 2;
-        const hh = this.h / 2;
-
-        // Color Palette
-        ctx.fillStyle = this.char.color;
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2.5;
-
-        // Torso
-        ctx.beginPath();
-        ctx.roundRect(-hw + 8, -hh + 24, this.w - 16, 44, [4]);
-        ctx.fill();
-        ctx.stroke();
-
-        // Head
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(0, -hh + 14, 14, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-
-        // Anime Eyes / Visor
-        ctx.fillStyle = this.char.color;
-        ctx.fillRect(2, -hh + 12, 8, 4);
-
-        // Legs (Running or Aerial Pose)
-        ctx.strokeStyle = this.char.color;
-        ctx.lineWidth = 5;
-        if (this.state === 'RUN') {
-          const legSwing = Math.sin(Date.now() * 0.02) * 16;
-          ctx.beginPath();
-          ctx.moveTo(-6, -hh + 68);
-          ctx.lineTo(-6 + legSwing, hh);
-          ctx.moveTo(6, -hh + 68);
-          ctx.lineTo(6 - legSwing, hh);
-          ctx.stroke();
-        } else {
-          ctx.beginPath();
-          ctx.moveTo(-8, -hh + 68);
-          ctx.lineTo(-10, hh);
-          ctx.moveTo(8, -hh + 68);
-          ctx.lineTo(10, hh);
-          ctx.stroke();
-        }
-
-        // Weapon / Signature Anime Prop
-        if (this.char.id === 'muramasa') {
-          // Katana
-          ctx.strokeStyle = '#ffffff';
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.moveTo(4, -hh + 40);
-          ctx.lineTo(34, -hh + 10);
-          ctx.stroke();
-        } else if (this.char.id === 'kaien') {
-          // Glowing flaming fists
-          ctx.fillStyle = '#ffea00';
-          ctx.shadowColor = '#ffea00';
-          ctx.shadowBlur = 10;
-          ctx.beginPath();
-          ctx.arc(14, -hh + 42, 7, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (this.char.id === 'vesper') {
-          // Floating Arcane Orbit Orb
-          const orbOrbit = Date.now() * 0.006;
-          ctx.fillStyle = '#00e5ff';
-          ctx.beginPath();
-          ctx.arc(Math.cos(orbOrbit) * 25, -hh + 30 + Math.sin(orbOrbit) * 10, 6, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
     }
 
-    // --- VISUAL EFFECTS & CAMERA SYSTEM ---
+    // --- VFX ENGINE ---
     class VFXEngine {
       constructor() {
         this.particles = [];
@@ -1836,8 +2073,10 @@
       }
 
       triggerFlash() {
-        this.flashEl.style.opacity = '0.75';
-        setTimeout(() => { this.flashEl.style.opacity = '0'; }, 80);
+        if (this.flashEl) {
+          this.flashEl.style.opacity = '0.75';
+          setTimeout(() => { if (this.flashEl) this.flashEl.style.opacity = '0'; }, 70);
+        }
       }
 
       spawnDust(x, y) {
@@ -1846,9 +2085,8 @@
             x, y,
             vx: (Math.random() - 0.5) * 6,
             vy: -Math.random() * 3,
-            size: Math.random() * 8 + 4,
-            life: 20,
-            maxLife: 20,
+            size: Math.random() * 8 + 3,
+            life: 18, maxLife: 18,
             color: '#ffffff'
           });
         }
@@ -1860,27 +2098,23 @@
             x, y,
             vx: (Math.random() - 0.5) * 8,
             vy: (Math.random() - 0.5) * 8,
-            size: Math.random() * 10 + 5,
-            life: 25,
-            maxLife: 25,
+            size: Math.random() * 10 + 4,
+            life: 22, maxLife: 22,
             color
           });
         }
       }
 
       spawnDashLines(x, y, facing) {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 4; i++) {
           this.particles.push({
-            x: x - facing * (Math.random() * 40),
-            y: y + (Math.random() - 0.5) * 40,
-            vx: -facing * (Math.random() * 12 + 6),
+            x: x - facing * (Math.random() * 30),
+            y: y + (Math.random() - 0.5) * 35,
+            vx: -facing * (Math.random() * 10 + 5),
             vy: 0,
-            size: 3,
-            length: Math.random() * 40 + 20,
-            life: 14,
-            maxLife: 14,
-            color: '#00e5ff',
-            isLine: true
+            size: 3, length: Math.random() * 35 + 15,
+            life: 12, maxLife: 12,
+            color: '#00e5ff', isLine: true
           });
         }
       }
@@ -1911,7 +2145,6 @@
       }
 
       draw(ctx) {
-        // Draw Particles
         for (const p of this.particles) {
           ctx.save();
           const alpha = p.life / p.maxLife;
@@ -1933,7 +2166,6 @@
           ctx.restore();
         }
 
-        // Draw Slashes (Anime Katana Arc Curves)
         for (const s of this.slashes) {
           ctx.save();
           const progress = 1 - (s.life / s.maxLife);
@@ -1941,7 +2173,7 @@
           ctx.scale(s.facing * s.scale, s.scale);
           ctx.strokeStyle = s.color;
           ctx.shadowColor = s.color;
-          ctx.shadowBlur = 18;
+          ctx.shadowBlur = 16;
           ctx.lineWidth = (1 - progress) * 8 + 2;
 
           ctx.beginPath();
@@ -1952,16 +2184,17 @@
       }
     }
 
-    // --- MAIN GAME MANAGER ---
+    // --- GAME MANAGER (STABLE & ZERO-BLACK-SCREEN ARCHITECTURE) ---
     class GameManager {
       constructor() {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
-        this.state = 'MENU'; // MENU, CHAR_SELECT, STAGE_SELECT, FIGHT, VICTORY
+        this.state = 'MENU'; // MENU, CHAR_SELECT, STAGE_SELECT, FIGHT, VICTORY, SETTINGS
 
-        this.gameMode = 'versus'; // 'versus', 'cpu', 'training'
-        this.selectedP1 = 'kaien';
-        this.selectedP2 = 'muramasa';
+        this.gameMode = 'versus';
+        this.selectedP1 = 'ryuuto';
+        this.selectedP2 = 'kurogane';
+        this.selectingPlayer = 1;
         this.currentStageIdx = 0;
         this.isPaused = false;
         this.showHitboxes = false;
@@ -1972,37 +2205,31 @@
         this.projectiles = [];
         this.fx = new VFXEngine();
 
-        // Camera System
         this.cam = { x: 960, y: 540, zoom: 1.0 };
+        this.lastFrameTime = performance.now();
+        this.fps = 60;
 
-        this.initDOM();
-        this.initPreviews();
+        this.initUI();
+        this.buildCharGrid();
+        this.buildStageGrid();
+
         this.loop = this.loop.bind(this);
         requestAnimationFrame(this.loop);
       }
 
-      initDOM() {
-        // Mode Buttons
+      initUI() {
+        // Mode buttons
         document.getElementById('btn-mode-versus').onclick = () => {
-          sound.init();
-          this.gameMode = 'versus';
-          this.openCharSelect();
+          sound.init(); this.gameMode = 'versus'; this.openCharSelect();
         };
         document.getElementById('btn-mode-cpu').onclick = () => {
-          sound.init();
-          this.gameMode = 'cpu';
-          this.openCharSelect();
+          sound.init(); this.gameMode = 'cpu'; this.openCharSelect();
         };
         document.getElementById('btn-mode-training').onclick = () => {
-          sound.init();
-          this.gameMode = 'training';
-          this.openCharSelect();
+          sound.init(); this.gameMode = 'training'; this.openCharSelect();
         };
-        document.getElementById('btn-show-controls').onclick = () => {
-          document.getElementById('controls-screen').classList.remove('hidden');
-        };
-        document.getElementById('btn-controls-back').onclick = () => {
-          document.getElementById('controls-screen').classList.add('hidden');
+        document.getElementById('btn-open-settings').onclick = () => {
+          this.showScreen('settings-screen');
         };
         document.getElementById('btn-toggle-sound').onclick = (e) => {
           sound.init();
@@ -2016,55 +2243,32 @@
           }
         };
 
-        // Character Select Buttons
-        document.querySelectorAll('.char-card').forEach(card => {
-          card.onclick = () => {
-            const charId = card.dataset.char;
-            if (this.selectingPlayer === 1) {
-              this.selectedP1 = charId;
-              if (this.gameMode === 'versus') {
-                this.selectingPlayer = 2;
-                document.getElementById('char-select-hint').innerText = 'JOGADOR 2: ESCOLHA SEU PERSONAGEM';
-              } else {
-                this.selectedP2 = charId === 'kaien' ? 'muramasa' : 'kaien';
-              }
-            } else {
-              this.selectedP2 = charId;
-              this.selectingPlayer = 1;
-              document.getElementById('char-select-hint').innerText = 'SELEÇÃO CONCLUÍDA! CLIQUE EM CONFIRMAR.';
-            }
-            this.updateCharSelectCards();
+        // Navigation
+        document.getElementById('btn-char-back').onclick = () => this.showScreen('main-menu');
+        document.getElementById('btn-char-confirm').onclick = () => this.showScreen('stage-select');
+        document.getElementById('btn-stage-back').onclick = () => this.openCharSelect();
+        document.getElementById('btn-stage-start').onclick = () => this.startFight();
+
+        // Settings / Rebinding
+        document.getElementById('btn-save-controls').onclick = () => this.showScreen('main-menu');
+        document.getElementById('btn-reset-controls').onclick = () => {
+          input.bindings.p1 = { up: 'KeyW', left: 'KeyA', down: 'KeyS', right: 'KeyD', light: 'KeyJ', heavy: 'KeyK', special: 'KeyL', ult: 'KeyU', dash: 'KeyI' };
+          input.bindings.p2 = { up: 'ArrowUp', left: 'ArrowLeft', down: 'ArrowDown', right: 'ArrowRight', light: 'Numpad1', heavy: 'Numpad2', dash: 'Numpad3', special: 'Numpad4', ult: 'Numpad5' };
+          this.updateRebindButtonLabels();
+        };
+
+        document.querySelectorAll('.rebind-btn').forEach(btn => {
+          btn.onclick = () => {
+            document.querySelectorAll('.rebind-btn').forEach(b => b.classList.remove('listening'));
+            btn.classList.add('listening');
+            btn.innerText = 'Pressione...';
+            input.listeningRebind = { player: btn.dataset.player, action: btn.dataset.action, btnEl: btn };
           };
         });
 
-        document.getElementById('btn-char-back').onclick = () => {
-          this.showScreen('main-menu');
-        };
-        document.getElementById('btn-char-confirm').onclick = () => {
-          this.showScreen('stage-select');
-        };
-
-        // Stage Select
-        document.querySelectorAll('.stage-card').forEach(card => {
-          card.onclick = () => {
-            document.querySelectorAll('.stage-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            this.currentStageIdx = parseInt(card.dataset.stage);
-          };
-        });
-        document.getElementById('btn-stage-back').onclick = () => {
-          this.openCharSelect();
-        };
-        document.getElementById('btn-stage-start').onclick = () => {
-          this.startFight();
-        };
-
-        // Pause Menu
+        // Pause menu
         document.getElementById('btn-resume').onclick = () => this.togglePause();
-        document.getElementById('btn-pause-restart').onclick = () => {
-          this.togglePause();
-          this.startFight();
-        };
+        document.getElementById('btn-pause-restart').onclick = () => { this.togglePause(); this.startFight(); };
         document.getElementById('btn-pause-quit').onclick = () => {
           this.togglePause();
           this.showScreen('main-menu');
@@ -2072,7 +2276,7 @@
           document.getElementById('training-panel').style.display = 'none';
         };
 
-        // Victory Screen
+        // Victory screen
         document.getElementById('btn-rematch').onclick = () => this.startFight();
         document.getElementById('btn-char-select-return').onclick = () => this.openCharSelect();
         document.getElementById('btn-menu-return').onclick = () => {
@@ -2080,18 +2284,10 @@
           document.getElementById('hud').style.display = 'none';
         };
 
-        // Training Panel
-        document.getElementById('btn-reset-pos').onclick = () => {
-          if (this.p1 && this.p2) {
-            this.p1.reset(this.stage.spawnP1.x, this.stage.spawnP1.y);
-            this.p2.reset(this.stage.spawnP2.x, this.stage.spawnP2.y);
-          }
-        };
+        // Training panel controls
+        document.getElementById('btn-reset-pos').onclick = () => this.resetFighterPositions();
         document.getElementById('btn-reset-dmg').onclick = () => {
-          if (this.p1 && this.p2) {
-            this.p1.damage = 0;
-            this.p2.damage = 0;
-          }
+          if (this.p1 && this.p2) { this.p1.damage = 0; this.p2.damage = 0; }
         };
         document.getElementById('btn-toggle-hitbox').onclick = (e) => {
           this.showHitboxes = !this.showHitboxes;
@@ -2099,9 +2295,28 @@
         };
         document.getElementById('btn-dummy-cpu').onclick = (e) => {
           if (!this.p2) return;
-          this.p2.isCPU = !this.p2.isCPU;
-          e.target.innerText = `Dummy: ${this.p2.isCPU ? 'CPU Ativo' : 'Parado'}`;
+          const modes = ['stand', 'jump', 'evade', 'fight'];
+          const nextIdx = (modes.indexOf(this.p2.dummyMode) + 1) % modes.length;
+          this.p2.dummyMode = modes[nextIdx];
+          this.p2.isCPU = this.p2.dummyMode === 'fight';
+          const labels = { stand: 'Dummy: Parado', jump: 'Dummy: Pular', evade: 'Dummy: Esquivar', fight: 'Dummy: Luta CPU' };
+          e.target.innerText = labels[this.p2.dummyMode];
         };
+        document.getElementById('btn-dummy-inv').onclick = (e) => {
+          if (!this.p2) return;
+          this.p2.isInvincibleDummy = !this.p2.isInvincibleDummy;
+          e.target.innerText = `Dummy Invencível: ${this.p2.isInvincibleDummy ? 'ON' : 'OFF'}`;
+        };
+      }
+
+      updateRebindButtonLabels() {
+        document.querySelectorAll('.rebind-btn').forEach(btn => {
+          const p = btn.dataset.player;
+          const a = btn.dataset.action;
+          if (input.bindings[p] && input.bindings[p][a]) {
+            btn.innerText = input.bindings[p][a];
+          }
+        });
       }
 
       showScreen(screenId) {
@@ -2110,9 +2325,112 @@
         if (target) target.classList.remove('hidden');
       }
 
+      buildCharGrid() {
+        const grid = document.getElementById('char-grid');
+        grid.innerHTML = '';
+
+        Object.values(CHARACTERS).forEach(c => {
+          const card = document.createElement('div');
+          card.className = 'char-card';
+          card.dataset.char = c.id;
+
+          card.innerHTML = `
+            <div class="char-card-portrait">
+              <canvas width="140" height="150" id="cvs-thumb-${c.id}"></canvas>
+            </div>
+            <div class="char-info">
+              <div class="char-name">${c.name}</div>
+              <div class="char-archetype">${c.genre}</div>
+              <div class="char-stats">${c.style} • ${c.difficulty}</div>
+            </div>
+          `;
+
+          card.onclick = () => {
+            sound.playHit('light');
+            if (this.selectingPlayer === 1) {
+              this.selectedP1 = c.id;
+              if (this.gameMode === 'versus') {
+                this.selectingPlayer = 2;
+                document.getElementById('char-select-hint').innerText = 'JOGADOR 2: ESCOLHA SEU LUTADOR';
+              } else {
+                this.selectedP2 = c.id === 'ryuuto' ? 'kurogane' : 'ryuuto';
+              }
+            } else {
+              this.selectedP2 = c.id;
+              this.selectingPlayer = 1;
+              document.getElementById('char-select-hint').innerText = 'SELEÇÃO CONCLUÍDA! CLIQUE EM CONFIRMAR';
+            }
+            this.updateCharSelectCards();
+          };
+
+          grid.appendChild(card);
+
+          // Draw portrait on thumb canvas
+          setTimeout(() => {
+            const cvs = document.getElementById(`cvs-thumb-${c.id}`);
+            if (cvs) CharacterArtEngine.drawPortrait(cvs.getContext('2d'), c.id, 140, 150);
+          }, 10);
+        });
+
+        this.updateCharSelectCards();
+      }
+
+      buildStageGrid() {
+        const grid = document.getElementById('stage-grid');
+        grid.innerHTML = '';
+
+        STAGES.forEach((s, idx) => {
+          const card = document.createElement('div');
+          card.className = `stage-card ${idx === this.currentStageIdx ? 'selected' : ''}`;
+          card.dataset.stage = idx;
+
+          card.innerHTML = `
+            <canvas width="320" height="180" id="stage-cvs-${idx}" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></canvas>
+            <div class="stage-card-title">${s.name}</div>
+            <div class="stage-card-desc">${s.theme}</div>
+          `;
+
+          card.onclick = () => {
+            sound.playHit('light');
+            document.querySelectorAll('.stage-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            this.currentStageIdx = idx;
+          };
+
+          grid.appendChild(card);
+
+          // Draw Stage Thumbnail Preview
+          setTimeout(() => {
+            const cvs = document.getElementById(`stage-cvs-${idx}`);
+            if (cvs) {
+              const ctx = cvs.getContext('2d');
+              const grad = ctx.createLinearGradient(0, 0, 0, 180);
+              grad.addColorStop(0, s.bgGrad[0]);
+              grad.addColorStop(0.5, s.bgGrad[1]);
+              grad.addColorStop(1, s.bgGrad[2]);
+              ctx.fillStyle = grad;
+              ctx.fillRect(0, 0, 320, 180);
+
+              // Miniature platforms
+              ctx.fillStyle = '#0f172a';
+              ctx.strokeStyle = s.color;
+              ctx.lineWidth = 2;
+              s.platforms.forEach(p => {
+                const rx = (p.x / 1920) * 320;
+                const ry = (p.y / 1080) * 180;
+                const rw = (p.w / 1920) * 320;
+                const rh = Math.max(3, (p.h / 1080) * 180);
+                ctx.fillRect(rx, ry, rw, rh);
+                ctx.strokeRect(rx, ry, rw, rh);
+              });
+            }
+          }, 10);
+        });
+      }
+
       openCharSelect() {
         this.selectingPlayer = 1;
-        document.getElementById('char-select-hint').innerText = 'JOGADOR 1: ESCOLHA SEU PERSONAGEM';
+        document.getElementById('char-select-hint').innerText = 'JOGADOR 1: ESCOLHA SEU LUTADOR';
         this.updateCharSelectCards();
         this.showScreen('char-select');
       }
@@ -2121,7 +2439,6 @@
         document.querySelectorAll('.char-card').forEach(card => {
           const cid = card.dataset.char;
           card.classList.remove('selected-p1', 'selected-p2', 'selected-both');
-          // Remove old badges
           const oldB1 = card.querySelector('.char-badge-p1');
           const oldB2 = card.querySelector('.char-badge-p2');
           if (oldB1) oldB1.remove();
@@ -2141,9 +2458,9 @@
       }
 
       startFight() {
-        this.stage = STAGES[this.currentStageIdx];
-        this.p1 = new Fighter('p1', CHARACTERS[this.selectedP1], false);
-        this.p2 = new Fighter('p2', CHARACTERS[this.selectedP2], this.gameMode === 'cpu');
+        this.stage = STAGES[this.currentStageIdx] || STAGES[0];
+        this.p1 = new Fighter('p1', CHARACTERS[this.selectedP1] || CHARACTERS.ryuuto, false);
+        this.p2 = new Fighter('p2', CHARACTERS[this.selectedP2] || CHARACTERS.kurogane, this.gameMode === 'cpu');
 
         this.p1.reset(this.stage.spawnP1.x, this.stage.spawnP1.y);
         this.p2.reset(this.stage.spawnP2.x, this.stage.spawnP2.y);
@@ -2151,6 +2468,8 @@
         if (this.gameMode === 'training') {
           this.p1.stocks = 99;
           this.p2.stocks = 99;
+          this.p2.dummyMode = 'stand';
+          this.p2.isCPU = false;
           document.getElementById('training-panel').style.display = 'flex';
         } else {
           this.p1.stocks = 3;
@@ -2158,28 +2477,37 @@
           document.getElementById('training-panel').style.display = 'none';
         }
 
-        // Update HUD
+        // Draw HUD avatars
         document.getElementById('p1-name').innerText = this.p1.char.name;
         document.getElementById('p2-name').innerText = this.p2.char.name;
-        document.getElementById('p1-avatar').innerText = this.p1.char.avatarLetter;
-        document.getElementById('p2-avatar').innerText = this.p2.char.avatarLetter;
+        const cvsP1 = document.getElementById('avatar-canvas-p1');
+        const cvsP2 = document.getElementById('avatar-canvas-p2');
+        if (cvsP1) CharacterArtEngine.drawPortrait(cvsP1.getContext('2d'), this.p1.char.id, 62, 62);
+        if (cvsP2) CharacterArtEngine.drawPortrait(cvsP2.getContext('2d'), this.p2.char.id, 62, 62);
 
         this.projectiles = [];
         this.state = 'FIGHT';
-        this.showScreen(''); // Hide menus
+        this.showScreen(''); // Hide all overlays
         document.getElementById('hud').style.display = 'flex';
+      }
+
+      resetFighterPositions() {
+        if (this.p1 && this.p2 && this.stage) {
+          this.p1.reset(this.stage.spawnP1.x, this.stage.spawnP1.y);
+          this.p2.reset(this.stage.spawnP2.x, this.stage.spawnP2.y);
+        }
       }
 
       togglePause() {
         if (this.state !== 'FIGHT') return;
         this.isPaused = !this.isPaused;
-        const pauseMenu = document.getElementById('pause-menu');
-        if (this.isPaused) pauseMenu.classList.remove('hidden');
-        else pauseMenu.classList.add('hidden');
+        const pm = document.getElementById('pause-menu');
+        if (this.isPaused) pm.classList.remove('hidden');
+        else pm.classList.add('hidden');
       }
 
       checkHitboxCollision(attacker, defender) {
-        if (!attacker.activeHitbox || defender.invulnerableTimer > 0) return;
+        if (!attacker || !defender || !attacker.activeHitbox || defender.invulnerableTimer > 0) return;
 
         const hb = attacker.activeHitbox;
         const hit = (
@@ -2201,7 +2529,7 @@
             this.fx.triggerFlash();
           }
 
-          attacker.activeHitbox = null; // Only hit once per attack activation
+          attacker.activeHitbox = null; // Consume hitbox hit
         }
       }
 
@@ -2223,7 +2551,7 @@
               const angle = target.x > p.x ? -0.5 : -2.6;
               target.takeDamage(p.damage, { baseKB: p.baseKB, kbGrowth: p.kbGrowth, angle });
               p.active = false;
-              this.fx.spawnAura(target.x + target.w/2, target.y + target.h/2, p.color, 14);
+              this.fx.spawnAura(target.x + target.w/2, target.y + target.h/2, p.color, 12);
             }
           }
 
@@ -2232,19 +2560,18 @@
       }
 
       checkRingOut(fighter) {
+        if (!fighter || !this.stage) return;
         const bz = this.stage.blastZone;
         if (fighter.x < bz.left || fighter.x > bz.right || fighter.y < bz.top || fighter.y > bz.bottom) {
-          // Ring out explosion!
           sound.playKO();
-          this.fx.triggerScreenShake(28, 30);
+          this.fx.triggerScreenShake(26, 28);
           this.fx.triggerFlash();
-          this.fx.spawnAura(fighter.x, fighter.y, '#ffea00', 30);
+          this.fx.spawnAura(fighter.x, fighter.y, '#ffea00', 25);
 
           fighter.stocks--;
           if (fighter.stocks <= 0 && this.gameMode !== 'training') {
             this.endMatch(fighter === this.p1 ? this.p2 : this.p1);
           } else {
-            // Respawn
             const spawnPos = fighter.id === 'p1' ? this.stage.spawnP1 : this.stage.spawnP2;
             fighter.reset(spawnPos.x, spawnPos.y);
           }
@@ -2253,160 +2580,196 @@
 
       endMatch(winner) {
         this.state = 'VICTORY';
-        const victoryTitle = document.getElementById('victory-title');
-        const victorySub = document.getElementById('victory-subtitle');
-        victoryTitle.innerText = `${winner.char.name} VENCEU!`;
-        victorySub.innerText = `${winner.id.toUpperCase()} DOMINOU A ARENA`;
-        victoryTitle.style.color = winner.char.color;
+        const vt = document.getElementById('victory-title');
+        const vs = document.getElementById('victory-subtitle');
+        vt.innerText = `${winner.char.name} VENCEU!`;
+        vs.innerText = `${winner.id.toUpperCase()} CONQUISTOU A ARENA`;
+        vt.style.color = winner.char.color;
         this.showScreen('victory-screen');
       }
 
       updateHUD() {
         if (!this.p1 || !this.p2) return;
 
-        // Damage %
-        const p1DmgEl = document.getElementById('p1-damage');
-        const p2DmgEl = document.getElementById('p2-damage');
-        p1DmgEl.innerText = `${Math.floor(this.p1.damage)}%`;
-        p2DmgEl.innerText = `${Math.floor(this.p2.damage)}%`;
+        const p1Dmg = document.getElementById('p1-damage');
+        const p2Dmg = document.getElementById('p2-damage');
+        p1Dmg.innerText = `${Math.floor(this.p1.damage)}%`;
+        p2Dmg.innerText = `${Math.floor(this.p2.damage)}%`;
 
-        // Color coding for high % (higher % = brighter red)
-        p1DmgEl.style.color = this.p1.damage > 100 ? '#ff2a5f' : this.p1.damage > 60 ? '#ffaa00' : '#ffffff';
-        p2DmgEl.style.color = this.p2.damage > 100 ? '#ff2a5f' : this.p2.damage > 60 ? '#ffaa00' : '#ffffff';
+        p1Dmg.style.color = this.p1.damage > 100 ? '#ff2a5f' : this.p1.damage > 60 ? '#ffaa00' : '#ffffff';
+        p2Dmg.style.color = this.p2.damage > 100 ? '#ff2a5f' : this.p2.damage > 60 ? '#ffaa00' : '#ffffff';
 
-        // Stocks
         this.renderStocks('p1-stocks', this.p1.stocks);
         this.renderStocks('p2-stocks', this.p2.stocks);
 
-        // Ultimate Bars
-        const p1UltBar = document.getElementById('p1-ult-bar');
-        const p2UltBar = document.getElementById('p2-ult-bar');
-        p1UltBar.style.width = `${this.p1.ultGauge}%`;
-        p2UltBar.style.width = `${this.p2.ultGauge}%`;
+        const p1Ult = document.getElementById('p1-ult-bar');
+        const p2Ult = document.getElementById('p2-ult-bar');
+        p1Ult.style.width = `${this.p1.ultGauge}%`;
+        p2Ult.style.width = `${this.p2.ultGauge}%`;
+        p1Ult.classList.toggle('hud-ult-ready', this.p1.ultGauge >= 100);
+        p2Ult.classList.toggle('hud-ult-ready', this.p2.ultGauge >= 100);
 
-        p1UltBar.classList.toggle('hud-ult-ready', this.p1.ultGauge >= 100);
-        p2UltBar.classList.toggle('hud-ult-ready', this.p2.ultGauge >= 100);
+        // Training mode stats
+        if (this.gameMode === 'training') {
+          document.getElementById('stat-fps').innerText = Math.round(this.fps);
+          document.getElementById('stat-p1-vel').innerText = `VX: ${this.p1.vx.toFixed(1)} | VY: ${this.p1.vy.toFixed(1)}`;
+          document.getElementById('stat-p2-vel').innerText = `VX: ${this.p2.vx.toFixed(1)} | VY: ${this.p2.vy.toFixed(1)}`;
+
+          // Input monitors
+          const p1In = input.getP1Input();
+          const p2In = input.getP2Input();
+
+          this.updateInputLight('in-p1-w', p1In.up);
+          this.updateInputLight('in-p1-a', p1In.left);
+          this.updateInputLight('in-p1-s', p1In.down);
+          this.updateInputLight('in-p1-d', p1In.right);
+          this.updateInputLight('in-p1-j', p1In.light);
+          this.updateInputLight('in-p1-k', p1In.heavy);
+          this.updateInputLight('in-p1-l', p1In.special);
+          this.updateInputLight('in-p1-u', p1In.ult);
+          this.updateInputLight('in-p1-i', p1In.dash);
+
+          this.updateInputLight('in-p2-up', p2In.up);
+          this.updateInputLight('in-p2-left', p2In.left);
+          this.updateInputLight('in-p2-down', p2In.down);
+          this.updateInputLight('in-p2-right', p2In.right);
+          this.updateInputLight('in-p2-1', p2In.light);
+          this.updateInputLight('in-p2-2', p2In.heavy);
+          this.updateInputLight('in-p2-3', p2In.dash);
+          this.updateInputLight('in-p2-4', p2In.special);
+          this.updateInputLight('in-p2-5', p2In.ult);
+        }
+      }
+
+      updateInputLight(id, active) {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('active', !!active);
       }
 
       renderStocks(containerId, count) {
         const el = document.getElementById(containerId);
+        if (!el) return;
         let html = '';
-        const displayCount = Math.min(5, Math.max(0, count));
-        for (let i = 0; i < displayCount; i++) {
-          html += '<span class="stock-icon"></span>';
-        }
+        const c = Math.min(5, Math.max(0, count));
+        for (let i = 0; i < c; i++) html += '<span class="stock-icon"></span>';
         el.innerHTML = html;
       }
 
-      // Dynamic Camera: Auto-Zoom and Center on Both Fighters
       updateCamera() {
         if (!this.p1 || !this.p2) return;
-
         const midX = (this.p1.x + this.p2.x) / 2 + this.p1.w / 2;
         const midY = (this.p1.y + this.p2.y) / 2 + this.p1.h / 2;
         const dist = Math.hypot(this.p1.x - this.p2.x, this.p1.y - this.p2.y);
 
-        // Calculate smooth zoom
-        const targetZoom = Math.min(1.2, Math.max(0.65, 1200 / (dist + 500)));
-        this.cam.zoom += (targetZoom - this.cam.zoom) * 0.08;
+        const targetZoom = Math.min(1.15, Math.max(0.65, 1200 / (dist + 500)));
 
-        // Smooth camera follow (lerp)
-        this.cam.x += (midX - this.cam.x) * 0.08;
-        this.cam.y += (midY - this.cam.y) * 0.08;
+        // Guard against NaN
+        if (Number.isFinite(targetZoom)) this.cam.zoom += (targetZoom - this.cam.zoom) * 0.08;
+        if (Number.isFinite(midX)) this.cam.x += (midX - this.cam.x) * 0.08;
+        if (Number.isFinite(midY)) this.cam.y += (midY - this.cam.y) * 0.08;
+
+        if (!Number.isFinite(this.cam.x)) this.cam.x = 960;
+        if (!Number.isFinite(this.cam.y)) this.cam.y = 540;
+        if (!Number.isFinite(this.cam.zoom) || this.cam.zoom <= 0) this.cam.zoom = 1.0;
       }
 
-      loop() {
-        this.ctx.clearRect(0, 0, 1920, 1080);
+      loop(now) {
+        // Calculate FPS
+        const delta = now - this.lastFrameTime;
+        this.lastFrameTime = now;
+        if (delta > 0) this.fps = this.fps * 0.9 + (1000 / delta) * 0.1;
 
-        if (this.state === 'FIGHT' && !this.isPaused) {
-          // Input
-          const p1In = input.getP1Input();
-          const p2In = input.getP2Input();
+        try {
+          this.ctx.clearRect(0, 0, 1920, 1080);
 
-          // Update Fighters
-          this.p1.update(p1In, this.p2, this.stage, this.projectiles, this.fx);
-          this.p2.update(p2In, this.p1, this.stage, this.projectiles, this.fx);
+          if (this.state === 'FIGHT' && !this.isPaused) {
+            const p1In = input.getP1Input();
+            const p2In = input.getP2Input();
 
-          // Hitbox Collisions
-          this.checkHitboxCollision(this.p1, this.p2);
-          this.checkHitboxCollision(this.p2, this.p1);
+            // P key in training resets positions
+            if (this.gameMode === 'training' && input.isDown('KeyP')) {
+              this.resetFighterPositions();
+            }
 
-          // Projectiles & Blastzone
-          this.checkProjectileCollisions();
-          this.checkRingOut(this.p1);
-          this.checkRingOut(this.p2);
+            this.p1.update(p1In, this.p2, this.stage, this.projectiles, this.fx);
+            this.p2.update(p2In, this.p1, this.stage, this.projectiles, this.fx);
 
-          this.fx.update();
-          this.updateCamera();
-          this.updateHUD();
-        }
+            this.checkHitboxCollision(this.p1, this.p2);
+            this.checkHitboxCollision(this.p2, this.p1);
 
-        // Camera Transformation & Screenshake
-        this.ctx.save();
-        let shakeX = 0;
-        let shakeY = 0;
-        if (this.fx.shakeTime > 0) {
-          shakeX = (Math.random() - 0.5) * this.fx.shakeIntensity;
-          shakeY = (Math.random() - 0.5) * this.fx.shakeIntensity;
-        }
+            this.checkProjectileCollisions();
+            this.checkRingOut(this.p1);
+            this.checkRingOut(this.p2);
 
-        this.ctx.translate(960 + shakeX, 540 + shakeY);
-        this.ctx.scale(this.cam.zoom, this.cam.zoom);
-        this.ctx.translate(-this.cam.x, -this.cam.y);
-
-        // Render Game World
-        this.drawStage();
-
-        if (this.state === 'FIGHT' || this.state === 'VICTORY') {
-          for (const proj of this.projectiles) proj.draw(this.ctx);
-          this.p1.draw(this.ctx);
-          this.p2.draw(this.ctx);
-          this.fx.draw(this.ctx);
-
-          // Debug Hitbox View (Training Mode)
-          if (this.showHitboxes) {
-            this.drawDebugHitboxes();
+            this.fx.update();
+            this.updateCamera();
+            this.updateHUD();
           }
-        }
 
-        this.ctx.restore();
+          // Camera rendering
+          this.ctx.save();
+          let shakeX = 0;
+          let shakeY = 0;
+          if (this.fx.shakeTime > 0) {
+            shakeX = (Math.random() - 0.5) * this.fx.shakeIntensity;
+            shakeY = (Math.random() - 0.5) * this.fx.shakeIntensity;
+          }
 
-        // Render Screen-space UI (Combo Counters, etc.)
-        if (this.state === 'FIGHT') {
-          this.drawCombos();
+          this.ctx.translate(960 + shakeX, 540 + shakeY);
+          this.ctx.scale(this.cam.zoom, this.cam.zoom);
+          this.ctx.translate(-this.cam.x, -this.cam.y);
+
+          this.drawStage();
+
+          if (this.state === 'FIGHT' || this.state === 'VICTORY') {
+            for (const proj of this.projectiles) proj.draw(this.ctx);
+            this.p1.draw(this.ctx);
+            this.p2.draw(this.ctx);
+            this.fx.draw(this.ctx);
+
+            if (this.showHitboxes) this.drawDebugHitboxes();
+          }
+
+          this.ctx.restore();
+
+          if (this.state === 'FIGHT') this.drawCombos();
+
+        } catch (err) {
+          console.error("Critical Render/GameLoop Error:", err);
+          const eb = document.getElementById('error-banner');
+          if (eb) {
+            eb.style.display = 'block';
+            eb.innerText = `Auto-Recuperado de Erro: ${err.message}`;
+            setTimeout(() => { if (eb) eb.style.display = 'none'; }, 2000);
+          }
         }
 
         requestAnimationFrame(this.loop);
       }
 
       drawStage() {
-        // Dynamic Stage Background Gradient
-        const grad = this.ctx.createLinearGradient(0, 0, 0, 1080);
-        grad.addColorStop(0, this.stage.bgGradient[0]);
-        grad.addColorStop(0.5, this.stage.bgGradient[1]);
-        grad.addColorStop(1, this.stage.bgGradient[2]);
+        if (!this.stage) return;
+        const grad = this.ctx.createLinearGradient(0, -400, 0, 1400);
+        grad.addColorStop(0, this.stage.bgGrad[0]);
+        grad.addColorStop(0.5, this.stage.bgGrad[1]);
+        grad.addColorStop(1, this.stage.bgGrad[2]);
 
         this.ctx.fillStyle = grad;
-        this.ctx.fillRect(-600, -400, 3120, 1980);
+        this.ctx.fillRect(-800, -800, 3600, 2400);
 
-        // Background Cyber/Anime Grid or Distant City
+        // Backdrop architectural details
         this.ctx.save();
-        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
-        this.ctx.lineWidth = 2;
-        for (let x = -400; x < 2400; x += 120) {
-          this.ctx.beginPath();
-          this.ctx.moveTo(x, -200);
-          this.ctx.lineTo(x, 1200);
-          this.ctx.stroke();
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+        for (let i = -600; i < 2600; i += 160) {
+          this.ctx.fillRect(i, -200, 4, 1400);
         }
         this.ctx.restore();
 
-        // Render Platforms
+        // Platforms
         for (const plat of this.stage.platforms) {
           this.ctx.save();
           if (plat.semi) {
-            // Glowing Floating Platform
-            this.ctx.fillStyle = 'rgba(25, 35, 60, 0.9)';
+            this.ctx.fillStyle = 'rgba(20, 28, 48, 0.92)';
             this.ctx.strokeStyle = this.stage.color;
             this.ctx.lineWidth = 3;
             this.ctx.shadowColor = this.stage.color;
@@ -2417,10 +2780,9 @@
             this.ctx.fill();
             this.ctx.stroke();
           } else {
-            // Solid Base Platform
-            this.ctx.fillStyle = '#0e1322';
+            this.ctx.fillStyle = '#0b0f19';
             this.ctx.strokeStyle = '#ffffff';
-            this.ctx.lineWidth = 4;
+            this.ctx.lineWidth = 3.5;
             this.ctx.shadowColor = 'rgba(255, 255, 255, 0.2)';
             this.ctx.shadowBlur = 15;
 
@@ -2429,9 +2791,9 @@
             this.ctx.fill();
             this.ctx.stroke();
 
-            // Neon Underglow Edge
+            // Neon top lip
             this.ctx.strokeStyle = this.stage.color;
-            this.ctx.lineWidth = 3;
+            this.ctx.lineWidth = 4;
             this.ctx.beginPath();
             this.ctx.moveTo(plat.x, plat.y);
             this.ctx.lineTo(plat.x + plat.w, plat.y);
@@ -2443,19 +2805,23 @@
 
       drawDebugHitboxes() {
         this.ctx.save();
-        this.ctx.strokeStyle = '#ff0055';
-        this.ctx.fillStyle = 'rgba(255, 0, 85, 0.25)';
-        this.ctx.lineWidth = 2;
-
         for (const f of [this.p1, this.p2]) {
+          if (!f) continue;
+          // Hurtbox (Green)
+          this.ctx.strokeStyle = '#22c55e';
+          this.ctx.fillStyle = 'rgba(34, 197, 94, 0.2)';
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeRect(f.x, f.y, f.w, f.h);
+          this.ctx.fillRect(f.x, f.y, f.w, f.h);
+
+          // Hitbox (Red)
           if (f.activeHitbox) {
             const hb = f.activeHitbox;
+            this.ctx.strokeStyle = '#ef4444';
+            this.ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
             this.ctx.strokeRect(hb.x, hb.y, hb.w, hb.h);
             this.ctx.fillRect(hb.x, hb.y, hb.w, hb.h);
           }
-          // Hurtbox
-          this.ctx.strokeStyle = '#00ff88';
-          this.ctx.strokeRect(f.x, f.y, f.w, f.h);
         }
         this.ctx.restore();
       }
@@ -2463,52 +2829,23 @@
       drawCombos() {
         this.ctx.save();
         this.ctx.font = 'italic 900 28px Impact';
-        if (this.p1.comboCount > 1) {
+        if (this.p1 && this.p1.comboCount > 1) {
           this.ctx.fillStyle = '#ff2a5f';
           this.ctx.shadowColor = '#ff2a5f';
           this.ctx.shadowBlur = 15;
           this.ctx.fillText(`${this.p1.comboCount} HITS!`, 220, 160);
         }
-        if (this.p2.comboCount > 1) {
+        if (this.p2 && this.p2.comboCount > 1) {
           this.ctx.fillStyle = '#00e5ff';
           this.ctx.shadowColor = '#00e5ff';
           this.ctx.shadowBlur = 15;
-          this.ctx.fillText(`${this.p2.comboCount} HITS!`, 1600, 160);
+          this.ctx.fillText(`${this.p2.comboCount} HITS!`, 1580, 160);
         }
         this.ctx.restore();
       }
-
-      // Draw dynamic preview canvases in character & stage select
-      initPreviews() {
-        // Previews for Character Select Cards
-        for (const cid of ['kaien', 'muramasa', 'vesper']) {
-          const cvs = document.getElementById(`preview-${cid}`);
-          if (!cvs) continue;
-          const pctx = cvs.getContext('2d');
-          const dummy = new Fighter('p1', CHARACTERS[cid]);
-          dummy.x = 80 - dummy.w/2;
-          dummy.y = 110 - dummy.h/2;
-          dummy.drawFighterBody(pctx);
-        }
-
-        // Previews for Stages
-        for (let i = 0; i < 3; i++) {
-          const cvs = document.getElementById(`stage-thumb-${i}`);
-          if (!cvs) continue;
-          const sctx = cvs.getContext('2d');
-          const s = STAGES[i];
-          const grad = sctx.createLinearGradient(0, 0, 0, 170);
-          grad.addColorStop(0, s.bgGradient[0]);
-          grad.addColorStop(1, s.bgGradient[2]);
-          sctx.fillStyle = grad;
-          sctx.fillRect(0, 0, 260, 170);
-          sctx.fillStyle = s.color;
-          sctx.fillRect(50, 120, 160, 10);
-        }
-      }
     }
 
-    // Launch Game Engine!
+    // Launch Engine
     window.addEventListener('DOMContentLoaded', () => {
       window.game = new GameManager();
     });
