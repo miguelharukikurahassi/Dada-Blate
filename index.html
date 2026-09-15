@@ -1,0 +1,2517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DADA BLATE — Anime Platform Fighter</title>
+  <style>
+    :root {
+      --bg-dark: #090a10;
+      --primary: #ff2a5f;
+      --primary-glow: rgba(255, 42, 95, 0.6);
+      --secondary: #00e5ff;
+      --secondary-glow: rgba(0, 229, 255, 0.6);
+      --accent: #ffea00;
+      --purple: #9d00ff;
+      --text: #ffffff;
+      --font-display: 'Impact', 'Arial Black', sans-serif;
+      --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text);
+      font-family: var(--font-body);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas#gameCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      image-rendering: auto;
+    }
+
+    /* UI Layer */
+    .ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .interactive {
+      pointer-events: auto;
+    }
+
+    /* Menus Styling */
+    .screen-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(15, 18, 30, 0.85) 0%, rgba(5, 6, 12, 0.98) 100%);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 50;
+      pointer-events: auto;
+    }
+
+    .screen-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.03);
+    }
+
+    .title-logo {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: #fff;
+      text-shadow: 0 0 25px var(--primary-glow), 4px 4px 0 #000, -3px -3px 0 var(--secondary);
+      line-height: 0.95;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      animation: logoGlow 3s ease-in-out infinite alternate;
+    }
+
+    .title-sub {
+      font-size: clamp(0.9rem, 2vw, 1.4rem);
+      letter-spacing: 8px;
+      color: var(--secondary);
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 2.5rem;
+      text-shadow: 0 0 10px var(--secondary-glow);
+    }
+
+    @keyframes logoGlow {
+      0% { text-shadow: 0 0 20px var(--primary-glow), 4px 4px 0 #000, -3px -3px 0 var(--secondary); }
+      100% { text-shadow: 0 0 35px var(--secondary-glow), 4px 4px 0 #000, 3px 3px 0 var(--primary); }
+    }
+
+    .menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: min(400px, 90%);
+    }
+
+    .btn {
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-style: italic;
+      letter-spacing: 2px;
+      padding: 0.85rem 1.8rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      text-align: center;
+      clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      outline: none;
+    }
+
+    .btn:hover, .btn.selected {
+      background: var(--primary);
+      border-color: #fff;
+      color: #fff;
+      transform: translateX(6px) scale(1.03);
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .btn.btn-secondary {
+      border-color: rgba(0, 229, 255, 0.4);
+    }
+
+    .btn.btn-secondary:hover {
+      background: var(--secondary);
+      color: #000;
+      box-shadow: 0 0 20px var(--secondary-glow);
+    }
+
+    /* Character Select Screen */
+    .char-select-grid {
+      display: flex;
+      gap: 1.8rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1200px;
+    }
+
+    .char-card {
+      width: 250px;
+      height: 370px;
+      background: linear-gradient(180deg, rgba(20, 25, 45, 0.9) 0%, rgba(10, 12, 22, 0.95) 100%);
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .char-card:hover {
+      transform: translateY(-8px);
+      border-color: #fff;
+    }
+
+    .char-card.selected-p1 {
+      border-color: var(--primary);
+      box-shadow: 0 0 25px var(--primary-glow), inset 0 0 20px rgba(255, 42, 95, 0.3);
+    }
+
+    .char-card.selected-p2 {
+      border-color: var(--secondary);
+      box-shadow: 0 0 25px var(--secondary-glow), inset 0 0 20px rgba(0, 229, 255, 0.3);
+    }
+
+    .char-card.selected-both {
+      border-color: var(--accent);
+      box-shadow: 0 0 25px rgba(255, 234, 0, 0.7);
+    }
+
+    .char-card-portrait {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    }
+
+    .char-badge-p1, .char-badge-p2 {
+      position: absolute;
+      top: 10px;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      padding: 3px 10px;
+      font-style: italic;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+
+    .char-badge-p1 { left: 10px; background: var(--primary); color: #fff; }
+    .char-badge-p2 { right: 10px; background: var(--secondary); color: #000; }
+
+    .char-info {
+      padding: 12px;
+      background: rgba(5, 7, 15, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .char-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-style: italic;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .char-archetype {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .char-stats {
+      font-size: 0.72rem;
+      color: #bbb;
+      line-height: 1.4;
+    }
+
+    /* Stage Select */
+    .stage-select-grid {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stage-card {
+      width: 260px;
+      height: 170px;
+      background: #111422;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .stage-card:hover, .stage-card.selected {
+      border-color: var(--accent);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 234, 0, 0.5);
+    }
+
+    .stage-card-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-style: italic;
+      text-shadow: 2px 2px 4px #000;
+      z-index: 2;
+    }
+
+    /* In-Game HUD */
+    #hud {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 24px 36px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .fighter-hud {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: linear-gradient(135deg, rgba(10, 12, 22, 0.85) 0%, rgba(20, 24, 40, 0.6) 100%);
+      padding: 12px 22px;
+      border-radius: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      min-width: 320px;
+    }
+
+    .fighter-hud.p1 {
+      border-left: 6px solid var(--primary);
+      clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+    }
+
+    .fighter-hud.p2 {
+      border-right: 6px solid var(--secondary);
+      flex-direction: row-reverse;
+      clip-path: polygon(5% 0, 100% 0, 100% 100%, 0 100%);
+      text-align: right;
+    }
+
+    .hud-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-style: italic;
+      background: #1a2035;
+    }
+
+    .fighter-hud.p1 .hud-avatar { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
+    .fighter-hud.p2 .hud-avatar { border-color: var(--secondary); box-shadow: 0 0 15px var(--secondary-glow); }
+
+    .hud-details {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hud-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .fighter-hud.p2 .hud-header {
+      justify-content: flex-end;
+    }
+
+    .hud-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+
+    .hud-stocks {
+      display: flex;
+      gap: 5px;
+    }
+
+    .stock-icon {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      display: inline-block;
+      box-shadow: 0 0 8px #fff;
+    }
+
+    .fighter-hud.p1 .stock-icon { background: var(--primary); box-shadow: 0 0 8px var(--primary-glow); }
+    .fighter-hud.p2 .stock-icon { background: var(--secondary); box-shadow: 0 0 8px var(--secondary-glow); }
+
+    .hud-damage {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-style: italic;
+      line-height: 1;
+      letter-spacing: 1px;
+      color: #fff;
+      transition: color 0.15s ease, transform 0.1s ease;
+    }
+
+    .hud-ult-bar-container {
+      width: 180px;
+      height: 9px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 3px;
+    }
+
+    .hud-ult-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffea00, #ff5e00);
+      transition: width 0.1s linear;
+    }
+
+    .hud-ult-ready {
+      animation: pulseGlow 0.8s infinite alternate;
+      background: linear-gradient(90deg, #00e5ff, #ff2a5f) !important;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 5px #ffea00; }
+      100% { box-shadow: 0 0 15px #00e5ff, 0 0 25px #ff2a5f; }
+    }
+
+    /* Training HUD */
+    #training-panel {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 15, 30, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 24px;
+      border-radius: 20px;
+      display: flex;
+      gap: 16px;
+      pointer-events: auto;
+      backdrop-filter: blur(8px);
+      z-index: 20;
+    }
+
+    .training-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all 0.2s;
+    }
+
+    .training-btn:hover, .training-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Floating Combos Counter */
+    .combo-banner {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-style: italic;
+      color: var(--accent);
+      text-shadow: 0 0 15px rgba(255, 234, 0, 0.8), 2px 2px 0 #000;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.2s ease;
+      z-index: 25;
+    }
+
+    /* Modal dialogs / Help */
+    .controls-modal {
+      display: flex;
+      gap: 2.5rem;
+      background: rgba(10, 14, 25, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 24px 36px;
+      max-width: 850px;
+      margin-bottom: 2rem;
+    }
+
+    .control-col {
+      flex: 1;
+    }
+
+    .control-col h3 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      border-bottom: 2px solid;
+      padding-bottom: 6px;
+    }
+
+    .control-col.p1 h3 { color: var(--primary); border-color: var(--primary); }
+    .control-col.p2 h3 { color: var(--secondary); border-color: var(--secondary); }
+
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+    }
+
+    .key-badge {
+      background: #252c42;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    /* Pause Menu */
+    #pause-menu {
+      z-index: 60;
+    }
+
+    /* Blast Indicators */
+    .offscreen-marker {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      pointer-events: none;
+      z-index: 22;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Impact Flash Effect */
+    #impact-flash {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+      transition: opacity 0.05s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="gameCanvas" width="1920" height="1080"></canvas>
+    <div id="impact-flash"></div>
+
+    <!-- UI Overlay -->
+    <div class="ui-layer">
+
+      <!-- In-Game HUD -->
+      <div id="hud" style="display: none;">
+        <!-- P1 HUD -->
+        <div class="fighter-hud p1" id="p1-hud">
+          <div class="hud-avatar" id="p1-avatar">K</div>
+          <div class="hud-details">
+            <div class="hud-header">
+              <span class="hud-name" id="p1-name">KAIEN</span>
+              <div class="hud-stocks" id="p1-stocks">
+                <span class="stock-icon"></span>
+                <span class="stock-icon"></span>
+                <span class="stock-icon"></span>
+              </div>
+            </div>
+            <div class="hud-damage" id="p1-damage">0%</div>
+            <div class="hud-ult-bar-container">
+              <div class="hud-ult-bar" id="p1-ult-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- P2 HUD -->
+        <div class="fighter-hud p2" id="p2-hud">
+          <div class="hud-avatar" id="p2-avatar">M</div>
+          <div class="hud-details">
+            <div class="hud-header">
+              <span class="hud-name" id="p2-name">MURAMASA</span>
+              <div class="hud-stocks" id="p2-stocks">
+                <span class="stock-icon"></span>
+                <span class="stock-icon"></span>
+                <span class="stock-icon"></span>
+              </div>
+            </div>
+            <div class="hud-damage" id="p2-damage">0%</div>
+            <div class="hud-ult-bar-container">
+              <div class="hud-ult-bar" id="p2-ult-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Training Mode Controls -->
+      <div id="training-panel" style="display: none;">
+        <button class="training-btn" id="btn-reset-pos">Resetar Posições (P)</button>
+        <button class="training-btn" id="btn-reset-dmg">Zerar Dano</button>
+        <button class="training-btn" id="btn-toggle-hitbox">Hitboxes: OFF</button>
+        <button class="training-btn" id="btn-dummy-cpu">Dummy: Parado</button>
+      </div>
+
+      <!-- Main Menu Screen -->
+      <div class="screen-overlay" id="main-menu">
+        <h1 class="title-logo">DADA BLATE</h1>
+        <div class="title-sub">Anime Platform Fighter</div>
+
+        <div class="menu-buttons">
+          <button class="btn" id="btn-mode-versus">Versus Local (2 Jogadores)</button>
+          <button class="btn btn-secondary" id="btn-mode-cpu">1 Jogador vs CPU</button>
+          <button class="btn btn-secondary" id="btn-mode-training">Modo Treinamento</button>
+          <button class="btn" id="btn-show-controls">Controles & Anti-Ghosting</button>
+          <button class="btn" id="btn-toggle-sound">Som & Música: LIGADO</button>
+        </div>
+      </div>
+
+      <!-- Character Select Screen -->
+      <div class="screen-overlay hidden" id="char-select">
+        <h2 class="title-logo" style="font-size: 3rem; margin-bottom: 0.2rem;">SELEÇÃO DE LUTADORES</h2>
+        <div class="title-sub" id="char-select-hint">JOGADOR 1: ESCOLHA SEU PERSONAGEM</div>
+
+        <div class="char-select-grid" id="char-grid">
+          <!-- Kaien -->
+          <div class="char-card selected-p1" data-char="kaien">
+            <div class="char-badge-p1">P1</div>
+            <div class="char-card-portrait">
+              <canvas width="160" height="220" id="preview-kaien"></canvas>
+            </div>
+            <div class="char-info">
+              <div class="char-name">KAIEN</div>
+              <div class="char-archetype">O Protagonista Shounen</div>
+              <div class="char-stats">
+                Velocidade: ★★★★☆<br>
+                Poder: ★★★★★<br>
+                Alcance: ★★★☆☆<br>
+                <i>Brawler flamejante com Hadouken e Dragon Uppercut.</i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Muramasa -->
+          <div class="char-card" data-char="muramasa">
+            <div class="char-card-portrait">
+              <canvas width="160" height="220" id="preview-muramasa"></canvas>
+            </div>
+            <div class="char-info">
+              <div class="char-name">MURAMASA</div>
+              <div class="char-archetype">O Espadachim Sombrio</div>
+              <div class="char-stats">
+                Velocidade: ★★★★★<br>
+                Poder: ★★★☆☆<br>
+                Alcance: ★★★★★<br>
+                <i>Alcance de katana, cortes em dash e sangramento.</i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vesper -->
+          <div class="char-card" data-char="vesper">
+            <div class="char-card-portrait">
+              <canvas width="160" height="220" id="preview-vesper"></canvas>
+            </div>
+            <div class="char-info">
+              <div class="char-name">VESPER</div>
+              <div class="char-archetype">O Mago Underground</div>
+              <div class="char-stats">
+                Velocidade: ★★★☆☆<br>
+                Poder: ★★★★☆<br>
+                Alcance: ★★★★★<br>
+                <i>Armadilhas rúnicas, vórtices de gravidade e teleporte.</i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-secondary" id="btn-char-back">Voltar</button>
+          <button class="btn" id="btn-char-confirm">Confirmar Seleção</button>
+        </div>
+      </div>
+
+      <!-- Stage Select Screen -->
+      <div class="screen-overlay hidden" id="stage-select">
+        <h2 class="title-logo" style="font-size: 3rem; margin-bottom: 0.2rem;">SELEÇÃO DE ARENA</h2>
+        <div class="title-sub">ESCOLHA O CAMPO DE BATALHA</div>
+
+        <div class="stage-select-grid" id="stage-grid">
+          <div class="stage-card selected" data-stage="0">
+            <canvas width="260" height="170" id="stage-thumb-0" style="position: absolute; top:0; left:0;"></canvas>
+            <div class="stage-card-title">NEO SHINJUKU</div>
+          </div>
+          <div class="stage-card" data-stage="1">
+            <canvas width="260" height="170" id="stage-thumb-1" style="position: absolute; top:0; left:0;"></canvas>
+            <div class="stage-card-title">SANTUÁRIO CELESTIAL</div>
+          </div>
+          <div class="stage-card" data-stage="2">
+            <canvas width="260" height="170" id="stage-thumb-2" style="position: absolute; top:0; left:0;"></canvas>
+            <div class="stage-card-title">CÂMARA DO VAZIO</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-secondary" id="btn-stage-back">Voltar</button>
+          <button class="btn" id="btn-stage-start">INICIAR COMBATE</button>
+        </div>
+      </div>
+
+      <!-- Controls Screen -->
+      <div class="screen-overlay hidden" id="controls-screen">
+        <h2 class="title-logo" style="font-size: 2.8rem; margin-bottom: 1.5rem;">ESQUEMA DE CONTROLES</h2>
+
+        <div class="controls-modal">
+          <div class="control-col p1">
+            <h3>JOGADOR 1 (Lado Esquerdo)</h3>
+            <div class="control-row"><span>Mover / Pular</span> <span class="key-badge">W A S D</span></div>
+            <div class="control-row"><span>Fast Fall / Descer Plataforma</span> <span class="key-badge">S</span></div>
+            <div class="control-row"><span>Ataque Leve</span> <span class="key-badge">F</span></div>
+            <div class="control-row"><span>Ataque Pesado / Smash</span> <span class="key-badge">G</span></div>
+            <div class="control-row"><span>Especial (Neutro / Cima)</span> <span class="key-badge">R</span></div>
+            <div class="control-row"><span>Ataque Ultimate (100%)</span> <span class="key-badge">T</span></div>
+            <div class="control-row"><span>Dash Terrestre / Air Dodge</span> <span class="key-badge">E</span></div>
+          </div>
+
+          <div class="control-col p2">
+            <h3>JOGADOR 2 (Lado Direito)</h3>
+            <div class="control-row"><span>Mover / Pular</span> <span class="key-badge">Setas Direcionais</span></div>
+            <div class="control-row"><span>Fast Fall / Descer Plataforma</span> <span class="key-badge">Seta Baixo</span></div>
+            <div class="control-row"><span>Ataque Leve</span> <span class="key-badge">Numpad 1 ou K</span></div>
+            <div class="control-row"><span>Ataque Pesado / Smash</span> <span class="key-badge">Numpad 2 ou L</span></div>
+            <div class="control-row"><span>Especial (Neutro / Cima)</span> <span class="key-badge">Numpad 4 ou I</span></div>
+            <div class="control-row"><span>Ataque Ultimate (100%)</span> <span class="key-badge">Numpad 5 ou O</span></div>
+            <div class="control-row"><span>Dash Terrestre / Air Dodge</span> <span class="key-badge">Numpad 3 ou J</span></div>
+          </div>
+        </div>
+
+        <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 1.5rem; max-width: 650px; text-align: center;">
+          ⚡ <b>Anti-Ghosting Integrado</b>: Posições físicas totalmente separadas no teclado. Jogadores em notebooks podem usar <b>I, J, K, L, O</b> simultaneamente sem Numpad!
+        </p>
+
+        <button class="btn" id="btn-controls-back">Entendido</button>
+      </div>
+
+      <!-- Victory Screen -->
+      <div class="screen-overlay hidden" id="victory-screen">
+        <h1 class="title-logo" id="victory-title" style="color: var(--accent);">VITÓRIA!</h1>
+        <div class="title-sub" id="victory-subtitle">JOGADOR 1 VENCEU A PARTIDA</div>
+
+        <div class="menu-buttons" style="margin-top: 1rem;">
+          <button class="btn" id="btn-rematch">Revanche Instantânea</button>
+          <button class="btn btn-secondary" id="btn-char-select-return">Mudar Personagens</button>
+          <button class="btn btn-secondary" id="btn-menu-return">Menu Principal</button>
+        </div>
+      </div>
+
+      <!-- Pause Menu -->
+      <div class="screen-overlay hidden" id="pause-menu">
+        <h2 class="title-logo" style="font-size: 3rem;">JOGO PAUSADO</h2>
+        <div class="menu-buttons">
+          <button class="btn" id="btn-resume">Continuar</button>
+          <button class="btn btn-secondary" id="btn-pause-restart">Reiniciar Partida</button>
+          <button class="btn btn-secondary" id="btn-pause-quit">Sair para o Menu</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       DADA BLATE: ANIME PLATFORM FIGHTER ENGINE (Vanilla JS / Canvas / Web Audio)
+       ========================================================================== */
+
+    // --- AUDIO SYSTEM (Procedural Web Audio API) ---
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+        this.bgmPlaying = false;
+        this.bgmNode = null;
+        this.masterGain = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.setValueAtTime(0.4, this.ctx.currentTime);
+          this.masterGain.connect(this.ctx.destination);
+          this.startBGM();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playHit(strength = 'light') {
+        if (!this.enabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+
+        if (strength === 'light') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(70, now + 0.12);
+          gain.gain.setValueAtTime(0.6, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } else if (strength === 'heavy') {
+          // Punchy heavy sub-drop with noise
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(360, now);
+          osc.frequency.exponentialRampToValueAtTime(35, now + 0.35);
+          gain.gain.setValueAtTime(1.0, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else if (strength === 'slash') {
+          // Katana high frequency metallic slice
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(1200, now);
+          osc.frequency.exponentialRampToValueAtTime(200, now + 0.18);
+          gain.gain.setValueAtTime(0.7, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+          osc.start(now);
+          osc.stop(now + 0.18);
+        }
+      }
+
+      playDash() {
+        if (!this.enabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(500, now);
+        osc.frequency.exponentialRampToValueAtTime(180, now + 0.1);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(now);
+        osc.stop(now + 0.1);
+      }
+
+      playJump() {
+        if (!this.enabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(380, now + 0.12);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      playKO() {
+        if (!this.enabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        // Big ring-out explosion boom
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(25, now + 1.2);
+        gain.gain.setValueAtTime(1.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(now);
+        osc.stop(now + 1.2);
+      }
+
+      playUltCharge() {
+        if (!this.enabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.5);
+        gain.gain.setValueAtTime(0.6, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(now);
+        osc.stop(now + 0.5);
+      }
+
+      // Procedural Synth-Rock/Cyber Chiptune Loop
+      startBGM() {
+        if (this.bgmPlaying || !this.ctx) return;
+        this.bgmPlaying = true;
+        const tempo = 135;
+        const beatSec = 60 / tempo;
+        let step = 0;
+        const scale = [110, 130.81, 146.83, 164.81, 196, 220]; // A Minor Pentatonic
+
+        const playTick = () => {
+          if (!this.bgmPlaying || !this.ctx) return;
+          const now = this.ctx.currentTime;
+
+          // Bass groove
+          if (step % 2 === 0) {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            const note = scale[(step / 2) % scale.length] / 2;
+            osc.frequency.setValueAtTime(note, now);
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + beatSec * 0.9);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + beatSec * 0.9);
+          }
+
+          // Arpeggio Lead
+          if (step % 1 === 0) {
+            const leadOsc = this.ctx.createOscillator();
+            const leadGain = this.ctx.createGain();
+            leadOsc.type = 'triangle';
+            const noteIdx = (step * 3) % scale.length;
+            leadOsc.frequency.setValueAtTime(scale[noteIdx] * 2, now);
+            leadGain.gain.setValueAtTime(0.07, now);
+            leadGain.gain.exponentialRampToValueAtTime(0.01, now + beatSec * 0.45);
+            leadOsc.connect(leadGain);
+            leadGain.connect(this.masterGain);
+            leadOsc.start(now);
+            leadOsc.stop(now + beatSec * 0.45);
+          }
+
+          step = (step + 1) % 32;
+          this.bgmTimeout = setTimeout(playTick, beatSec * 500);
+        };
+        playTick();
+      }
+
+      stopBGM() {
+        this.bgmPlaying = false;
+        clearTimeout(this.bgmTimeout);
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    // --- INPUT MANAGER (Zero-Ghosting & Multi-key Tracking) ---
+    class InputManager {
+      constructor() {
+        this.keys = new Set();
+        this.buffer = { p1: {}, p2: {} };
+
+        window.addEventListener('keydown', (e) => {
+          sound.init(); // Initialize audio on first user keypress
+          if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+            e.preventDefault();
+          }
+          if (e.code === 'Escape') {
+            game.togglePause();
+          }
+          this.keys.add(e.code);
+        });
+
+        window.addEventListener('keyup', (e) => {
+          this.keys.delete(e.code);
+        });
+      }
+
+      isDown(code) {
+        return this.keys.has(code);
+      }
+
+      getP1Input() {
+        return {
+          left: this.isDown('KeyA'),
+          right: this.isDown('KeyD'),
+          up: this.isDown('KeyW'),
+          down: this.isDown('KeyS'),
+          light: this.isDown('KeyF'),
+          heavy: this.isDown('KeyG'),
+          special: this.isDown('KeyR'),
+          ult: this.isDown('KeyT'),
+          dash: this.isDown('KeyE')
+        };
+      }
+
+      getP2Input() {
+        // Supports Numpad OR Laptop alternative keys (I, J, K, L, O) simultaneously!
+        return {
+          left: this.isDown('ArrowLeft'),
+          right: this.isDown('ArrowRight'),
+          up: this.isDown('ArrowUp'),
+          down: this.isDown('ArrowDown'),
+          light: this.isDown('Numpad1') || this.isDown('KeyK'),
+          heavy: this.isDown('Numpad2') || this.isDown('KeyL'),
+          special: this.isDown('Numpad4') || this.isDown('KeyI'),
+          ult: this.isDown('Numpad5') || this.isDown('KeyO'),
+          dash: this.isDown('Numpad3') || this.isDown('KeyJ')
+        };
+      }
+    }
+
+    const input = new InputManager();
+
+    // --- ARENAS / STAGES DEFINITION ---
+    const STAGES = [
+      {
+        name: 'Neo Shinjuku',
+        color: '#ff2a5f',
+        bgGradient: ['#0d111d', '#1e1430', '#0a0715'],
+        platforms: [
+          // Main solid base: { x, y, w, h, semi: false }
+          { x: 560, y: 780, w: 800, h: 60, semi: false },
+          // Floating semi-solid platforms (jump through or drop down)
+          { x: 620, y: 620, w: 220, h: 16, semi: true },
+          { x: 1080, y: 620, w: 220, h: 16, semi: true },
+          { x: 850, y: 480, w: 220, h: 16, semi: true }
+        ],
+        spawnP1: { x: 750, y: 700 },
+        spawnP2: { x: 1170, y: 700 },
+        blastZone: { left: 100, right: 1820, top: 50, bottom: 1050 }
+      },
+      {
+        name: 'Santuário Celestial',
+        color: '#ffea00',
+        bgGradient: ['#0f223d', '#2c1e4a', '#100c24'],
+        platforms: [
+          { x: 500, y: 800, w: 920, h: 70, semi: false },
+          { x: 450, y: 640, w: 240, h: 18, semi: true },
+          { x: 1230, y: 640, w: 240, h: 18, semi: true },
+          { x: 810, y: 550, w: 300, h: 18, semi: true }
+        ],
+        spawnP1: { x: 700, y: 720 },
+        spawnP2: { x: 1220, y: 720 },
+        blastZone: { left: 80, right: 1840, top: 40, bottom: 1060 }
+      },
+      {
+        name: 'Câmara do Vazio',
+        color: '#9d00ff',
+        bgGradient: ['#050510', '#150524', '#000005'],
+        platforms: [
+          { x: 600, y: 810, w: 720, h: 50, semi: false },
+          { x: 740, y: 630, w: 440, h: 16, semi: true }
+        ],
+        spawnP1: { x: 760, y: 730 },
+        spawnP2: { x: 1160, y: 730 },
+        blastZone: { left: 120, right: 1800, top: 60, bottom: 1050 }
+      }
+    ];
+
+    // --- CHARACTER DEFINITIONS ---
+    const CHARACTERS = {
+      kaien: {
+        id: 'kaien',
+        name: 'KAIEN',
+        archetype: 'O Protagonista Shounen',
+        color: '#ff3b30',
+        auraColor: 'rgba(255, 60, 40, 0.4)',
+        weight: 100,
+        speed: 9.2,
+        jumpForce: 18.5,
+        gravity: 0.85,
+        avatarLetter: 'K',
+        description: 'Brawler ofensivo com Hadouken, Uppercut flamejante e combos aéreos velozes.'
+      },
+      muramasa: {
+        id: 'muramasa',
+        name: 'MURAMASA',
+        archetype: 'O Espadachim Sombrio',
+        color: '#9d00ff',
+        auraColor: 'rgba(157, 0, 255, 0.4)',
+        weight: 90,
+        speed: 10.5,
+        jumpForce: 19.0,
+        gravity: 0.88,
+        avatarLetter: 'M',
+        description: 'Mestre da espada rápida com alto alcance, cortes verticais e sangramento contínuo.'
+      },
+      vesper: {
+        id: 'vesper',
+        name: 'VESPER',
+        archetype: 'O Mago Underground',
+        color: '#00e5ff',
+        auraColor: 'rgba(0, 229, 255, 0.4)',
+        weight: 85,
+        speed: 8.5,
+        jumpForce: 17.8,
+        gravity: 0.76,
+        avatarLetter: 'V',
+        description: 'Trapmaster que invoca armadilhas de glifos no chão, vórtice de atração e teleporte.'
+      }
+    };
+
+    // --- PROJECTILES & HAZARDS ---
+    class Projectile {
+      constructor(owner, x, y, vx, vy, type, options = {}) {
+        this.owner = owner;
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.type = type; // 'hadouken', 'trap', 'slashwave', 'vortex'
+        this.w = options.w || 30;
+        this.h = options.h || 30;
+        this.life = options.life || 90;
+        this.damage = options.damage || 8;
+        this.baseKB = options.baseKB || 6;
+        this.kbGrowth = options.kbGrowth || 0.4;
+        this.color = options.color || '#ffea00';
+        this.active = true;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life--;
+        if (this.life <= 0) this.active = false;
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 15;
+
+        if (this.type === 'hadouken') {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.w / 2, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.type === 'slashwave') {
+          ctx.beginPath();
+          ctx.ellipse(this.x, this.y, this.w / 2, this.h / 2, Math.PI / 4, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.type === 'trap') {
+          // Arcane spinning rune
+          ctx.translate(this.x, this.y);
+          ctx.rotate(Date.now() * 0.005);
+          ctx.strokeStyle = this.color;
+          ctx.lineWidth = 3;
+          ctx.strokeRect(-this.w/2, -this.h/2, this.w, this.h);
+          ctx.beginPath();
+          ctx.arc(0, 0, this.w / 3, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+    }
+
+    // --- FIGHTER CONTROLLER & PHYSICS ---
+    class Fighter {
+      constructor(id, charData, isCPU = false) {
+        this.id = id; // 'p1' or 'p2'
+        this.char = charData;
+        this.isCPU = isCPU;
+        this.cpuLevel = 'normal'; // 'easy', 'normal', 'hard'
+
+        // Dimensions
+        this.w = 54;
+        this.h = 92;
+
+        // Position & Velocity
+        this.x = 800;
+        this.y = 700;
+        this.vx = 0;
+        this.vy = 0;
+        this.facing = id === 'p1' ? 1 : -1;
+
+        // Combat Stats
+        this.damage = 0;
+        this.stocks = 3;
+        this.ultGauge = 0;
+        this.comboCount = 0;
+        this.comboTimer = 0;
+
+        // States
+        this.state = 'IDLE'; // IDLE, RUN, JUMP, ATTACK, AIRDODGE, HITSTUN, RESPAWN
+        this.grounded = false;
+        this.canDoubleJump = true;
+        this.canAirDash = true;
+        this.fastFalling = false;
+        this.wallSliding = false;
+        this.wallDir = 0;
+
+        // Timers & Frames
+        this.stateTimer = 0;
+        this.attackCooldown = 0;
+        this.hitstop = 0;
+        this.invulnerableTimer = 0;
+        this.currentAttack = null;
+
+        // Active hitboxes
+        this.activeHitbox = null;
+
+        // CPU AI internals
+        this.cpuTimer = 0;
+        this.cpuTargetAction = null;
+      }
+
+      reset(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = 0;
+        this.vy = 0;
+        this.damage = 0;
+        this.ultGauge = 0;
+        this.state = 'IDLE';
+        this.grounded = false;
+        this.invulnerableTimer = 90; // Respawn i-frames
+        this.activeHitbox = null;
+        this.currentAttack = null;
+      }
+
+      update(ctrlInput, opponent, stage, projectiles, fx) {
+        // Hit-stop freeze frames (impact frame pause)
+        if (this.hitstop > 0) {
+          this.hitstop--;
+          return;
+        }
+
+        if (this.invulnerableTimer > 0) this.invulnerableTimer--;
+        if (this.comboTimer > 0) {
+          this.comboTimer--;
+          if (this.comboTimer === 0) this.comboCount = 0;
+        }
+
+        // Handle CPU Decisions if bot
+        let inputState = ctrlInput;
+        if (this.isCPU) {
+          inputState = this.getCPUInput(opponent, stage);
+        }
+
+        // --- STATE HANDLING ---
+        if (this.state === 'HITSTUN') {
+          this.stateTimer--;
+          this.applyGravity();
+          this.moveAndCollide(stage, inputState);
+          if (this.stateTimer <= 0) {
+            this.state = 'IDLE';
+          }
+          return;
+        }
+
+        if (this.state === 'AIRDODGE') {
+          this.stateTimer--;
+          this.x += this.vx;
+          this.y += this.vy;
+          this.vx *= 0.92;
+          this.vy *= 0.92;
+          if (this.stateTimer <= 0) {
+            this.state = 'IDLE';
+          }
+          return;
+        }
+
+        // Normal Control Logic
+        this.handleMovement(inputState, stage);
+        this.handleAttacks(inputState, projectiles, fx);
+        this.applyGravity();
+        this.moveAndCollide(stage, inputState);
+      }
+
+      handleMovement(inState, stage) {
+        // Horizontal Movement
+        const accel = this.grounded ? 1.6 : 1.1;
+        const maxSpeed = this.char.speed;
+        const friction = this.grounded ? 0.82 : 0.94;
+
+        if (this.state !== 'ATTACK' || this.canMoveWhileAttacking()) {
+          if (inState.left) {
+            this.vx -= accel;
+            if (this.vx < -maxSpeed) this.vx = -maxSpeed;
+            this.facing = -1;
+            if (this.grounded && this.state !== 'ATTACK') this.state = 'RUN';
+          } else if (inState.right) {
+            this.vx += accel;
+            if (this.vx > maxSpeed) this.vx = maxSpeed;
+            this.facing = 1;
+            if (this.grounded && this.state !== 'ATTACK') this.state = 'RUN';
+          } else {
+            this.vx *= friction;
+            if (Math.abs(this.vx) < 0.2) this.vx = 0;
+            if (this.grounded && this.state !== 'ATTACK') this.state = 'IDLE';
+          }
+        }
+
+        // Jump & Double Jump
+        if (inState.up && !this.upHeld) {
+          if (this.grounded) {
+            this.vy = -this.char.jumpForce;
+            this.grounded = false;
+            this.canDoubleJump = true;
+            sound.playJump();
+            fx.spawnDust(this.x + this.w/2, this.y + this.h);
+          } else if (this.wallSliding) {
+            // Wall Jump
+            this.vy = -this.char.jumpForce * 0.95;
+            this.vx = -this.wallDir * this.char.speed * 1.3;
+            this.facing = -this.wallDir;
+            this.wallSliding = false;
+            sound.playJump();
+            fx.spawnDust(this.x + (this.wallDir > 0 ? this.w : 0), this.y + this.h/2);
+          } else if (this.canDoubleJump) {
+            this.vy = -this.char.jumpForce * 0.88;
+            this.canDoubleJump = false;
+            sound.playJump();
+            fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color);
+          }
+        }
+        this.upHeld = inState.up;
+
+        // Fast Fall (Hold down while falling)
+        if (inState.down && this.vy > 0 && !this.grounded) {
+          this.vy = Math.max(this.vy, 18);
+          this.fastFalling = true;
+        }
+
+        // Dash / Air Dodge (E or Numpad 3)
+        if (inState.dash && !this.dashHeld) {
+          if (this.grounded && this.state !== 'AIRDODGE') {
+            // Ground Dash
+            this.vx = this.facing * (this.char.speed * 1.9);
+            this.invulnerableTimer = 16;
+            sound.playDash();
+            fx.spawnDashLines(this.x + this.w/2, this.y + this.h/2, this.facing);
+          } else if (!this.grounded && this.canAirDash) {
+            // Directional Air Dodge
+            let dirX = 0;
+            let dirY = 0;
+            if (inState.left) dirX -= 1;
+            if (inState.right) dirX += 1;
+            if (inState.up) dirY -= 1;
+            if (inState.down) dirY += 1;
+            if (dirX === 0 && dirY === 0) dirX = this.facing;
+
+            const len = Math.hypot(dirX, dirY) || 1;
+            this.vx = (dirX / len) * 16;
+            this.vy = (dirY / len) * 16;
+            this.state = 'AIRDODGE';
+            this.stateTimer = 18;
+            this.canAirDash = false;
+            this.invulnerableTimer = 18;
+            sound.playDash();
+            fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#ffffff');
+          }
+        }
+        this.dashHeld = inState.dash;
+      }
+
+      canMoveWhileAttacking() {
+        return !this.grounded;
+      }
+
+      applyGravity() {
+        if (!this.grounded) {
+          this.vy += this.char.gravity;
+          if (this.vy > 25) this.vy = 25; // Terminal velocity
+        }
+      }
+
+      moveAndCollide(stage, inState) {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        this.grounded = false;
+        this.wallSliding = false;
+
+        // Check Stage Platform Collisions
+        for (const plat of stage.platforms) {
+          if (plat.semi) {
+            // One-way semi-solid platform
+            const dropDown = inState && inState.down && inState.up; // Down + jump drops down
+            if (!dropDown && this.vy >= 0) {
+              const feetPrev = (this.y - this.vy) + this.h;
+              const feetNow = this.y + this.h;
+              if (feetPrev <= plat.y + 4 && feetNow >= plat.y &&
+                  this.x + this.w > plat.x && this.x < plat.x + plat.w) {
+                this.y = plat.y - this.h;
+                this.vy = 0;
+                this.grounded = true;
+                this.canDoubleJump = true;
+                this.canAirDash = true;
+                this.fastFalling = false;
+              }
+            }
+          } else {
+            // Solid platform: top, sides, bottom
+            // Check Landing on top
+            if (this.vy >= 0 &&
+                this.x + this.w > plat.x + 6 && this.x < plat.x + plat.w - 6 &&
+                this.y + this.h >= plat.y && this.y + this.h - this.vy <= plat.y + 15) {
+              this.y = plat.y - this.h;
+              this.vy = 0;
+              this.grounded = true;
+              this.canDoubleJump = true;
+              this.canAirDash = true;
+              this.fastFalling = false;
+            }
+
+            // Wall Slide check
+            if (!this.grounded && this.y + this.h > plat.y && this.y < plat.y + plat.h) {
+              // Touching left edge of solid platform
+              if (this.x + this.w >= plat.x && this.x + this.w - this.vx <= plat.x + 10 && inState.right) {
+                this.x = plat.x - this.w;
+                this.vx = 0;
+                this.wallSliding = true;
+                this.wallDir = 1;
+                if (this.vy > 2.5) this.vy = 2.5; // Slide friction
+              }
+              // Touching right edge
+              else if (this.x <= plat.x + plat.w && this.x - this.vx >= plat.x + plat.w - 10 && inState.left) {
+                this.x = plat.x + plat.w;
+                this.vx = 0;
+                this.wallSliding = true;
+                this.wallDir = -1;
+                if (this.vy > 2.5) this.vy = 2.5;
+              }
+            }
+          }
+        }
+      }
+
+      handleAttacks(inState, projectiles, fx) {
+        if (this.attackCooldown > 0) this.attackCooldown--;
+
+        if (this.state === 'ATTACK') {
+          this.stateTimer--;
+          if (this.stateTimer <= 0) {
+            this.state = 'IDLE';
+            this.activeHitbox = null;
+            this.currentAttack = null;
+          }
+          return;
+        }
+
+        if (this.attackCooldown > 0) return;
+
+        // 1. ULTIMATE ATTACK (T or Numpad 5 when gauge >= 100)
+        if (inState.ult && this.ultGauge >= 100) {
+          this.executeUltimate(fx);
+          return;
+        }
+
+        // 2. SPECIAL ATTACK (R or Numpad 4)
+        if (inState.special) {
+          this.executeSpecial(inState, projectiles, fx);
+          return;
+        }
+
+        // 3. HEAVY ATTACK / SMASH (G or Numpad 2)
+        if (inState.heavy) {
+          this.executeHeavy(inState, fx);
+          return;
+        }
+
+        // 4. LIGHT ATTACK (F or Numpad 1)
+        if (inState.light) {
+          this.executeLight(inState, fx);
+          return;
+        }
+      }
+
+      executeLight(inState, fx) {
+        this.state = 'ATTACK';
+        this.stateTimer = 16;
+        this.attackCooldown = 18;
+        this.currentAttack = 'LIGHT';
+
+        let hx = this.facing === 1 ? this.x + this.w : this.x - 50;
+        let hy = this.y + 15;
+        let hw = 55;
+        let hh = 50;
+
+        if (inState.up) {
+          // Up-tilt
+          hy = this.y - 30;
+          hw = 65;
+          hh = 50;
+          this.activeHitbox = { x: this.x - 5, y: hy, w: hw, h: hh, dmg: 7, baseKB: 5, kbGrowth: 0.35, angle: -Math.PI / 2.2 };
+        } else if (!this.grounded) {
+          // Aerial Light (360 spin / quick kick)
+          this.activeHitbox = { x: this.x - 15, y: this.y - 10, w: this.w + 30, h: this.h + 20, dmg: 6, baseKB: 4.5, kbGrowth: 0.3, angle: this.facing === 1 ? -0.5 : -2.6 };
+        } else {
+          // Neutral Jab
+          this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg: 5, baseKB: 3.5, kbGrowth: 0.25, angle: this.facing === 1 ? -0.4 : -2.7 };
+        }
+
+        sound.playHit('light');
+        fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, this.char.color);
+      }
+
+      executeHeavy(inState, fx) {
+        this.state = 'ATTACK';
+        this.stateTimer = 26;
+        this.attackCooldown = 32;
+        this.currentAttack = 'HEAVY';
+
+        let hx = this.facing === 1 ? this.x + this.w - 10 : this.x - 70;
+        let hy = this.y + 5;
+        let hw = 80;
+        let hh = 65;
+        let angle = this.facing === 1 ? -0.55 : -2.55;
+        let dmg = 15;
+        let kbGrowth = 0.95;
+
+        if (inState.up) {
+          // High Launching Uppercut
+          hy = this.y - 45;
+          hw = 70;
+          hh = 75;
+          angle = -Math.PI / 2;
+          dmg = 17;
+          kbGrowth = 1.05;
+        } else if (!this.grounded && inState.down) {
+          // Down Air Spike / Meteor Smash!
+          hy = this.y + this.h - 10;
+          hw = 75;
+          hh = 50;
+          angle = Math.PI / 2; // Straight Down!
+          dmg = 16;
+          kbGrowth = 0.9;
+        }
+
+        this.activeHitbox = { x: hx, y: hy, w: hw, h: hh, dmg, baseKB: 8, kbGrowth, angle, hitstop: 8, isHeavy: true };
+        sound.playHit('heavy');
+        fx.spawnSlash(this.x + this.w/2, this.y + this.h/2, this.facing, '#ffffff', 1.5);
+      }
+
+      executeSpecial(inState, projectiles, fx) {
+        this.state = 'ATTACK';
+        this.stateTimer = 25;
+        this.attackCooldown = 30;
+        this.currentAttack = 'SPECIAL';
+
+        if (this.char.id === 'kaien') {
+          if (inState.up) {
+            // DRAGON UPPERCUT RECOVERY
+            this.vy = -20;
+            this.vx = this.facing * 5;
+            this.grounded = false;
+            this.activeHitbox = { x: this.x - 10, y: this.y - 30, w: this.w + 20, h: this.h + 20, dmg: 14, baseKB: 9, kbGrowth: 0.85, angle: -Math.PI / 2.3, hitstop: 6 };
+            sound.playHit('heavy');
+            fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#ffea00');
+          } else {
+            // HADOUKEN KI BLAST
+            const px = this.facing === 1 ? this.x + this.w + 10 : this.x - 30;
+            projectiles.push(new Projectile(this, px, this.y + 25, this.facing * 14, 0, 'hadouken', {
+              w: 36, h: 36, damage: 10, baseKB: 6, kbGrowth: 0.5, color: '#ff3b30'
+            }));
+            sound.playHit('light');
+            fx.spawnDust(this.x + this.w/2, this.y + this.h);
+          }
+        } else if (this.char.id === 'muramasa') {
+          if (inState.up) {
+            // SHADOW SLASH RECOVERY (Angled dash teleport)
+            this.vy = -19;
+            this.vx = this.facing * 11;
+            this.grounded = false;
+            this.activeHitbox = { x: this.x - 20, y: this.y - 20, w: this.w + 40, h: this.h + 20, dmg: 13, baseKB: 8, kbGrowth: 0.8, angle: -Math.PI / 3 };
+            sound.playHit('slash');
+            fx.spawnSlash(this.x, this.y, this.facing, '#9d00ff', 1.8);
+          } else {
+            // PHANTOM CRESCENT WAVE
+            const px = this.facing === 1 ? this.x + this.w + 10 : this.x - 30;
+            projectiles.push(new Projectile(this, px, this.y + 20, this.facing * 17, 0, 'slashwave', {
+              w: 45, h: 60, damage: 11, baseKB: 7, kbGrowth: 0.6, color: '#9d00ff'
+            }));
+            sound.playHit('slash');
+          }
+        } else if (this.char.id === 'vesper') {
+          if (inState.up) {
+            // BLINK WARP RECOVERY (Teleports towards input)
+            this.y -= 180;
+            this.vx = (inState.left ? -1 : inState.right ? 1 : this.facing) * 6;
+            this.vy = -4;
+            sound.playDash();
+            fx.spawnAura(this.x + this.w/2, this.y + this.h/2, '#00e5ff');
+          } else {
+            // ARCANE RUNE TRAP
+            const px = this.facing === 1 ? this.x + this.w + 30 : this.x - 50;
+            projectiles.push(new Projectile(this, px, this.y + 40, 0, 0, 'trap', {
+              w: 42, h: 42, life: 300, damage: 13, baseKB: 8, kbGrowth: 0.7, color: '#00e5ff'
+            }));
+            sound.playHit('light');
+          }
+        }
+      }
+
+      executeUltimate(fx) {
+        this.ultGauge = 0;
+        this.state = 'ATTACK';
+        this.stateTimer = 45;
+        this.attackCooldown = 60;
+        this.currentAttack = 'ULTIMATE';
+        this.invulnerableTimer = 45;
+
+        // Cinematic Impact burst
+        sound.playUltCharge();
+        fx.triggerScreenShake(25, 35);
+        fx.triggerFlash();
+
+        // Massive anime burst area
+        let hw = 260;
+        let hh = 160;
+        let hx = this.facing === 1 ? this.x - 20 : this.x - hw + this.w + 20;
+        let hy = this.y - 40;
+
+        this.activeHitbox = {
+          x: hx, y: hy, w: hw, h: hh, dmg: 38, baseKB: 16, kbGrowth: 1.4,
+          angle: this.facing === 1 ? -0.6 : -2.5, hitstop: 18, isHeavy: true
+        };
+
+        fx.spawnAura(this.x + this.w/2, this.y + this.h/2, this.char.color, 4);
+      }
+
+      takeDamage(dmg, kbVector, hitstopFrames = 5) {
+        if (this.invulnerableTimer > 0) return;
+
+        this.damage += dmg;
+        this.ultGauge = Math.min(100, this.ultGauge + dmg * 0.85);
+
+        // Smash Knockback Scaling Formula:
+        // kb = baseKB + (damage * kbGrowth * weightFactor)
+        const weightFactor = 100 / this.char.weight;
+        const totalKB = kbVector.baseKB + (this.damage * kbVector.kbGrowth * 0.55 * weightFactor);
+
+        this.vx = Math.cos(kbVector.angle) * totalKB;
+        this.vy = Math.sin(kbVector.angle) * totalKB;
+
+        // Hitstun Duration proportional to knockback
+        const hitstunDuration = Math.min(65, Math.max(10, Math.floor(totalKB * 1.5)));
+        this.state = 'HITSTUN';
+        this.stateTimer = hitstunDuration;
+        this.hitstop = hitstopFrames;
+        this.grounded = false;
+
+        // Combo Counter
+        this.comboCount++;
+        this.comboTimer = 75;
+
+        sound.playHit(kbVector.isHeavy ? 'heavy' : 'light');
+      }
+
+      // AI Decision Making (Bot Controller)
+      getCPUInput(opponent, stage) {
+        this.cpuTimer--;
+        const dist = Math.hypot(opponent.x - this.x, opponent.y - this.y);
+        const dx = opponent.x - this.x;
+        const dy = opponent.y - this.y;
+
+        const res = { left: false, right: false, up: false, down: false, light: false, heavy: false, special: false, ult: false, dash: false };
+
+        // 1. Offstage Survival / Recovery AI Priority!
+        const blast = stage.blastZone;
+        const offstageLeft = this.x < stage.platforms[0].x - 40;
+        const offstageRight = this.x > stage.platforms[0].x + stage.platforms[0].w + 40;
+
+        if (offstageLeft || offstageRight || this.y > 780) {
+          // Move towards stage center
+          if (this.x < 960) res.right = true;
+          else res.left = true;
+
+          // Double jump if falling
+          if (this.vy > 2 && this.canDoubleJump) {
+            res.up = true;
+          }
+          // Use Recovery Up-Special if still below platform
+          else if (this.vy > 4 && this.y > 680) {
+            res.up = true;
+            res.special = true;
+          }
+          return res;
+        }
+
+        // 2. Combat Engagement
+        if (dx > 30) res.right = true;
+        else if (dx < -30) res.left = true;
+
+        if (dy < -60 && this.grounded) res.up = true; // Jump towards aerial opponent
+
+        // Attacks based on distance
+        if (dist < 80) {
+          if (this.ultGauge >= 100) res.ult = true;
+          else if (Math.random() < 0.25) res.heavy = true;
+          else res.light = true;
+        } else if (dist < 220) {
+          if (Math.random() < 0.15) res.special = true;
+          else if (Math.random() < 0.1) res.dash = true;
+        }
+
+        return res;
+      }
+
+      draw(ctx) {
+        ctx.save();
+
+        // Respawn / Invulnerability Flashing
+        if (this.invulnerableTimer > 0 && Math.floor(Date.now() / 60) % 2 === 0) {
+          ctx.globalAlpha = 0.4;
+        }
+
+        // Hitstun Shake
+        let drawX = this.x;
+        let drawY = this.y;
+        if (this.state === 'HITSTUN' && this.hitstop > 0) {
+          drawX += (Math.random() - 0.5) * 8;
+          drawY += (Math.random() - 0.5) * 8;
+        }
+
+        ctx.translate(drawX + this.w / 2, drawY + this.h / 2);
+        ctx.scale(this.facing, 1);
+
+        // Character Aura / Silhouette
+        ctx.shadowColor = this.char.color;
+        ctx.shadowBlur = this.ultGauge >= 100 ? 30 : 12;
+
+        // Draw Stylized Anime Body
+        this.drawFighterBody(ctx);
+
+        ctx.restore();
+      }
+
+      drawFighterBody(ctx) {
+        const hw = this.w / 2;
+        const hh = this.h / 2;
+
+        // Color Palette
+        ctx.fillStyle = this.char.color;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2.5;
+
+        // Torso
+        ctx.beginPath();
+        ctx.roundRect(-hw + 8, -hh + 24, this.w - 16, 44, [4]);
+        ctx.fill();
+        ctx.stroke();
+
+        // Head
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, -hh + 14, 14, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Anime Eyes / Visor
+        ctx.fillStyle = this.char.color;
+        ctx.fillRect(2, -hh + 12, 8, 4);
+
+        // Legs (Running or Aerial Pose)
+        ctx.strokeStyle = this.char.color;
+        ctx.lineWidth = 5;
+        if (this.state === 'RUN') {
+          const legSwing = Math.sin(Date.now() * 0.02) * 16;
+          ctx.beginPath();
+          ctx.moveTo(-6, -hh + 68);
+          ctx.lineTo(-6 + legSwing, hh);
+          ctx.moveTo(6, -hh + 68);
+          ctx.lineTo(6 - legSwing, hh);
+          ctx.stroke();
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(-8, -hh + 68);
+          ctx.lineTo(-10, hh);
+          ctx.moveTo(8, -hh + 68);
+          ctx.lineTo(10, hh);
+          ctx.stroke();
+        }
+
+        // Weapon / Signature Anime Prop
+        if (this.char.id === 'muramasa') {
+          // Katana
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(4, -hh + 40);
+          ctx.lineTo(34, -hh + 10);
+          ctx.stroke();
+        } else if (this.char.id === 'kaien') {
+          // Glowing flaming fists
+          ctx.fillStyle = '#ffea00';
+          ctx.shadowColor = '#ffea00';
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(14, -hh + 42, 7, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.char.id === 'vesper') {
+          // Floating Arcane Orbit Orb
+          const orbOrbit = Date.now() * 0.006;
+          ctx.fillStyle = '#00e5ff';
+          ctx.beginPath();
+          ctx.arc(Math.cos(orbOrbit) * 25, -hh + 30 + Math.sin(orbOrbit) * 10, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- VISUAL EFFECTS & CAMERA SYSTEM ---
+    class VFXEngine {
+      constructor() {
+        this.particles = [];
+        this.slashes = [];
+        this.shakeTime = 0;
+        this.shakeIntensity = 0;
+        this.flashEl = document.getElementById('impact-flash');
+      }
+
+      triggerScreenShake(intensity = 15, duration = 18) {
+        this.shakeIntensity = intensity;
+        this.shakeTime = duration;
+      }
+
+      triggerFlash() {
+        this.flashEl.style.opacity = '0.75';
+        setTimeout(() => { this.flashEl.style.opacity = '0'; }, 80);
+      }
+
+      spawnDust(x, y) {
+        for (let i = 0; i < 6; i++) {
+          this.particles.push({
+            x, y,
+            vx: (Math.random() - 0.5) * 6,
+            vy: -Math.random() * 3,
+            size: Math.random() * 8 + 4,
+            life: 20,
+            maxLife: 20,
+            color: '#ffffff'
+          });
+        }
+      }
+
+      spawnAura(x, y, color, count = 10) {
+        for (let i = 0; i < count; i++) {
+          this.particles.push({
+            x, y,
+            vx: (Math.random() - 0.5) * 8,
+            vy: (Math.random() - 0.5) * 8,
+            size: Math.random() * 10 + 5,
+            life: 25,
+            maxLife: 25,
+            color
+          });
+        }
+      }
+
+      spawnDashLines(x, y, facing) {
+        for (let i = 0; i < 5; i++) {
+          this.particles.push({
+            x: x - facing * (Math.random() * 40),
+            y: y + (Math.random() - 0.5) * 40,
+            vx: -facing * (Math.random() * 12 + 6),
+            vy: 0,
+            size: 3,
+            length: Math.random() * 40 + 20,
+            life: 14,
+            maxLife: 14,
+            color: '#00e5ff',
+            isLine: true
+          });
+        }
+      }
+
+      spawnSlash(x, y, facing, color = '#ffffff', scale = 1.0) {
+        this.slashes.push({
+          x, y, facing, color, scale,
+          life: 12, maxLife: 12
+        });
+      }
+
+      update() {
+        if (this.shakeTime > 0) this.shakeTime--;
+
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const p = this.particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life--;
+          if (p.life <= 0) this.particles.splice(i, 1);
+        }
+
+        for (let i = this.slashes.length - 1; i >= 0; i--) {
+          const s = this.slashes[i];
+          s.life--;
+          if (s.life <= 0) this.slashes.splice(i, 1);
+        }
+      }
+
+      draw(ctx) {
+        // Draw Particles
+        for (const p of this.particles) {
+          ctx.save();
+          const alpha = p.life / p.maxLife;
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = p.color;
+          ctx.strokeStyle = p.color;
+
+          if (p.isLine) {
+            ctx.lineWidth = p.size;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x + p.length, p.y);
+            ctx.stroke();
+          } else {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+
+        // Draw Slashes (Anime Katana Arc Curves)
+        for (const s of this.slashes) {
+          ctx.save();
+          const progress = 1 - (s.life / s.maxLife);
+          ctx.translate(s.x, s.y);
+          ctx.scale(s.facing * s.scale, s.scale);
+          ctx.strokeStyle = s.color;
+          ctx.shadowColor = s.color;
+          ctx.shadowBlur = 18;
+          ctx.lineWidth = (1 - progress) * 8 + 2;
+
+          ctx.beginPath();
+          ctx.arc(20, 0, 75, -Math.PI / 3 + progress * 0.8, Math.PI / 3 + progress * 0.8);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+
+    // --- MAIN GAME MANAGER ---
+    class GameManager {
+      constructor() {
+        this.canvas = document.getElementById('gameCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.state = 'MENU'; // MENU, CHAR_SELECT, STAGE_SELECT, FIGHT, VICTORY
+
+        this.gameMode = 'versus'; // 'versus', 'cpu', 'training'
+        this.selectedP1 = 'kaien';
+        this.selectedP2 = 'muramasa';
+        this.currentStageIdx = 0;
+        this.isPaused = false;
+        this.showHitboxes = false;
+
+        this.p1 = null;
+        this.p2 = null;
+        this.stage = STAGES[0];
+        this.projectiles = [];
+        this.fx = new VFXEngine();
+
+        // Camera System
+        this.cam = { x: 960, y: 540, zoom: 1.0 };
+
+        this.initDOM();
+        this.initPreviews();
+        this.loop = this.loop.bind(this);
+        requestAnimationFrame(this.loop);
+      }
+
+      initDOM() {
+        // Mode Buttons
+        document.getElementById('btn-mode-versus').onclick = () => {
+          sound.init();
+          this.gameMode = 'versus';
+          this.openCharSelect();
+        };
+        document.getElementById('btn-mode-cpu').onclick = () => {
+          sound.init();
+          this.gameMode = 'cpu';
+          this.openCharSelect();
+        };
+        document.getElementById('btn-mode-training').onclick = () => {
+          sound.init();
+          this.gameMode = 'training';
+          this.openCharSelect();
+        };
+        document.getElementById('btn-show-controls').onclick = () => {
+          document.getElementById('controls-screen').classList.remove('hidden');
+        };
+        document.getElementById('btn-controls-back').onclick = () => {
+          document.getElementById('controls-screen').classList.add('hidden');
+        };
+        document.getElementById('btn-toggle-sound').onclick = (e) => {
+          sound.init();
+          sound.enabled = !sound.enabled;
+          if (sound.enabled) {
+            sound.startBGM();
+            e.target.innerText = 'Som & Música: LIGADO';
+          } else {
+            sound.stopBGM();
+            e.target.innerText = 'Som & Música: MUTADO';
+          }
+        };
+
+        // Character Select Buttons
+        document.querySelectorAll('.char-card').forEach(card => {
+          card.onclick = () => {
+            const charId = card.dataset.char;
+            if (this.selectingPlayer === 1) {
+              this.selectedP1 = charId;
+              if (this.gameMode === 'versus') {
+                this.selectingPlayer = 2;
+                document.getElementById('char-select-hint').innerText = 'JOGADOR 2: ESCOLHA SEU PERSONAGEM';
+              } else {
+                this.selectedP2 = charId === 'kaien' ? 'muramasa' : 'kaien';
+              }
+            } else {
+              this.selectedP2 = charId;
+              this.selectingPlayer = 1;
+              document.getElementById('char-select-hint').innerText = 'SELEÇÃO CONCLUÍDA! CLIQUE EM CONFIRMAR.';
+            }
+            this.updateCharSelectCards();
+          };
+        });
+
+        document.getElementById('btn-char-back').onclick = () => {
+          this.showScreen('main-menu');
+        };
+        document.getElementById('btn-char-confirm').onclick = () => {
+          this.showScreen('stage-select');
+        };
+
+        // Stage Select
+        document.querySelectorAll('.stage-card').forEach(card => {
+          card.onclick = () => {
+            document.querySelectorAll('.stage-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            this.currentStageIdx = parseInt(card.dataset.stage);
+          };
+        });
+        document.getElementById('btn-stage-back').onclick = () => {
+          this.openCharSelect();
+        };
+        document.getElementById('btn-stage-start').onclick = () => {
+          this.startFight();
+        };
+
+        // Pause Menu
+        document.getElementById('btn-resume').onclick = () => this.togglePause();
+        document.getElementById('btn-pause-restart').onclick = () => {
+          this.togglePause();
+          this.startFight();
+        };
+        document.getElementById('btn-pause-quit').onclick = () => {
+          this.togglePause();
+          this.showScreen('main-menu');
+          document.getElementById('hud').style.display = 'none';
+          document.getElementById('training-panel').style.display = 'none';
+        };
+
+        // Victory Screen
+        document.getElementById('btn-rematch').onclick = () => this.startFight();
+        document.getElementById('btn-char-select-return').onclick = () => this.openCharSelect();
+        document.getElementById('btn-menu-return').onclick = () => {
+          this.showScreen('main-menu');
+          document.getElementById('hud').style.display = 'none';
+        };
+
+        // Training Panel
+        document.getElementById('btn-reset-pos').onclick = () => {
+          if (this.p1 && this.p2) {
+            this.p1.reset(this.stage.spawnP1.x, this.stage.spawnP1.y);
+            this.p2.reset(this.stage.spawnP2.x, this.stage.spawnP2.y);
+          }
+        };
+        document.getElementById('btn-reset-dmg').onclick = () => {
+          if (this.p1 && this.p2) {
+            this.p1.damage = 0;
+            this.p2.damage = 0;
+          }
+        };
+        document.getElementById('btn-toggle-hitbox').onclick = (e) => {
+          this.showHitboxes = !this.showHitboxes;
+          e.target.innerText = `Hitboxes: ${this.showHitboxes ? 'ON' : 'OFF'}`;
+        };
+        document.getElementById('btn-dummy-cpu').onclick = (e) => {
+          if (!this.p2) return;
+          this.p2.isCPU = !this.p2.isCPU;
+          e.target.innerText = `Dummy: ${this.p2.isCPU ? 'CPU Ativo' : 'Parado'}`;
+        };
+      }
+
+      showScreen(screenId) {
+        document.querySelectorAll('.screen-overlay').forEach(el => el.classList.add('hidden'));
+        const target = document.getElementById(screenId);
+        if (target) target.classList.remove('hidden');
+      }
+
+      openCharSelect() {
+        this.selectingPlayer = 1;
+        document.getElementById('char-select-hint').innerText = 'JOGADOR 1: ESCOLHA SEU PERSONAGEM';
+        this.updateCharSelectCards();
+        this.showScreen('char-select');
+      }
+
+      updateCharSelectCards() {
+        document.querySelectorAll('.char-card').forEach(card => {
+          const cid = card.dataset.char;
+          card.classList.remove('selected-p1', 'selected-p2', 'selected-both');
+          // Remove old badges
+          const oldB1 = card.querySelector('.char-badge-p1');
+          const oldB2 = card.querySelector('.char-badge-p2');
+          if (oldB1) oldB1.remove();
+          if (oldB2) oldB2.remove();
+
+          if (this.selectedP1 === cid && this.selectedP2 === cid) {
+            card.classList.add('selected-both');
+            card.insertAdjacentHTML('afterbegin', '<div class="char-badge-p1">P1</div><div class="char-badge-p2">P2</div>');
+          } else if (this.selectedP1 === cid) {
+            card.classList.add('selected-p1');
+            card.insertAdjacentHTML('afterbegin', '<div class="char-badge-p1">P1</div>');
+          } else if (this.selectedP2 === cid) {
+            card.classList.add('selected-p2');
+            card.insertAdjacentHTML('afterbegin', '<div class="char-badge-p2">P2</div>');
+          }
+        });
+      }
+
+      startFight() {
+        this.stage = STAGES[this.currentStageIdx];
+        this.p1 = new Fighter('p1', CHARACTERS[this.selectedP1], false);
+        this.p2 = new Fighter('p2', CHARACTERS[this.selectedP2], this.gameMode === 'cpu');
+
+        this.p1.reset(this.stage.spawnP1.x, this.stage.spawnP1.y);
+        this.p2.reset(this.stage.spawnP2.x, this.stage.spawnP2.y);
+
+        if (this.gameMode === 'training') {
+          this.p1.stocks = 99;
+          this.p2.stocks = 99;
+          document.getElementById('training-panel').style.display = 'flex';
+        } else {
+          this.p1.stocks = 3;
+          this.p2.stocks = 3;
+          document.getElementById('training-panel').style.display = 'none';
+        }
+
+        // Update HUD
+        document.getElementById('p1-name').innerText = this.p1.char.name;
+        document.getElementById('p2-name').innerText = this.p2.char.name;
+        document.getElementById('p1-avatar').innerText = this.p1.char.avatarLetter;
+        document.getElementById('p2-avatar').innerText = this.p2.char.avatarLetter;
+
+        this.projectiles = [];
+        this.state = 'FIGHT';
+        this.showScreen(''); // Hide menus
+        document.getElementById('hud').style.display = 'flex';
+      }
+
+      togglePause() {
+        if (this.state !== 'FIGHT') return;
+        this.isPaused = !this.isPaused;
+        const pauseMenu = document.getElementById('pause-menu');
+        if (this.isPaused) pauseMenu.classList.remove('hidden');
+        else pauseMenu.classList.add('hidden');
+      }
+
+      checkHitboxCollision(attacker, defender) {
+        if (!attacker.activeHitbox || defender.invulnerableTimer > 0) return;
+
+        const hb = attacker.activeHitbox;
+        const hit = (
+          hb.x < defender.x + defender.w &&
+          hb.x + hb.w > defender.x &&
+          hb.y < defender.y + defender.h &&
+          hb.y + hb.h > defender.y
+        );
+
+        if (hit) {
+          defender.takeDamage(hb.dmg, hb, hb.hitstop || 6);
+          attacker.hitstop = hb.hitstop || 5;
+          attacker.ultGauge = Math.min(100, attacker.ultGauge + hb.dmg * 1.1);
+
+          this.fx.spawnAura(defender.x + defender.w/2, defender.y + defender.h/2, '#ffea00', 12);
+          this.fx.triggerScreenShake(hb.isHeavy ? 18 : 8, hb.isHeavy ? 14 : 8);
+
+          if (hb.isHeavy && defender.damage > 90) {
+            this.fx.triggerFlash();
+          }
+
+          attacker.activeHitbox = null; // Only hit once per attack activation
+        }
+      }
+
+      checkProjectileCollisions() {
+        for (let i = this.projectiles.length - 1; i >= 0; i--) {
+          const p = this.projectiles[i];
+          p.update();
+
+          const target = p.owner === this.p1 ? this.p2 : this.p1;
+          if (target && target.invulnerableTimer <= 0) {
+            const hit = (
+              p.x - p.w/2 < target.x + target.w &&
+              p.x + p.w/2 > target.x &&
+              p.y - p.h/2 < target.y + target.h &&
+              p.y + p.h/2 > target.y
+            );
+
+            if (hit) {
+              const angle = target.x > p.x ? -0.5 : -2.6;
+              target.takeDamage(p.damage, { baseKB: p.baseKB, kbGrowth: p.kbGrowth, angle });
+              p.active = false;
+              this.fx.spawnAura(target.x + target.w/2, target.y + target.h/2, p.color, 14);
+            }
+          }
+
+          if (!p.active) this.projectiles.splice(i, 1);
+        }
+      }
+
+      checkRingOut(fighter) {
+        const bz = this.stage.blastZone;
+        if (fighter.x < bz.left || fighter.x > bz.right || fighter.y < bz.top || fighter.y > bz.bottom) {
+          // Ring out explosion!
+          sound.playKO();
+          this.fx.triggerScreenShake(28, 30);
+          this.fx.triggerFlash();
+          this.fx.spawnAura(fighter.x, fighter.y, '#ffea00', 30);
+
+          fighter.stocks--;
+          if (fighter.stocks <= 0 && this.gameMode !== 'training') {
+            this.endMatch(fighter === this.p1 ? this.p2 : this.p1);
+          } else {
+            // Respawn
+            const spawnPos = fighter.id === 'p1' ? this.stage.spawnP1 : this.stage.spawnP2;
+            fighter.reset(spawnPos.x, spawnPos.y);
+          }
+        }
+      }
+
+      endMatch(winner) {
+        this.state = 'VICTORY';
+        const victoryTitle = document.getElementById('victory-title');
+        const victorySub = document.getElementById('victory-subtitle');
+        victoryTitle.innerText = `${winner.char.name} VENCEU!`;
+        victorySub.innerText = `${winner.id.toUpperCase()} DOMINOU A ARENA`;
+        victoryTitle.style.color = winner.char.color;
+        this.showScreen('victory-screen');
+      }
+
+      updateHUD() {
+        if (!this.p1 || !this.p2) return;
+
+        // Damage %
+        const p1DmgEl = document.getElementById('p1-damage');
+        const p2DmgEl = document.getElementById('p2-damage');
+        p1DmgEl.innerText = `${Math.floor(this.p1.damage)}%`;
+        p2DmgEl.innerText = `${Math.floor(this.p2.damage)}%`;
+
+        // Color coding for high % (higher % = brighter red)
+        p1DmgEl.style.color = this.p1.damage > 100 ? '#ff2a5f' : this.p1.damage > 60 ? '#ffaa00' : '#ffffff';
+        p2DmgEl.style.color = this.p2.damage > 100 ? '#ff2a5f' : this.p2.damage > 60 ? '#ffaa00' : '#ffffff';
+
+        // Stocks
+        this.renderStocks('p1-stocks', this.p1.stocks);
+        this.renderStocks('p2-stocks', this.p2.stocks);
+
+        // Ultimate Bars
+        const p1UltBar = document.getElementById('p1-ult-bar');
+        const p2UltBar = document.getElementById('p2-ult-bar');
+        p1UltBar.style.width = `${this.p1.ultGauge}%`;
+        p2UltBar.style.width = `${this.p2.ultGauge}%`;
+
+        p1UltBar.classList.toggle('hud-ult-ready', this.p1.ultGauge >= 100);
+        p2UltBar.classList.toggle('hud-ult-ready', this.p2.ultGauge >= 100);
+      }
+
+      renderStocks(containerId, count) {
+        const el = document.getElementById(containerId);
+        let html = '';
+        const displayCount = Math.min(5, Math.max(0, count));
+        for (let i = 0; i < displayCount; i++) {
+          html += '<span class="stock-icon"></span>';
+        }
+        el.innerHTML = html;
+      }
+
+      // Dynamic Camera: Auto-Zoom and Center on Both Fighters
+      updateCamera() {
+        if (!this.p1 || !this.p2) return;
+
+        const midX = (this.p1.x + this.p2.x) / 2 + this.p1.w / 2;
+        const midY = (this.p1.y + this.p2.y) / 2 + this.p1.h / 2;
+        const dist = Math.hypot(this.p1.x - this.p2.x, this.p1.y - this.p2.y);
+
+        // Calculate smooth zoom
+        const targetZoom = Math.min(1.2, Math.max(0.65, 1200 / (dist + 500)));
+        this.cam.zoom += (targetZoom - this.cam.zoom) * 0.08;
+
+        // Smooth camera follow (lerp)
+        this.cam.x += (midX - this.cam.x) * 0.08;
+        this.cam.y += (midY - this.cam.y) * 0.08;
+      }
+
+      loop() {
+        this.ctx.clearRect(0, 0, 1920, 1080);
+
+        if (this.state === 'FIGHT' && !this.isPaused) {
+          // Input
+          const p1In = input.getP1Input();
+          const p2In = input.getP2Input();
+
+          // Update Fighters
+          this.p1.update(p1In, this.p2, this.stage, this.projectiles, this.fx);
+          this.p2.update(p2In, this.p1, this.stage, this.projectiles, this.fx);
+
+          // Hitbox Collisions
+          this.checkHitboxCollision(this.p1, this.p2);
+          this.checkHitboxCollision(this.p2, this.p1);
+
+          // Projectiles & Blastzone
+          this.checkProjectileCollisions();
+          this.checkRingOut(this.p1);
+          this.checkRingOut(this.p2);
+
+          this.fx.update();
+          this.updateCamera();
+          this.updateHUD();
+        }
+
+        // Camera Transformation & Screenshake
+        this.ctx.save();
+        let shakeX = 0;
+        let shakeY = 0;
+        if (this.fx.shakeTime > 0) {
+          shakeX = (Math.random() - 0.5) * this.fx.shakeIntensity;
+          shakeY = (Math.random() - 0.5) * this.fx.shakeIntensity;
+        }
+
+        this.ctx.translate(960 + shakeX, 540 + shakeY);
+        this.ctx.scale(this.cam.zoom, this.cam.zoom);
+        this.ctx.translate(-this.cam.x, -this.cam.y);
+
+        // Render Game World
+        this.drawStage();
+
+        if (this.state === 'FIGHT' || this.state === 'VICTORY') {
+          for (const proj of this.projectiles) proj.draw(this.ctx);
+          this.p1.draw(this.ctx);
+          this.p2.draw(this.ctx);
+          this.fx.draw(this.ctx);
+
+          // Debug Hitbox View (Training Mode)
+          if (this.showHitboxes) {
+            this.drawDebugHitboxes();
+          }
+        }
+
+        this.ctx.restore();
+
+        // Render Screen-space UI (Combo Counters, etc.)
+        if (this.state === 'FIGHT') {
+          this.drawCombos();
+        }
+
+        requestAnimationFrame(this.loop);
+      }
+
+      drawStage() {
+        // Dynamic Stage Background Gradient
+        const grad = this.ctx.createLinearGradient(0, 0, 0, 1080);
+        grad.addColorStop(0, this.stage.bgGradient[0]);
+        grad.addColorStop(0.5, this.stage.bgGradient[1]);
+        grad.addColorStop(1, this.stage.bgGradient[2]);
+
+        this.ctx.fillStyle = grad;
+        this.ctx.fillRect(-600, -400, 3120, 1980);
+
+        // Background Cyber/Anime Grid or Distant City
+        this.ctx.save();
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+        this.ctx.lineWidth = 2;
+        for (let x = -400; x < 2400; x += 120) {
+          this.ctx.beginPath();
+          this.ctx.moveTo(x, -200);
+          this.ctx.lineTo(x, 1200);
+          this.ctx.stroke();
+        }
+        this.ctx.restore();
+
+        // Render Platforms
+        for (const plat of this.stage.platforms) {
+          this.ctx.save();
+          if (plat.semi) {
+            // Glowing Floating Platform
+            this.ctx.fillStyle = 'rgba(25, 35, 60, 0.9)';
+            this.ctx.strokeStyle = this.stage.color;
+            this.ctx.lineWidth = 3;
+            this.ctx.shadowColor = this.stage.color;
+            this.ctx.shadowBlur = 12;
+
+            this.ctx.beginPath();
+            this.ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [4]);
+            this.ctx.fill();
+            this.ctx.stroke();
+          } else {
+            // Solid Base Platform
+            this.ctx.fillStyle = '#0e1322';
+            this.ctx.strokeStyle = '#ffffff';
+            this.ctx.lineWidth = 4;
+            this.ctx.shadowColor = 'rgba(255, 255, 255, 0.2)';
+            this.ctx.shadowBlur = 15;
+
+            this.ctx.beginPath();
+            this.ctx.roundRect(plat.x, plat.y, plat.w, plat.h, [8]);
+            this.ctx.fill();
+            this.ctx.stroke();
+
+            // Neon Underglow Edge
+            this.ctx.strokeStyle = this.stage.color;
+            this.ctx.lineWidth = 3;
+            this.ctx.beginPath();
+            this.ctx.moveTo(plat.x, plat.y);
+            this.ctx.lineTo(plat.x + plat.w, plat.y);
+            this.ctx.stroke();
+          }
+          this.ctx.restore();
+        }
+      }
+
+      drawDebugHitboxes() {
+        this.ctx.save();
+        this.ctx.strokeStyle = '#ff0055';
+        this.ctx.fillStyle = 'rgba(255, 0, 85, 0.25)';
+        this.ctx.lineWidth = 2;
+
+        for (const f of [this.p1, this.p2]) {
+          if (f.activeHitbox) {
+            const hb = f.activeHitbox;
+            this.ctx.strokeRect(hb.x, hb.y, hb.w, hb.h);
+            this.ctx.fillRect(hb.x, hb.y, hb.w, hb.h);
+          }
+          // Hurtbox
+          this.ctx.strokeStyle = '#00ff88';
+          this.ctx.strokeRect(f.x, f.y, f.w, f.h);
+        }
+        this.ctx.restore();
+      }
+
+      drawCombos() {
+        this.ctx.save();
+        this.ctx.font = 'italic 900 28px Impact';
+        if (this.p1.comboCount > 1) {
+          this.ctx.fillStyle = '#ff2a5f';
+          this.ctx.shadowColor = '#ff2a5f';
+          this.ctx.shadowBlur = 15;
+          this.ctx.fillText(`${this.p1.comboCount} HITS!`, 220, 160);
+        }
+        if (this.p2.comboCount > 1) {
+          this.ctx.fillStyle = '#00e5ff';
+          this.ctx.shadowColor = '#00e5ff';
+          this.ctx.shadowBlur = 15;
+          this.ctx.fillText(`${this.p2.comboCount} HITS!`, 1600, 160);
+        }
+        this.ctx.restore();
+      }
+
+      // Draw dynamic preview canvases in character & stage select
+      initPreviews() {
+        // Previews for Character Select Cards
+        for (const cid of ['kaien', 'muramasa', 'vesper']) {
+          const cvs = document.getElementById(`preview-${cid}`);
+          if (!cvs) continue;
+          const pctx = cvs.getContext('2d');
+          const dummy = new Fighter('p1', CHARACTERS[cid]);
+          dummy.x = 80 - dummy.w/2;
+          dummy.y = 110 - dummy.h/2;
+          dummy.drawFighterBody(pctx);
+        }
+
+        // Previews for Stages
+        for (let i = 0; i < 3; i++) {
+          const cvs = document.getElementById(`stage-thumb-${i}`);
+          if (!cvs) continue;
+          const sctx = cvs.getContext('2d');
+          const s = STAGES[i];
+          const grad = sctx.createLinearGradient(0, 0, 0, 170);
+          grad.addColorStop(0, s.bgGradient[0]);
+          grad.addColorStop(1, s.bgGradient[2]);
+          sctx.fillStyle = grad;
+          sctx.fillRect(0, 0, 260, 170);
+          sctx.fillStyle = s.color;
+          sctx.fillRect(50, 120, 160, 10);
+        }
+      }
+    }
+
+    // Launch Game Engine!
+    window.addEventListener('DOMContentLoaded', () => {
+      window.game = new GameManager();
+    });
+  </script>
+</body>
+</html>
